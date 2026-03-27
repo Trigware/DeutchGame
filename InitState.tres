@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="GridState" format=3 uid="uid://cwkh6rk77ggh2"]
+
+[ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/PieceResource.gd" id="1_vbvah"]
+[ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/GridResource.gd" id="2_fwst3"]
+
+[sub_resource type="Resource" id="Resource_vbvah"]
+script = ExtResource("1_vbvah")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_fwst3"]
+script = ExtResource("1_vbvah")
+kind = 3
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_fg4jk"]
+script = ExtResource("1_vbvah")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_ea7cf"]
+script = ExtResource("1_vbvah")
+kind = 2
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_rdx3d"]
+script = ExtResource("1_vbvah")
+kind = 2
+player_red = true
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_idnlk"]
+script = ExtResource("1_vbvah")
+kind = 1
+player_red = true
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_i3l8j"]
+script = ExtResource("1_vbvah")
+kind = 3
+player_red = true
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_l1d1j"]
+script = ExtResource("1_vbvah")
+kind = 1
+player_red = true
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[resource]
+script = ExtResource("2_fwst3")
+piece_locations = Dictionary[Vector2i, ExtResource("1_vbvah")]({
+Vector2i(3, 1): SubResource("Resource_vbvah"),
+Vector2i(3, 7): SubResource("Resource_idnlk"),
+Vector2i(5, 1): SubResource("Resource_fwst3"),
+Vector2i(5, 2): SubResource("Resource_ea7cf"),
+Vector2i(5, 6): SubResource("Resource_rdx3d"),
+Vector2i(5, 7): SubResource("Resource_i3l8j"),
+Vector2i(7, 1): SubResource("Resource_fg4jk"),
+Vector2i(7, 7): SubResource("Resource_l1d1j")
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
