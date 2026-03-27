@@ -2,14 +2,21 @@ extends TileMapLayer
 
 @onready var camera = $"../Camera"
 @onready var selector = $Selector
+@onready var icons = $Icons
 @onready var board = $".."
 
 var screen_size: Vector2i
 const tile_size := 32
 const board_tile_count := Vector2(11, 9)
 
+var possible_moves: Dictionary
+
 func _ready(): load_init_state()
-func load_init_state(): pass
+func load_init_state():
+	for tile_pos in UID.init_state.piece_locations.keys():
+		var piece = UID.init_state.piece_locations[tile_pos]
+		var atlas_coord = Vector2i(GridState.piece_atlas_coords_x[piece.kind], 1)
+		icons.set_cell(tile_pos, 1, atlas_coord)
 
 func _process(_delta):
 	var current_size = DisplayServer.window_get_size()
@@ -20,7 +27,7 @@ func _process(_delta):
 	update_board()
 
 var zoom_level = 1
-var grid_offset := -Vector2.ONE * 2
+var grid_offset := Vector2.ONE
 
 const zoom_change := 1.05
 const zoom_limits := Vector2(0.05, 5)
@@ -56,6 +63,7 @@ func _unhandled_input(_event):
 		grid_offset += offset_delta
 	if Input.is_action_just_pressed("cancel_selection"):
 		selector.hide()
+		reset_possible_moves()
 	zoom_level = clamp(zoom_level, zoom_limits.x, zoom_limits.y)
 	if previous_zoom == zoom_level and previous_offset == grid_offset: return
 	update_board()
@@ -74,27 +82,56 @@ func update_selected_tile():
 	var hovered_changed = hovered_tile != previous_hovered_tile
 	if hovered_changed: hide_previous_hovered_tile()
 	if tile_exists and not selector.visible:
-		set_cell(hovered_tile, 1, get_hovered_atlas_coord(hovered_tile, true))
+		var selected_atlas_coord = get_hovered_atlas_coord(hovered_tile, TileType.Selected)
+		set_cell(hovered_tile, 1, selected_atlas_coord)
 		previous_hovered_tile = hovered_tile
 	
 	if not Input.is_action_just_pressed("select_tile"): return
 	var selection_cancelled = selected_tile == hovered_tile
+	reset_possible_moves()
 	if selection_cancelled:
 		selected_tile = -Vector2i.ONE
 		selector.hide()
 		return
 	
 	if not board.has_piece(hovered_tile): return
+	possible_moves = board.get_possible_moves(hovered_tile)
+	display_possible_moves()
 	selected_tile = hovered_tile
 	selector.position = Vector2(selected_tile) * tile_size
 	selector.visible = tile_exists
 	hide_previous_hovered_tile()
 
-func get_hovered_atlas_coord(tile_pos: Vector2i, selected: bool) -> Vector2i:
+enum TileType {
+	Regular,
+	Selected,
+	Move
+}
+
+func get_hovered_atlas_coord(tile_pos: Vector2i, tile_type: TileType) -> Vector2i:
 	var is_dark = tile_pos.x % 2 != tile_pos.y % 2
-	var x_coord = int(is_dark) + tiles_per_variant * int(selected)
+	var x_coord = int(is_dark) + tiles_per_variant * int(tile_type)
 	return Vector2i(x_coord, 0)
 
 func hide_previous_hovered_tile():
 	if previous_hovered_tile == -Vector2i.ONE: return
-	set_cell(previous_hovered_tile, 1, get_hovered_atlas_coord(previous_hovered_tile, false))
+	set_cell(previous_hovered_tile, 1, get_hovered_atlas_coord(previous_hovered_tile, TileType.Regular))
+
+func reset_possible_moves():
+	if latest_move_cost_root != null: latest_move_cost_root.queue_free()
+	for move_dist in possible_moves.keys(): set_cell(move_dist, 1, get_hovered_atlas_coord(move_dist, TileType.Regular))
+
+var latest_move_cost_root: Control = null
+
+func display_possible_moves():
+	latest_move_cost_root = Control.new()
+	
+	for move_dest in possible_moves.keys():
+		set_cell(move_dest, 1, get_hovered_atlas_coord(move_dest, TileType.Move))
+		var move_cost = possible_moves[move_dest]
+		var cost_node = UID.move_cost.instantiate()
+		cost_node.position = tile_size * move_dest
+		cost_node.size = Vector2(tile_size, tile_size)
+		cost_node.text = str(move_cost)
+		latest_move_cost_root.add_child(cost_node)
+	add_child(latest_move_cost_root)
