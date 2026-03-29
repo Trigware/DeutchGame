@@ -26,11 +26,5 @@ visible = false
 texture = ExtResource("3_37q8m")
 centered = false
 
-[node name="Effect Durations" type="Control" parent="Tiles" unique_id=975573772]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="Camera" type="Camera2D" parent="." unique_id=1617227410]
 anchor_mode = 0
