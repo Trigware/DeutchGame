@@ -25,8 +25,11 @@ func get_atlas() -> Vector2i:
 
 var effect_type := StatusEffect.Unknown
 var remaining_duration: int
+var duration_node: EffectDuration
+var linked_piece: Piece
 
-static func ctor(effect: StatusEffect) -> Effect:
+static func ctor(effect: StatusEffect, piece: Piece) -> Effect:
 	var instance := Effect.new()
 	instance.effect_type = effect
+	instance.linked_piece = piece
 	return instance
