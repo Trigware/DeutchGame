@@ -27,6 +27,7 @@ func override_effects(effect: Effect.StatusEffect):
 func remove_effect(effect_type: Effect.StatusEffect):
 	var effect: Effect = status_effects[effect_type]
 	effect.duration_node.queue_free()
+	effect.duration_node = null
 	status_effects.erase(effect_type)
 
 func add_effect(effect: Effect.StatusEffect):
@@ -36,3 +37,6 @@ func is_effect_over(effect: Effect.StatusEffect):
 	var has_effect = effect in status_effects
 	if not has_effect: return false
 	return status_effects[effect].remaining_duration == 0
+
+func has_flag() -> bool:
+	return has_status_effect(Effect.StatusEffect.RedFlag) or has_status_effect(Effect.StatusEffect.BlueFlag)

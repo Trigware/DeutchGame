@@ -6,6 +6,7 @@ extends TileMapLayer
 @onready var board = $".."
 @onready var status = $Status
 @onready var effect_durations = $"Effect Durations"
+@onready var power_ups = $PowerUps
 
 var screen_size: Vector2i
 const tile_size := 32
@@ -18,6 +19,14 @@ func load_init_state():
 	GridState.active_game = UID.init_state
 	load_kind_of_tile(GridState.active_game.piece_locations, true)
 	load_kind_of_tile(GridState.active_game.special_tiles)
+	setup_power_ups_at_start()
+
+func setup_power_ups_at_start():
+	for tile_coord: Vector2i in GridState.active_game.power_up_tiles:
+		GridState.active_game.generate_power_up(tile_coord, power_ups)
+
+func update_board_tile(tile_coord: Vector2i, tile_type: TileType):
+	set_cell(tile_coord, 1, get_hovered_atlas_coord(tile_coord, tile_type))
 
 func load_kind_of_tile(source: Dictionary, handling_pieces := false):
 	for tile_pos in source.keys():
@@ -98,14 +107,10 @@ func handle_mouse_hover_logic():
 	var hovered_changed = hovered_tile != previous_hovered_tile
 	if hovered_changed: hide_previous_hovered_tile()
 	
-	var hovering_over_flag_tile = hovered_tile in GridState.active_game.flag_origin.values()
-	var hovering_over_grave = hovered_tile in GridState.active_game.grave_tiles
-	var can_highlight_tile = tile_exists and not selector.visible and\
-		not hovering_over_flag_tile and not hovering_over_grave
+	var can_highlight_tile = tile_exists and not selector.visible and not update_tile_check_states(hovered_tile)
 	
 	if can_highlight_tile:
-		var selected_atlas_coord = get_hovered_atlas_coord(hovered_tile, TileType.Selected)
-		set_cell(hovered_tile, 1, selected_atlas_coord)
+		update_board_tile(hovered_tile, TileType.Selected)
 		previous_hovered_tile = hovered_tile
 	return tile_exists
 
@@ -134,7 +139,7 @@ enum TileType {
 	Move,
 	TrickQuestion,
 	Grave,
-	Flag
+	Flag,
 }
 
 func can_select(tile: Vector2i) -> bool:
@@ -158,15 +163,24 @@ func get_hovered_atlas_coord(tile_pos: Vector2i, tile_type: TileType) -> Vector2
 
 func hide_previous_hovered_tile():
 	if previous_hovered_tile == -Vector2i.ONE: return
-	set_cell(previous_hovered_tile, 1, get_hovered_atlas_coord(previous_hovered_tile, TileType.Regular))
+	update_board_tile(previous_hovered_tile, TileType.Regular)
+
+var latest_check_grave_tile: bool
+var latest_check_is_flag: bool
+
+func update_tile_check_states(tile_coord: Vector2i) -> bool:
+	latest_check_grave_tile = tile_coord in GridState.active_game.grave_tiles
+	latest_check_is_flag = tile_coord in GridState.active_game.flag_origin.values()
+	return latest_check_grave_tile or latest_check_is_flag
 
 func reset_possible_moves():
 	if latest_move_cost_root != null: latest_move_cost_root.queue_free()
 	for move_dist in possible_moves.keys():
-		var is_grave = move_dist in GridState.active_game.grave_tiles
+		update_tile_check_states(move_dist)
 		var tile_type = TileType.Regular
-		if is_grave: tile_type = TileType.Grave
-		set_cell(move_dist, 1, get_hovered_atlas_coord(move_dist, tile_type))
+		if latest_check_grave_tile: tile_type = TileType.Grave
+		if latest_check_is_flag: tile_type = TileType.Flag
+		update_board_tile(move_dist, tile_type)
 
 var latest_move_cost_root: Control = null
 
@@ -176,10 +190,11 @@ func display_possible_moves():
 	for move_dest in possible_moves.keys():
 		var move: Move = possible_moves[move_dest]
 		var tile_type = TileType.TrickQuestion if move.trick_move else TileType.Move
-		set_cell(move_dest, 1, get_hovered_atlas_coord(move_dest, tile_type))
+		update_board_tile(move_dest, tile_type)
 		var cost_node = UID.move_cost.instantiate()
 		cost_node.setup(move_dest, move, latest_move_cost_root)
 	add_child(latest_move_cost_root)
+	previous_hovered_tile = -Vector2i.ONE
 
 func hide_selector():
 	selector.hide()
@@ -208,11 +223,20 @@ func play_move():
 		selected_tile = hovered_tile
 		return
 	
-	piece_locations.erase(selected_tile)
+	handle_flag_move_logic(moved_piece)
+	erase_piece(moved_piece, selected_tile)
 	piece_locations[hovered_tile] = moved_piece
 	icons.erase_cell(selected_tile)
 	draw_piece_to_board(moved_piece, hovered_tile)
+	handle_win_conditions(moved_piece)
 	selected_tile = hovered_tile
+
+func handle_flag_move_logic(moved_piece: Piece):
+	var obtainted_flag = hovered_tile in GridState.active_game.flag_origin.values()
+	if not obtainted_flag: return
+	var used_flag = Effect.StatusEffect.BlueFlag if moved_piece.team_relation == SpecialTile.TeamRelation.Red\
+		else Effect.StatusEffect.RedFlag
+	moved_piece.add_effect(used_flag)
 
 func handle_captured_piece_logic():
 	var piece_locations = GridState.active_game.piece_locations
@@ -236,7 +260,24 @@ func draw_piece_to_board(piece: Piece, coords: Vector2i):
 		status.erase_cell(status_show_coord)
 		if i >= effect_count: continue
 		var status_effect: Effect = piece.status_effects.values()[i]
+		if status_effect.effect_type == Effect.StatusEffect.Unknown: continue
 		var status_atlas_coord = status_effect.get_atlas()
 		status.set_cell(status_show_coord, 1, status_atlas_coord)
 		var effect_node = UID.effect_duration.instantiate()
 		effect_node.setup(status_show_coord, status_effect, effect_durations)
+
+func erase_piece(piece: Piece, coords: Vector2i):
+	var piece_locations = GridState.active_game.piece_locations
+	piece_locations.erase(selected_tile)
+	var base_status_coord = coords * 2
+	for i in range(status_effect_show_offset.size()):
+		var status_coord = base_status_coord + status_effect_show_offset[i]
+		status.erase_cell(status_coord)
+
+func handle_win_conditions(moved_piece: Piece):
+	var needed_flag_color = moved_piece.team_relation
+	var is_in_flag_origin = GridState.active_game.flag_origin[needed_flag_color] == hovered_tile
+	var holds_flag = moved_piece.has_flag()
+	var has_obtainted_flag = is_in_flag_origin and holds_flag
+	if not has_obtainted_flag: return
+	print("WIN!")

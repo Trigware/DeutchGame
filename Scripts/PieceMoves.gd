@@ -70,7 +70,11 @@ func is_valid_tile(piece: Piece, tile) -> bool:
 		GridState.active_game.piece_locations[tile].team_relation == piece.team_relation
 	
 	var is_in_grave = is_tile_in_grave(tile)
-	var is_invalid = out_of_bounds or is_in_wall or has_same_team_piece or is_in_grave
+	var has_flag = piece.has_flag()
+	var is_in_own_flag = GridState.active_game.flag_origin[piece.team_relation] == tile
+	var flag_enter_invalid = is_in_own_flag and not has_flag
+	
+	var is_invalid = out_of_bounds or is_in_wall or has_same_team_piece or is_in_grave or flag_enter_invalid
 	return not is_invalid
 
 func is_tile_in_grave(tile: Vector2i) -> bool: return tile in GridState.active_game.grave_tiles
