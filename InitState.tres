@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="GridState" format=3 uid="uid://cwkh6rk77ggh2"]
 
 [ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/PieceResource.gd" id="1_vbvah"]
+[ext_resource type="Script" uid="uid://dl3w4u42jqb36" path="res://Scripts/PlayerPowerUpRes.gd" id="2_fg4jk"]
 [ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/GridResource.gd" id="2_fwst3"]
 [ext_resource type="Script" uid="uid://q3c88fb6vgof" path="res://Scripts/SpecialTile.gd" id="3_fwst3"]
 

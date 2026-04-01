@@ -29,6 +29,12 @@ enum WallSurround {
 @export var relation := TeamRelation.Other
 @export var wall_surround := WallSurround.Center
 
+static func flag(team: SpecialTile.TeamRelation) -> SpecialTile:
+	var instance := SpecialTile.new()
+	instance.kind = TileType.Flag
+	instance.relation = team
+	return instance
+
 func _validate_property(property: Dictionary):
 	match property.name:
 		"relation": if kind != TileType.Flag: property.usage = PROPERTY_USAGE_NO_EDITOR

@@ -26,7 +26,8 @@ func override_effects(effect: Effect.StatusEffect):
 
 func remove_effect(effect_type: Effect.StatusEffect):
 	var effect: Effect = status_effects[effect_type]
-	effect.duration_node.queue_free()
+	if effect.duration_node != null:
+		effect.duration_node.queue_free()
 	effect.duration_node = null
 	status_effects.erase(effect_type)
 
@@ -40,3 +41,8 @@ func is_effect_over(effect: Effect.StatusEffect):
 
 func has_flag() -> bool:
 	return has_status_effect(Effect.StatusEffect.RedFlag) or has_status_effect(Effect.StatusEffect.BlueFlag)
+
+func flag_kind() -> SpecialTile.TeamRelation:
+	if not has_flag(): return SpecialTile.TeamRelation.Other
+	return SpecialTile.TeamRelation.Blue if team_relation == SpecialTile.TeamRelation.Red\
+		else SpecialTile.TeamRelation.Red

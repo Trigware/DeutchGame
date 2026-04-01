@@ -1,0 +1,16 @@
+[gd_resource type="TileSet" format=3 uid="uid://b4g465r6qq585"]
+
+[ext_resource type="Texture2D" uid="uid://dj4mi5ki58hnp" path="res://Textures/PowerUps.png" id="1_rat26"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_23sda"]
+texture = ExtResource("1_rat26")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_23sda")

@@ -7,6 +7,7 @@ extends TileMapLayer
 @onready var status = $Status
 @onready var effect_durations = $"Effect Durations"
 @onready var power_ups = $PowerUps
+@onready var game_end = $"../Game End"
 
 var screen_size: Vector2i
 const tile_size := 32
@@ -148,7 +149,8 @@ func can_select(tile: Vector2i) -> bool:
 	var selected_piece: Piece = GridState.active_game.piece_locations[tile]
 	var is_selectable_color = selected_piece.team_relation == GridState.active_game.player_turn
 	var is_selecting_non_fainted_piece = not selected_piece.has_status_effect(Effect.StatusEffect.Fainted)
-	var can_be_selected = is_selectable_color and is_selecting_non_fainted_piece
+	var is_game_ongoing = GridState.active_game.game_end_type == GridState.GameEndType.Ongoing
+	var can_be_selected = is_selectable_color and is_selecting_non_fainted_piece and is_game_ongoing
 	return can_be_selected
 
 const last_tile_pair := TileType.TrickQuestion
@@ -224,11 +226,14 @@ func play_move():
 		return
 	
 	handle_flag_move_logic(moved_piece)
-	erase_piece(moved_piece, selected_tile)
+	erase_piece(selected_tile)
 	piece_locations[hovered_tile] = moved_piece
 	icons.erase_cell(selected_tile)
 	draw_piece_to_board(moved_piece, hovered_tile)
+	handle_power_up_tiles()
 	handle_win_conditions(moved_piece)
+	if GridState.active_game.game_end_type != GridState.GameEndType.Ongoing:
+		game_end.display_end_of_game()
 	selected_tile = hovered_tile
 
 func handle_flag_move_logic(moved_piece: Piece):
@@ -241,6 +246,15 @@ func handle_flag_move_logic(moved_piece: Piece):
 func handle_captured_piece_logic():
 	var piece_locations = GridState.active_game.piece_locations
 	var captured_piece: Piece = piece_locations[hovered_tile]
+	var captured_had_flag = captured_piece.has_flag()
+	
+	if captured_had_flag:
+		var flag_team = captured_piece.flag_kind()
+		var respawn_coord = GridState.active_game.flag_origin[flag_team]
+		var special_tile = SpecialTile.flag(flag_team)
+		GridState.active_game.special_tiles[respawn_coord] = special_tile
+		icons.set_cell(respawn_coord, 1, special_tile.get_atlas())
+	
 	if captured_piece.kind != GridState.PieceType.Sword: return
 	var respawn_pos = captured_piece.respawn_pos
 	captured_piece.override_effects(Effect.StatusEffect.Fainted)
@@ -248,7 +262,7 @@ func handle_captured_piece_logic():
 	draw_piece_to_board(captured_piece, respawn_pos)
 
 const status_effect_show_offset : Array[Vector2i] =\
-	[Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0)]
+	[Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]
 
 func draw_piece_to_board(piece: Piece, coords: Vector2i):
 	icons.set_cell(coords, 1, piece.get_atlas())
@@ -266,7 +280,7 @@ func draw_piece_to_board(piece: Piece, coords: Vector2i):
 		var effect_node = UID.effect_duration.instantiate()
 		effect_node.setup(status_show_coord, status_effect, effect_durations)
 
-func erase_piece(piece: Piece, coords: Vector2i):
+func erase_piece(coords: Vector2i):
 	var piece_locations = GridState.active_game.piece_locations
 	piece_locations.erase(selected_tile)
 	var base_status_coord = coords * 2
@@ -274,10 +288,22 @@ func erase_piece(piece: Piece, coords: Vector2i):
 		var status_coord = base_status_coord + status_effect_show_offset[i]
 		status.erase_cell(status_coord)
 
+func handle_power_up_tiles():
+	var contains_power_up = GridState.active_game.has_tile_power_up(hovered_tile)
+	if not contains_power_up: return
+	var obtainted_kind = GridState.active_game.power_up_tiles[hovered_tile]
+	GridState.active_game.power_up_tiles.erase(hovered_tile)
+	power_ups.erase_cell(hovered_tile)
+	GridState.active_game.receive_power_up(obtainted_kind)
+
 func handle_win_conditions(moved_piece: Piece):
 	var needed_flag_color = moved_piece.team_relation
 	var is_in_flag_origin = GridState.active_game.flag_origin[needed_flag_color] == hovered_tile
 	var holds_flag = moved_piece.has_flag()
 	var has_obtainted_flag = is_in_flag_origin and holds_flag
-	if not has_obtainted_flag: return
-	print("WIN!")
+	if has_obtainted_flag:
+		GridState.active_game.game_end_type = GridState.GameEndType.FlagCaptured
+		return
+	var unable_to_progress = board.is_lack_of_moves_win_condition_valid()
+	if not unable_to_progress: return
+	GridState.active_game.game_end_type = GridState.GameEndType.PiecelessOpponent

@@ -96,3 +96,13 @@ func is_stopping_path(piece: Piece, tile):
 func is_in_trick_question(tile):
 	return tile in GridState.active_game.special_tiles and\
 		GridState.active_game.special_tiles[tile].kind == SpecialTile.TileType.TrickQuestion
+
+func is_lack_of_moves_win_condition_valid() -> bool:
+	var number_of_valid_pieces = 0
+	for piece_coord: Vector2i in GridState.active_game.piece_locations:
+		var piece: Piece = GridState.active_game.piece_locations[piece_coord]
+		var opponent_piece = piece.team_relation != GridState.active_game.player_turn
+		var piece_has_fainted = Effect.StatusEffect.Fainted in piece.status_effects
+		if opponent_piece or piece_has_fainted: continue
+		number_of_valid_pieces += 1
+	return number_of_valid_pieces == 0

@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://dxwqhuukxbedm"]
+
+[ext_resource type="Script" uid="uid://bv143x84o6ygy" path="res://Scripts/GameEnd.gd" id="1_nbjv2"]
+[ext_resource type="Texture2D" uid="uid://bm6yovfv31x43" path="res://Textures/PauseMain.png" id="2_dd2aj"]
+[ext_resource type="Texture2D" uid="uid://kpm6w6oi0c15" path="res://Textures/PauseOutline.png" id="3_mmyd5"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="4_dd2aj"]
+
+[node name="GameEnd" type="CanvasLayer" unique_id=868845125]
+script = ExtResource("1_nbjv2")
+
+[node name="Menu" type="Node2D" parent="." unique_id=98300666]
+
+[node name="Main" type="Sprite2D" parent="Menu" unique_id=612285812]
+modulate = Color(0.43, 0.43, 0.43, 1)
+texture = ExtResource("2_dd2aj")
+
+[node name="Outline" type="Sprite2D" parent="Menu" unique_id=669968446]
+texture = ExtResource("3_mmyd5")
+
+[node name="Title" type="Label" parent="." unique_id=1829127781]
+offset_left = -143.0
+offset_top = -77.0
+offset_right = 142.0
+offset_bottom = 37.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("4_dd2aj")
+theme_override_font_sizes/font_size = 21
+text = "Vyhrál tým \"TEAM_NAME\""
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="." unique_id=450158752]
+offset_left = -143.0
+offset_top = -53.0
+offset_right = 142.0
+offset_bottom = -30.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.78431374)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.78431374)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("4_dd2aj")
+text = "Protože získali soupeřovu vlajku"
+horizontal_alignment = 1
+
+[node name="Horizontal Seperator" type="Label" parent="." unique_id=540379389]
+offset_left = -143.0
+offset_top = -40.0
+offset_right = 142.0
+offset_bottom = -17.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("4_dd2aj")
+text = "-----------------------------------"
+horizontal_alignment = 1
+
+[node name="Vertical Seperator" type="Label" parent="." unique_id=1501326858]
+offset_left = 9.0
+offset_top = -39.0
+offset_right = 131.99474
+offset_bottom = -16.0
+rotation = 1.5707964
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("4_dd2aj")
+text = "-------------"
+horizontal_alignment = 1

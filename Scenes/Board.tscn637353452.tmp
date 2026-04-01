@@ -4,10 +4,21 @@
 [ext_resource type="Script" uid="uid://di58mk1cpwqay" path="res://Scripts/PieceMoves.gd" id="1_pc0oo"]
 [ext_resource type="TileSet" uid="uid://ciuj0hph82fqs" path="res://TileSets/BoardTileSet.tres" id="2_igt3p"]
 [ext_resource type="Texture2D" uid="uid://diif6m6nlow8t" path="res://Textures/Selection.png" id="3_37q8m"]
-[ext_resource type="TileSet" uid="uid://b4g465r6qq585" path="res://TileSets/PowerUps.tres" id="4_m454s"]
 [ext_resource type="TileSet" uid="uid://cseqtmoq1ltl" path="res://TileSets/StatusEffects.tres" id="5_ekcd8"]
-[ext_resource type="PackedScene" uid="uid://dxwqhuukxbedm" path="res://Scenes/Game End.tscn" id="7_23sda"]
-[ext_resource type="Script" uid="uid://bmastutkie36w" path="res://Scripts/ItemManager.gd" id="8_m454s"]
+[ext_resource type="Texture2D" uid="uid://dj4mi5ki58hnp" path="res://Textures/PowerUps.png" id="5_xbakj"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_23sda"]
+texture = ExtResource("5_xbakj")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_m454s"]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_23sda")
 
 [node name="Board" type="Node2D" unique_id=1780951279]
 script = ExtResource("1_pc0oo")
@@ -18,7 +29,7 @@ tile_set = ExtResource("2_igt3p")
 script = ExtResource("1_ml4tp")
 
 [node name="PowerUps" type="TileMapLayer" parent="Tiles" unique_id=274257437]
-tile_set = ExtResource("4_m454s")
+tile_set = SubResource("TileSet_m454s")
 
 [node name="Icons" type="TileMapLayer" parent="Tiles" unique_id=714113198]
 tile_set = ExtResource("2_igt3p")
@@ -39,9 +50,3 @@ offset_bottom = 40.0
 
 [node name="Camera" type="Camera2D" parent="." unique_id=1617227410]
 anchor_mode = 0
-
-[node name="Game End" parent="." unique_id=868845125 instance=ExtResource("7_23sda")]
-visible = false
-
-[node name="Items" type="CanvasLayer" parent="." unique_id=1737742422]
-script = ExtResource("8_m454s")
