@@ -30,7 +30,14 @@ theme_override_font_sizes/font_size = 21
 text = "Vyhrál tým \"TEAM_NAME\""
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="." unique_id=450158752]
+[node name="Extra Info" type="Control" parent="." unique_id=2139290819]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Description" type="Label" parent="Extra Info" unique_id=1745347430]
+layout_mode = 0
 offset_left = -143.0
 offset_top = -53.0
 offset_right = 142.0
@@ -43,7 +50,8 @@ theme_override_fonts/font = ExtResource("4_dd2aj")
 text = "Protože získali soupeřovu vlajku"
 horizontal_alignment = 1
 
-[node name="Horizontal Seperator" type="Label" parent="." unique_id=540379389]
+[node name="Horizontal Seperator" type="Label" parent="Extra Info" unique_id=650309788]
+layout_mode = 0
 offset_left = -143.0
 offset_top = -40.0
 offset_right = 142.0
@@ -55,7 +63,8 @@ theme_override_fonts/font = ExtResource("4_dd2aj")
 text = "-----------------------------------"
 horizontal_alignment = 1
 
-[node name="Vertical Seperator" type="Label" parent="." unique_id=1501326858]
+[node name="Vertical Seperator" type="Label" parent="Extra Info" unique_id=1535808456]
+layout_mode = 0
 offset_left = 9.0
 offset_top = -39.0
 offset_right = 131.99474

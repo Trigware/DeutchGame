@@ -32,19 +32,46 @@ const team_modulate : Dictionary[SpecialTile.TeamRelation, Color] = {
 	SpecialTile.TeamRelation.Blue: Color(0x7ab8ffff)
 }
 
+const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
+	SpecialTile.TeamRelation.Red: Color("6b3838"),
+	SpecialTile.TeamRelation.Blue: Color("38546bff")
+}
+
 @export var piece_locations: Dictionary[Vector2i, Piece]
 @export var special_tiles: Dictionary[Vector2i, SpecialTile]
 @export var power_up_tiles: Dictionary[Vector2i, PowerUpType] = {}
-@export var player_power_ups: Dictionary[SpecialTile.TeamRelation, PlayerPowerUp] = {}
+
+@export var player_power_ups: Dictionary[SpecialTile.TeamRelation, PlayerPowerUp] = {
+	SpecialTile.TeamRelation.Red: PlayerPowerUp.ctor([
+		PowerUp.ctor(GridState.PowerUpType.SpeedBoost, 5),
+		PowerUp.ctor(GridState.PowerUpType.Shield, 5),
+		PowerUp.ctor(GridState.PowerUpType.TrickyItem, 5),
+		PowerUp.ctor(GridState.PowerUpType.WizardFreeze, 5),
+		PowerUp.ctor(GridState.PowerUpType.OpponentSlowness, 5),
+	]),
+	SpecialTile.TeamRelation.Blue: PlayerPowerUp.ctor([
+		PowerUp.ctor(GridState.PowerUpType.SpeedBoost, 5),
+		PowerUp.ctor(GridState.PowerUpType.Shield, 5),
+		PowerUp.ctor(GridState.PowerUpType.TrickyItem, 5),
+		PowerUp.ctor(GridState.PowerUpType.WizardFreeze, 5),
+		PowerUp.ctor(GridState.PowerUpType.OpponentSlowness, 5),
+	])
+}
 
 var player_turn := SpecialTile.TeamRelation.Red
 var grave_tiles: Array[Vector2i] = []
 var flag_origin: Dictionary[SpecialTile.TeamRelation, Vector2i]
 var game_end_type := GameEndType.Ongoing
+var grid_tiles = null
 
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",
 	SpecialTile.TeamRelation.Blue: "modří"
+}
+
+const number_of_players: Dictionary[SpecialTile.TeamRelation, int] = {
+	SpecialTile.TeamRelation.Red: 15,
+	SpecialTile.TeamRelation.Blue: 12
 }
 
 static var active_game: GridState
@@ -79,7 +106,12 @@ func receive_power_up(power_up_kind: PowerUpType):
 	var wanted_player_power_up_setup = actual_team in player_power_ups
 	if not wanted_player_power_up_setup: player_power_ups[actual_team] = PlayerPowerUp.new()
 	var playing_power_ups = player_power_ups[actual_team]
-	var no_wanted_kind_power_up = not power_up_kind in player_power_ups
+	var no_wanted_kind_power_up = not power_up_kind in playing_power_ups.power_ups
 	if no_wanted_kind_power_up:
 		playing_power_ups.power_ups[power_up_kind] = PowerUp.new()
 	playing_power_ups.power_ups[power_up_kind].amount += 1
+
+func decrement_power_up(power_up_kind: PowerUpType):
+	var player_power_up: PlayerPowerUp = player_power_ups[player_turn]
+	var power_up: PowerUp = player_power_up.power_ups[power_up_kind]
+	power_up.amount -= 1

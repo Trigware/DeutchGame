@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dp6cflpcbxoaq"]
+
+[ext_resource type="Script" uid="uid://daowgjbag41t1" path="res://Scripts/FortuneWheel.gd" id="1_hk2ns"]
+[ext_resource type="Texture2D" uid="uid://bfsvl1lqqbnkn" path="res://Textures/Fortune Wheel.png" id="1_va65w"]
+[ext_resource type="Shader" uid="uid://drtoub807qo8h" path="res://Shaders/Task Wheel.gdshader" id="1_yyskf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hk2ns"]
+shader = ExtResource("1_yyskf")
+shader_parameter/amount_of_segments = 8
+shader_parameter/wheel_rotation = 0.0
+shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.30359998, 0.30359998, 1), Color(0.69, 0.5934, 0.30359998, 1), Color(0.4968, 0.69, 0.30359998, 1), Color(0.30359998, 0.69, 0.40019998, 1), Color(0.30359998, 0.69, 0.69, 1), Color(0.30359998, 0.40019998, 0.69, 1), Color(0.4968, 0.30359998, 0.69, 1), Color(0.69, 0.30359998, 0.5934, 1)])
+shader_parameter/texture_size = Vector2(100, 104)
+shader_parameter/seperator_size = 10
+shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.201
+shader_parameter/inner_tint = Vector4(0, 0, 0, 0)
+shader_parameter/inner_boundary = Vector4(0, 0, 0, 0)
+
+[node name="Fortune Wheel" type="Node2D" unique_id=1160983429]
+script = ExtResource("1_hk2ns")
+number_of_segments = 8
+base_wheel_color = Color(0.69, 0.30359998, 0.30359998, 1)
+seperator_size = 10
+seperator_tint = Color(1.2722987, 1.2051998, 0.7690575, 1)
+inner_radius = 0.201
+inner_tint = Color(0.80099994, 0.8191499, 0.9, 1)
+
+[node name="Wheel" type="Sprite2D" parent="." unique_id=101584755]
+material = SubResource("ShaderMaterial_hk2ns")
+texture = ExtResource("1_va65w")

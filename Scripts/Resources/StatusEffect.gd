@@ -19,6 +19,7 @@ var effect_type := StatusEffect.Unknown
 var remaining_duration: int
 var duration_node: EffectDuration = null
 var linked_piece: Piece
+var effect_initialized := false
 
 const flag_kind : Array[StatusEffect] = [StatusEffect.RedFlag, StatusEffect.BlueFlag]
 

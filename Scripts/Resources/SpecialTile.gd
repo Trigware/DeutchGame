@@ -29,11 +29,17 @@ enum WallSurround {
 @export var relation := TeamRelation.Other
 @export var wall_surround := WallSurround.Center
 
-static func flag(team: SpecialTile.TeamRelation) -> SpecialTile:
+static func ctor(special_tile_type: TileType, team: TeamRelation):
 	var instance := SpecialTile.new()
-	instance.kind = TileType.Flag
+	instance.kind = special_tile_type
 	instance.relation = team
 	return instance
+
+static func flag(team: SpecialTile.TeamRelation) -> SpecialTile: return ctor(TileType.Flag, team)
+static func trick(team: SpecialTile.TeamRelation) -> SpecialTile: return ctor(TileType.TrickQuestion, team)
+
+func is_flag():
+	return kind == TileType.Flag
 
 func _validate_property(property: Dictionary):
 	match property.name:
@@ -46,7 +52,9 @@ enum AtlasTile {
 	WallRight = 2,
 	RedFlag = 3,
 	BlueFlag = 4,
-	TrickQuestion = 5
+	TrickQuestion = 5,
+	RedTrick = 6,
+	BlueTrick = 7
 }
 
 func get_atlas_x() -> int:
@@ -57,8 +65,13 @@ func get_atlas_x() -> int:
 			WallSurround.Right: return int(AtlasTile.WallRight)
 		TileType.Flag:
 			return int(AtlasTile.RedFlag) if relation == TeamRelation.Red else int(AtlasTile.BlueFlag)
-		TileType.TrickQuestion: return int(AtlasTile.TrickQuestion)
+		TileType.TrickQuestion: match relation:
+			TeamRelation.Red: return int(AtlasTile.RedTrick)
+			TeamRelation.Blue: return int(AtlasTile.BlueTrick)
+			TeamRelation.Other: return int(AtlasTile.TrickQuestion)
 	return -1
 
 func get_atlas() -> Vector2i:
-	return Vector2(get_atlas_x(), 1)
+	var atlas_x = get_atlas_x()
+	var atlas_y = 1 if kind == TileType.Wall else 0
+	return Vector2(atlas_x, atlas_y)

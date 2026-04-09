@@ -15,11 +15,17 @@ const move_cost_duration: Dictionary[MoveCost, int] = {
 
 var move_cost := MoveCost.Unknown
 var trick_move := false
-var is_reviving := false
+var attribute := Attribute.None
 
-static func ctor(cost: MoveCost, is_trick := false, reviving = false) -> Move:
+enum Attribute {
+	None,
+	SwordRevive,
+	PieceFreeze
+}
+
+static func ctor(cost: MoveCost, is_trick := false, attr := Attribute.None) -> Move:
 	var instance = Move.new()
 	instance.move_cost = cost
 	instance.trick_move = is_trick or cost == MoveCost.FastTrick
-	instance.is_reviving = reviving
+	instance.attribute = attr
 	return instance

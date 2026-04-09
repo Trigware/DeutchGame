@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dl4njbrtd7u0t"]
+
+[ext_resource type="PackedScene" uid="uid://dp6cflpcbxoaq" path="res://Scenes/Task Wheel.tscn" id="1_bg8bi"]
+
+[node name="Trick Question Decision" type="Control" unique_id=1509575010]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Task Wheel" parent="." unique_id=51562097 instance=ExtResource("1_bg8bi")]
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1

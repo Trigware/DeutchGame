@@ -32,7 +32,20 @@ func remove_effect(effect_type: Effect.StatusEffect):
 	status_effects.erase(effect_type)
 
 func add_effect(effect: Effect.StatusEffect):
-	status_effects[effect] = Effect.ctor(effect, self)
+	var adding_slowness = effect == Effect.StatusEffect.Slowness
+	var adding_speed = effect == Effect.StatusEffect.Speed
+	var has_slowness = has_status_effect(Effect.StatusEffect.Slowness)
+	var has_speed = has_status_effect(Effect.StatusEffect.Speed)
+	if adding_slowness and has_speed: remove_effect(Effect.StatusEffect.Speed)
+	if adding_speed and has_slowness: remove_effect(Effect.StatusEffect.Slowness)
+	var already_has_effect = has_status_effect(effect)
+	var effect_instance: Effect = Effect.ctor(effect, self)
+	if already_has_effect:
+		effect_instance = status_effects[effect]
+		var init_duration = 0
+		if effect in EffectDuration.initial_durations: init_duration = EffectDuration.initial_durations[effect]
+		effect_instance.remaining_duration += init_duration
+	status_effects[effect] = effect_instance
 
 func is_effect_over(effect: Effect.StatusEffect):
 	var has_effect = effect in status_effects
@@ -46,3 +59,15 @@ func flag_kind() -> SpecialTile.TeamRelation:
 	if not has_flag(): return SpecialTile.TeamRelation.Other
 	return SpecialTile.TeamRelation.Blue if team_relation == SpecialTile.TeamRelation.Red\
 		else SpecialTile.TeamRelation.Red
+
+func belongs_to_playing(): return team_relation == GridState.active_game.player_turn
+
+const flag_effect_dict : Dictionary[SpecialTile.TeamRelation, Effect.StatusEffect] = {
+	SpecialTile.TeamRelation.Red: Effect.StatusEffect.RedFlag,
+	SpecialTile.TeamRelation.Blue: Effect.StatusEffect.BlueFlag
+}
+
+func remove_flag():
+	var flag_color = flag_kind()
+	var flag_effect = flag_effect_dict[flag_color]
+	remove_effect(flag_effect)
