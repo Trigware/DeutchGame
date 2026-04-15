@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://yde7hyop4yq4"]
+
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="1_oyidy"]
+
+[resource]
+font = ExtResource("1_oyidy")
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)

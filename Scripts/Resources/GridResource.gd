@@ -58,6 +58,11 @@ const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
 	])
 }
 
+const team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
+	SpecialTile.TeamRelation.Red: 12,
+	SpecialTile.TeamRelation.Blue: 15
+} #placeholder
+
 var player_turn := SpecialTile.TeamRelation.Red
 var grave_tiles: Array[Vector2i] = []
 var flag_origin: Dictionary[SpecialTile.TeamRelation, Vector2i]
@@ -67,7 +72,7 @@ var grid_tiles = null
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",
 	SpecialTile.TeamRelation.Blue: "modří"
-}
+} #placeholder
 
 const number_of_players: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Red: 15,

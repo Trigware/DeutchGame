@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b2c2jyon6rsdp"]
+
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="1_3l5wy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_plfqd"]
+font = ExtResource("1_3l5wy")
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="Wheel Item Label" type="Label" unique_id=776351866]
+offset_left = -16.0
+offset_top = -19.0
+offset_right = 18.0
+offset_bottom = 15.0
+pivot_offset = Vector2(16, 19)
+text = "0"
+label_settings = SubResource("LabelSettings_plfqd")
+horizontal_alignment = 1
+vertical_alignment = 1

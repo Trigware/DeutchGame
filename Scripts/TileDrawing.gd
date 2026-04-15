@@ -68,10 +68,12 @@ var zoom_level : float = 1
 var grid_offset := Vector2.ZERO
 
 const zoom_change := 1.05
-const zoom_limits := Vector2(0.05, 5)
+const zoom_limits := Vector2(0.075, 10)
+const diagonal_scale_multiplier := 1.5
 
 func update_board():
-	tiled_diagonals.scale = Vector2.ONE * (1.0 / zoom_level)
+	tiled_diagonals.scale = Vector2.ONE * (1.0 / zoom_level) * diagonal_scale_multiplier
+	tiled_diagonals.position_offset = grid_offset
 	var board_size = board_tile_count * tile_size
 	var intended_scale = Vector2(screen_size) / board_size
 	var higher_x_intended = intended_scale.x > intended_scale.y
@@ -94,7 +96,7 @@ func update_board():
 
 var latest_mouse_pos := Vector2.ZERO
 
-func _unhandled_input(_event):
+func _input(_event):
 	var previous_zoom = zoom_level
 	var previous_offset = grid_offset
 	if Input.is_action_just_pressed("zoom_in"): zoom_level *= zoom_change

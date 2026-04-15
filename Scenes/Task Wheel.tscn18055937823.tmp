@@ -8,11 +8,11 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hk2ns"]
 shader = ExtResource("1_yyskf")
-shader_parameter/amount_of_segments = 14
-shader_parameter/wheel_rotation = 0.7142857142857142
+shader_parameter/amount_of_segments = 8
+shader_parameter/wheel_rotation = 0.6875
 shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.30359998, 0.30359998, 1), Color(0.69, 0.5934, 0.30359998, 1), Color(0.4968, 0.69, 0.30359998, 1), Color(0.30359998, 0.69, 0.40019998, 1), Color(0.30359998, 0.69, 0.69, 1), Color(0.30359998, 0.40019998, 0.69, 1), Color(0.4968, 0.30359998, 0.69, 1), Color(0.69, 0.30359998, 0.5934, 1)])
 shader_parameter/texture_size = Vector2(100, 104)
-shader_parameter/seperator_size = 0.35
+shader_parameter/seperator_size = 0.25
 shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
 shader_parameter/inner_radius = 0.2
 shader_parameter/inner_tint = Vector4(0, 0, 0, 0)
@@ -22,24 +22,23 @@ shader_parameter/rotation_shift = 0.0
 [node name="Fortune Wheel" type="Control" unique_id=220678109]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 960.0
-offset_top = 1510.0376
-offset_right = 960.0
-offset_bottom = 1510.0376
-scale = Vector2(6.991514, 6.991514)
+offset_left = 575.61194
+offset_top = 634.1913
+offset_right = 575.61194
+offset_bottom = 634.1913
+scale = Vector2(10.490367, 10.490367)
 script = ExtResource("1_hk2ns")
-is_item_texture = false
 item_texture = ExtResource("2_pavpa")
-number_of_segments = 14
+number_of_segments = 8
 base_wheel_color = Color(0.69, 0.30359998, 0.30359998, 1)
 seperator_size = 0.25
 seperator_tint = Color(1.2722987, 1.2051998, 0.7690575, 1)
 inner_radius = 0.2
 inner_tint = Color(0.80099994, 0.8208, 0.9, 1)
 minimal_seperator_length = 0.05
-item_distance_portion = 0.835
-item_scale = 4.215
-maximum_item_scale = 0.32
+item_distance_portion = 0.85
+item_scale = 3.0
+maximum_item_scale = 0.6
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=30600016]
 modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)

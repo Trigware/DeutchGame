@@ -27,6 +27,7 @@ var pattern_repeated: float = 0:
 	set(value): rotation_repeated = value; set_uniform(UniformType.RotationRepeated, value)
 @export var value_offset: float
 @export var pattern_speed: float
+@export var position_offset: Vector2
 
 func uniform_as_str(uniform: UniformType) -> String: return UniformType.keys()[uniform].to_snake_case()
 func set_uniform(parameter: UniformType, value): material.set_shader_parameter(uniform_as_str(parameter), value)
@@ -40,7 +41,7 @@ func _process(delta: float):
 	set_uniform(UniformType.TextureSize, size / default_texture_size)
 	set_uniform(UniformType.TextureScale, texture_scale / scale)
 	set_colors()
-	position = -size * scale / 2.0 + size / 2.0
+	position = -size * scale / 2.0 + size / 2.0 + position_offset
 	pattern_repeated += delta * pattern_speed
 
 func set_colors():
