@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cfiu7vjy0bs1"]
+
+[ext_resource type="Script" uid="uid://dt8blcihhnthl" path="res://Scripts/MinigameCountdown.gd" id="1_xoqea"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_xoqea"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lk2xu"]
+font = ExtResource("2_xoqea")
+font_size = 380
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(19, 19)
+
+[node name="MinigameCountdown" type="CanvasLayer" unique_id=311049360]
+script = ExtResource("1_xoqea")
+
+[node name="Countdown" type="Label" parent="." unique_id=1985130597]
+offset_right = 1152.0
+offset_bottom = 648.0
+text = "0"
+label_settings = SubResource("LabelSettings_lk2xu")
+horizontal_alignment = 1
+vertical_alignment = 1

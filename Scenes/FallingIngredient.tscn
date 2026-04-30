@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dpat2hkit0sx0"]
+
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_f0n52"]
+[ext_resource type="Shader" uid="uid://dhl8tu15dmk1a" path="res://Shaders/PartialHiding.gdshader" id="1_fx6nr"]
+[ext_resource type="Script" uid="uid://di3hmf5v6c2su" path="res://Scripts/FallingIngredient.gd" id="1_jrase"]
+[ext_resource type="PackedScene" uid="uid://cuoijvayuffan" path="res://Scenes/IngredientCollider.tscn" id="4_jfd6e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jrase"]
+shader = ExtResource("1_fx6nr")
+shader_parameter/visibility_value = 1.0
+
+[node name="Falling Ingredient" type="Area2D" unique_id=767402334]
+rotation = -0.5235988
+script = ExtResource("1_jrase")
+
+[node name="Ingredient" type="Sprite2D" parent="." unique_id=1103916176]
+material = SubResource("ShaderMaterial_jrase")
+texture = ExtResource("1_f0n52")
+hframes = 10
+vframes = 2
+frame = 10
+
+[node name="Collider" parent="." unique_id=1577873355 instance=ExtResource("4_jfd6e")]

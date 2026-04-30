@@ -52,14 +52,20 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 			var dest_pos = origin + dir * i
 			if not is_valid_tile(piece, dest_pos): break
 			var cost = Move.MoveCost.FastTrick if i > 1 else Move.MoveCost.Regular
-			result[dest_pos] = Move.ctor(cost, is_in_trick_question(dest_pos))
+			
+			var move = Move.ctor(cost, is_in_trick_question(dest_pos))
+			move.moved_piece = piece
+			result[dest_pos] = move
 			if is_stopping_path(piece, dest_pos): break
+	
 	if is_slow: return result
 	
 	for dir in diagonal_offsets:
 		var dest_pos = origin + dir
 		if not is_valid_tile(piece, dest_pos): continue
-		result[dest_pos] = Move.ctor(Move.MoveCost.Fast, is_in_trick_question(dest_pos))
+		var move = Move.ctor(Move.MoveCost.Fast, is_in_trick_question(dest_pos))
+		move.moved_piece = piece
+		result[dest_pos] = move
 	return result
 
 func get_possible_wizard_moves(piece: Piece, origin: Vector2i) -> Dictionary:
@@ -86,7 +92,9 @@ func get_possible_wizard_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 			if is_move_orthogonal: move_cost = Move.MoveCost.Medium
 			var has_attribute = move_attribute != Move.Attribute.None
 			if has_attribute or i > 1: move_cost = Move.MoveCost.FastTrick
-			result[dest_pos] = Move.ctor(move_cost, is_in_trick_question(dest_pos), move_attribute)
+			var move = Move.ctor(move_cost, is_in_trick_question(dest_pos), move_attribute)
+			move.moved_piece = piece
+			result[dest_pos] = move
 			if is_stopping_path(piece, dest_pos): break
 	return result
 
@@ -95,7 +103,9 @@ func get_possible_horse_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	for dir in horse_offsets:
 		var dest_pos = origin + dir
 		if not is_valid_tile(piece, dest_pos): continue
-		result[dest_pos] = Move.ctor(Move.MoveCost.Medium, is_in_trick_question(dest_pos))
+		var move = Move.ctor(Move.MoveCost.Medium, is_in_trick_question(dest_pos))
+		move.moved_piece = piece
+		result[dest_pos] = move
 	return result
 
 func is_valid_tile(piece: Piece, tile) -> bool:

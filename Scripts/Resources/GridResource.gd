@@ -68,6 +68,11 @@ var grave_tiles: Array[Vector2i] = []
 var flag_origin: Dictionary[SpecialTile.TeamRelation, Vector2i]
 var game_end_type := GameEndType.Ongoing
 var grid_tiles = null
+var latest_move : Move
+
+# Restaurant Minigame
+var player_held_ingredient_count: int
+var transitional_held_item_count: float
 
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",

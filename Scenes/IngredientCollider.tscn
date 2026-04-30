@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cuoijvayuffan"]
+
+[ext_resource type="Script" uid="uid://xe1ciri7yc2v" path="res://Scripts/IngredientCollider.gd" id="1_o0yry"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jrase"]
+radius = 14.035668
+
+[node name="Collider" type="CollisionShape2D" unique_id=1577873355]
+shape = SubResource("CircleShape2D_jrase")
+script = ExtResource("1_o0yry")

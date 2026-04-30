@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://di2i3jpggila6"]
+
+[ext_resource type="Texture2D" uid="uid://bucjtc7s0268h" path="res://Textures/ConveyorBelt.png" id="1_ft3hp"]
+[ext_resource type="Script" uid="uid://dlg2u74qc4tva" path="res://Scripts/ConveyorBelt.gd" id="1_x3neq"]
+[ext_resource type="Shader" uid="uid://ciirgrhx4kd7p" path="res://Shaders/XWrap.gdshader" id="2_400ju"]
+[ext_resource type="PackedScene" uid="uid://brathel7wk04v" path="res://Scenes/MovingArrows.tscn" id="2_x3neq"]
+[ext_resource type="Shader" uid="uid://cyl8drhdvi60s" path="res://Shaders/ConwayArrow.gdshader" id="3_400ju"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eb6f2"]
+shader = ExtResource("2_400ju")
+shader_parameter/tile_count = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_400ju"]
+shader = ExtResource("3_400ju")
+shader_parameter/offset = 195.35466600004366
+shader_parameter/arrow_count = 1.0
+shader_parameter/reversed_progress = false
+shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)
+
+[node name="ConveyorBelt" type="Node2D" unique_id=1045113374]
+rotation = 4.712389
+script = ExtResource("1_x3neq")
+
+[node name="Conveyor" type="Sprite2D" parent="." unique_id=140094980]
+material = SubResource("ShaderMaterial_eb6f2")
+texture = ExtResource("1_ft3hp")
+
+[node name="Moving Arrows" parent="." unique_id=1427566606 instance=ExtResource("2_x3neq")]
+material = SubResource("ShaderMaterial_400ju")
+arrow_modulate = Color(0.4, 0, 0, 1)

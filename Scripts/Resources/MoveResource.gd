@@ -16,6 +16,7 @@ const move_cost_duration: Dictionary[MoveCost, int] = {
 var move_cost := MoveCost.Unknown
 var trick_move := false
 var attribute := Attribute.None
+var moved_piece: Piece
 
 enum Attribute {
 	None,

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dpsv5j6e1q4ti"]
+
+[sub_resource type="Gradient" id="Gradient_l5ssd"]
+interpolation_mode = 2
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o1mj7"]
+gradient = SubResource("Gradient_l5ssd")
+
+[node name="Table Shadow" type="TextureRect" unique_id=721408221]
+offset_right = 4.727787
+offset_bottom = 215.95663
+rotation = 1.5707964
+texture = SubResource("GradientTexture1D_o1mj7")
+expand_mode = 1

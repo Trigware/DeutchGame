@@ -1,0 +1,98 @@
+[gd_scene format=4 uid="uid://u5jm4evd6o0j"]
+
+[ext_resource type="TileSet" uid="uid://dhiac04lgfs3n" path="res://TileSets/RestaurantWalkable.tres" id="1_3gt1o"]
+[ext_resource type="Script" uid="uid://dq15cjvatvc6e" path="res://Scripts/FoodStation.gd" id="1_me4tm"]
+[ext_resource type="PackedScene" uid="uid://di2i3jpggila6" path="res://Scenes/Conveyor Belt.tscn" id="2_me4tm"]
+[ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="4_fnk2r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_me4tm"]
+size = Vector2(96, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fnk2r"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6de4d"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aa1ng"]
+size = Vector2(72, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_seeul"]
+size = Vector2(120, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2s7v"]
+size = Vector2(48, 48)
+
+[node name="Food Station" type="Node2D" unique_id=925608103]
+script = ExtResource("1_me4tm")
+
+[node name="Walkable Area" type="TileMapLayer" parent="." unique_id=1732023037]
+position = Vector2(12, -12)
+tile_map_data = PackedByteArray("AAD8/wAAAAACAAEAAAD9////AAADAAAAAAD9/wAAAAABAAEAAAD+/wAAAAAAAAEAAAABAP//AAADAAAAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAAAAAAAAAAAAAEAAAD//wAAAAACAAAAAAA=")
+tile_set = ExtResource("1_3gt1o")
+
+[node name="ConveyorOut" parent="." unique_id=1045113374 instance=ExtResource("2_me4tm")]
+position = Vector2(-48, -132)
+scale = Vector2(8, 1)
+
+[node name="ConveyorIn" parent="." unique_id=875806380 instance=ExtResource("2_me4tm")]
+position = Vector2(48, -132)
+scale = Vector2(8, 1)
+going_left = true
+
+[node name="Static Body" type="StaticBody2D" parent="." unique_id=1204300585]
+
+[node name="Left Bottom" type="CollisionShape2D" parent="Static Body" unique_id=1288032326]
+visible = false
+position = Vector2(-60, 24)
+shape = SubResource("RectangleShape2D_me4tm")
+
+[node name="Right Bottom" type="CollisionShape2D" parent="Static Body" unique_id=1412303425]
+visible = false
+position = Vector2(60, 24)
+shape = SubResource("RectangleShape2D_me4tm")
+
+[node name="Left Connector" type="CollisionShape2D" parent="Static Body" unique_id=1683473959]
+position = Vector2(-96, 0)
+shape = SubResource("RectangleShape2D_fnk2r")
+
+[node name="Right Connector" type="CollisionShape2D" parent="Static Body" unique_id=479572368]
+position = Vector2(96, 0)
+shape = SubResource("RectangleShape2D_fnk2r")
+
+[node name="Enterance" type="CollisionShape2D" parent="Static Body" unique_id=1838664581]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_6de4d")
+disabled = true
+
+[node name="Middle Blocker" type="CollisionShape2D" parent="Static Body" unique_id=504017016]
+visible = false
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_aa1ng")
+
+[node name="Upper Blocker" type="CollisionShape2D" parent="Static Body" unique_id=850635566]
+visible = false
+position = Vector2(0, -48)
+shape = SubResource("RectangleShape2D_seeul")
+
+[node name="Left Upper" type="CollisionShape2D" parent="Static Body" unique_id=1447465113]
+visible = false
+position = Vector2(-84, -36)
+shape = SubResource("RectangleShape2D_j2s7v")
+
+[node name="Right Upper" type="CollisionShape2D" parent="Static Body" unique_id=1032216969]
+visible = false
+position = Vector2(84, -36)
+shape = SubResource("RectangleShape2D_j2s7v")
+
+[node name="TextureRect" parent="." unique_id=721408221 instance=ExtResource("4_fnk2r")]
+offset_left = -12.0
+offset_top = 12.0
+offset_right = -5.0959167
+offset_bottom = 81.77391
+
+[node name="TextureRect2" parent="." unique_id=1802337867 instance=ExtResource("4_fnk2r")]
+offset_left = 82.32483
+offset_top = 12.0
+offset_right = 89.22891
+offset_bottom = 82.28027

@@ -13,6 +13,12 @@ func get_atlas() -> Vector2i:
 	var y_coord = red_piece if team_relation == SpecialTile.TeamRelation.Red else blue_piece
 	return Vector2(GridState.piece_atlas_coords_x[kind], y_coord)
 
+static func ctor(piece_kind: GridState.PieceType, team: SpecialTile.TeamRelation):
+	var instance = Piece.new()
+	instance.kind = piece_kind
+	instance.team_relation = team
+	return instance
+
 func has_status_effect(compared_effect: Effect.StatusEffect) -> bool:
 	return compared_effect in status_effects
 

@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bsu0basrbuots"]
+
+[ext_resource type="Shader" uid="uid://dhl8tu15dmk1a" path="res://Shaders/PartialHiding.gdshader" id="1_72pks"]
+
+[resource]
+shader = ExtResource("1_72pks")
+shader_parameter/visibility_value = 1.0

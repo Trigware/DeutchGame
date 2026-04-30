@@ -28,7 +28,7 @@ func _process(_delta):
 	used_pos.y += y_offset
 	offset = used_pos
 
-const menu_show_duration = 0.35
+const menu_show_duration = 0.85
 
 const win_message: Dictionary[GridState.GameEndType, String] = {
 	GridState.GameEndType.FlagCaptured: "protože získali soupeřovu vlajku.",

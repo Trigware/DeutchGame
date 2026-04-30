@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://wryidgesclld"]
+
+[ext_resource type="Shader" uid="uid://drtoub807qo8h" path="res://Shaders/Task Wheel.gdshader" id="1_8m8ni"]
+
+[resource]
+shader = ExtResource("1_8m8ni")
+shader_parameter/amount_of_segments = 7
+shader_parameter/wheel_rotation = 0.6785714285714286
+shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.69, 0.62100005, 0.207, 1), Color(0.34499997, 0.69, 0.207, 1), Color(0.207, 0.69, 0.48299998, 1), Color(0.207, 0.48299986, 0.69, 1), Color(0.34499997, 0.207, 0.69, 1), Color(0.69, 0.207, 0.62100005, 1)])
+shader_parameter/texture_size = Vector2(100, 104)
+shader_parameter/seperator_size = 0.219
+shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
+shader_parameter/inner_radius = 0.2
+shader_parameter/inner_tint = Vector4(0, 0, 0, 0)
+shader_parameter/minimal_seperator_length = 0.05
+shader_parameter/rotation_shift = 0.0

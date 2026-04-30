@@ -1,0 +1,34 @@
+[gd_scene format=4 uid="uid://dci365yxq04no"]
+
+[ext_resource type="Texture2D" uid="uid://bk53he8ibiduc" path="res://Textures/RestaurantWalkable.png" id="1_l4koa"]
+[ext_resource type="PackedScene" uid="uid://yj5ak3w8wg1c" path="res://Scenes/RestaurantPlayer.tscn" id="1_yutl7"]
+[ext_resource type="Script" uid="uid://ccxxdpi1ui1u7" path="res://Scripts/RestaurantPlayer.gd" id="3_x35uu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x35uu"]
+texture = ExtResource("1_l4koa")
+texture_region_size = Vector2i(24, 24)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -12, 12, -12, 12, -8.284399, -12, -8.284397)
+0:1/0/physics_layer_0/polygon_1/points = PackedVector2Array(12, 12, -12, 12, -12, 8.284401, 12, 8.284401, 12, 12)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(12, -12, 12, 12, 8.284399, 12, 8.284397, -12)
+1:0/0/physics_layer_0/polygon_1/points = PackedVector2Array(-12, 12, -12, -12, -8.284401, -12, -8.284401, 12, -12, 12)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(12, 12, -12, 12, -12, 8.284401, 12, 8.284401, 12, 12)
+
+[sub_resource type="TileSet" id="TileSet_3sf5n"]
+tile_size = Vector2i(24, 24)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_x35uu")
+
+[node name="Restaurant Root" type="Node2D" unique_id=954756602]
+
+[node name="WalkableSpace" type="TileMapLayer" parent="." unique_id=1261083929]
+tile_map_data = PackedByteArray("AAD//wAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAP//AAABAAAAAAAAAP7/AAABAAAAAAAAAP3/AAABAAAAAAABAAAAAAAAAAEAAAACAAAAAAAAAAEAAAD+/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAADAAAAAAAAAAEAAAAAAPz/AAABAAAAAAAAAPv/AAABAAAAAAD8/wAAAAAAAAEAAAAEAAAAAAAAAAEAAAAAAPr/AAABAAAAAAA=")
+tile_set = SubResource("TileSet_3sf5n")
+
+[node name="Player" parent="." unique_id=564817853 instance=ExtResource("1_yutl7")]
+script = ExtResource("3_x35uu")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1732760089]
+zoom = Vector2(3.5, 3.5)

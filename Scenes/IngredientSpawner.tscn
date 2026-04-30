@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bgcipste7pq55"]
+
+[ext_resource type="Texture2D" uid="uid://c0qygjwf4mbe3" path="res://Textures/IngredientSpawner.png" id="1_1ll6g"]
+[ext_resource type="Script" uid="uid://cc2duxhghrrij" path="res://Scripts/IngredientSpawner.gd" id="1_y7qas"]
+[ext_resource type="Texture2D" uid="uid://c0a6t8unk8bq4" path="res://Textures/SpawnerShadow.png" id="2_xd1mh"]
+
+[node name="Ingredient Spawner" type="Node2D" unique_id=2098849133]
+script = ExtResource("1_y7qas")
+dist_from_center = 4.285
+
+[node name="Hole" type="Sprite2D" parent="." unique_id=1990221929]
+texture = ExtResource("2_xd1mh")
+
+[node name="UpperOpener" type="Sprite2D" parent="." unique_id=827422999]
+position = Vector2(0, -12.285)
+texture = ExtResource("1_1ll6g")
+
+[node name="BottomOpener" type="Sprite2D" parent="." unique_id=481681765]
+position = Vector2(0, 12.285)
+rotation = 3.1415927
+texture = ExtResource("1_1ll6g")
+
+[node name="IngredientRoot" type="Node2D" parent="." unique_id=743736835]

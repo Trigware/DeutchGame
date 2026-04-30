@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dqijec0icxeev"]
+
+[ext_resource type="Shader" uid="uid://cyl8drhdvi60s" path="res://Shaders/ConwayArrow.gdshader" id="1_cttfe"]
+
+[resource]
+shader = ExtResource("1_cttfe")
+shader_parameter/offset = 193.84879833336927
+shader_parameter/arrow_count = 1.0
+shader_parameter/reversed_progress = false
+shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)

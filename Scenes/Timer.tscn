@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://busqxtrtkg14e"]
+
+[ext_resource type="Texture2D" uid="uid://82eq2i0v4xia" path="res://Textures/Timer Progress Bottom.png" id="2_t8y0m"]
+[ext_resource type="Texture2D" uid="uid://dvwn3qh4hadyo" path="res://Textures/Timer Progress Top.png" id="3_ihxis"]
+[ext_resource type="Texture2D" uid="uid://bi2k7iq18pxnx" path="res://Textures/Timer Clock.png" id="4_ihxis"]
+
+[node name="Timer" type="Control" unique_id=893546960]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 596.0
+offset_bottom = 596.0
+
+[node name="Progress Bar" type="TextureProgressBar" parent="." unique_id=1880388206]
+layout_mode = 0
+offset_left = 422.0
+offset_right = 922.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+stretch_margin_left = 13
+stretch_margin_right = 13
+texture_under = ExtResource("2_t8y0m")
+texture_progress = ExtResource("3_ihxis")
+
+[node name="Clock" type="TextureRect" parent="." unique_id=1858917014]
+layout_mode = 0
+offset_left = 372.0
+offset_right = 412.0
+offset_bottom = 40.0
+texture = ExtResource("4_ihxis")

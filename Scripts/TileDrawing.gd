@@ -240,6 +240,7 @@ func play_move_if_possible():
 
 func play_move():
 	var current_move: Move = possible_moves[hovered_tile]
+	GridState.active_game.latest_move = current_move
 	GridState.active_game.next_turn()
 	var piece_locations = GridState.active_game.piece_locations
 	var moved_piece: Piece = piece_locations[selected_tile]
@@ -378,7 +379,9 @@ var trick_question_transition_duration = 0.35
 const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
+const trick_questions_disabled = false
 func handle_trick_question():
+	if trick_questions_disabled: return
 	var center_grid_tile = (board_tile_count - Vector2.ONE) / 2
 	var offset_from_center = Vector2(hovered_tile) - center_grid_tile
 	var absolute_offset = offset_from_center * tile_size * scale

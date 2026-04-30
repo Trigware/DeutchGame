@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://gi430yjahyj2"]
+
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_m7vnd"]
+[ext_resource type="Script" uid="uid://60tg0kehthwl" path="res://Scripts/PlayerIngredient.gd" id="1_v3l6e"]
+
+[node name="PlayerIngredient" type="Area2D" unique_id=1807447324]
+y_sort_enabled = true
+script = ExtResource("1_v3l6e")
+
+[node name="Ingredient" type="Sprite2D" parent="." unique_id=262719181]
+texture = ExtResource("1_m7vnd")
+hframes = 10
+vframes = 2
+frame = 10

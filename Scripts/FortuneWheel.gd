@@ -1,7 +1,14 @@
 @tool
+class_name FortuneWheel
 extends Control
 
 @onready var wheel = $Wheel
+@onready var footer = get_node(footer_path)
+@onready var shadow = $Shadow
+@onready var pointer = $Pointer
+@onready var result_root = $"Result Root"
+@onready var result_sprite: Sprite2D = $"Result Root/Result"
+@onready var result_shadow: Sprite2D = $"Result Root/Result Shadow"
 
 @export var is_item_texture := true:
 	set(value):
@@ -38,8 +45,11 @@ extends Control
 	set(value): item_scale = value; generate_item_nodes()
 @export var maximum_item_scale: float:
 	set(value): maximum_item_scale = value; generate_item_nodes()
-@export var invisible_index: int = -1:
-	set(value): invisible_index = value; generate_item_nodes()
+
+const footer_distance: float = 30
+var footer_display_progress: float = 0
+const footer_min_y_pos = 55.0
+var wheel_show_modulate : float = 1
 
 func _validate_property(property: Dictionary):
 	if property.name == "item_texture" and not is_item_texture: property.usage = PROPERTY_USAGE_NO_EDITOR 
@@ -57,6 +67,8 @@ enum UniformType {
 	RotationShift
 }
 
+const footer_path = "Footer"
+
 func shift_rotation(current_rot: float):
 	const atan2_normalizer = 0.25
 	var center_shift = 0
@@ -68,6 +80,13 @@ func shift_rotation(current_rot: float):
 	var result = current_rot + shift
 	return result
 
+func update_footer():
+	var max_y_pos = footer_min_y_pos + footer_distance
+	var used_t = 1 - clamp(footer_display_progress, 0, 1)
+	var pos_y = lerp(footer_min_y_pos, max_y_pos, used_t)
+	footer.position.y = pos_y
+	footer.modulate.a = footer_display_progress
+
 func uniform_as_str(uniform: UniformType) -> String: return UniformType.keys()[uniform].to_snake_case()
 func set_uniform(parameter: UniformType, value):
 	if wheel == null and not Engine.is_editor_hint(): return
@@ -76,17 +95,20 @@ func set_uniform(parameter: UniformType, value):
 const max_color_count = 8
 
 var wheel_pos_portion := Vector2(0.5, 1)
+
 func _ready():
 	set_segment_colors()
+	wheel.material = UID.fortune_wheel_shader.duplicate_deep()
 	if Engine.is_editor_hint(): return
 
 func _process(delta):
 	if wheel == null: return
 	uniform_updates()
-	update_wheel_display_info()
 	if Engine.is_editor_hint(): return
 	if wheel_spinned: time_since_spinned += delta
 	handle_mouse_event()
+	update_wheel_display_info()
+	update_footer()
 
 const wheel_size = Vector2(100, 109)
 var wheel_size_multiplier = 0.675
@@ -97,11 +119,21 @@ func update_wheel_display_info():
 	var scale_component = min(used_scale.x, used_scale.y) * wheel_size_multiplier
 	scale = Vector2(scale_component, scale_component)
 	
-	var wheel_offset: Vector2 = wheel_size / 2 * scale_component
-	var wheel_portion: Vector2 = wheel_size * scale_component / window_size
-	var used_portion: Vector2 = wheel_pos_portion - wheel_portion * (Vector2.ONE - wheel_pos_portion)
-	var wheel_pos = wheel_offset + window_size * used_portion
-	position = wheel_pos
+	var upper_left_corner: Vector2 = wheel_size / 2 * scale_component
+	var bottom_right_corner = window_size - upper_left_corner
+	var used_pos_x = lerp(upper_left_corner.x, bottom_right_corner.x, wheel_pos_portion.x)
+	var used_pos_y = lerp(upper_left_corner.y, bottom_right_corner.y, wheel_pos_portion.y)
+	position.x = used_pos_x
+	position.y = used_pos_y
+	
+	wheel.modulate.a = wheel_show_modulate
+	shadow.modulate.a = wheel_show_modulate
+	pointer.modulate.a = wheel_show_modulate
+	if items_node != null: items_node.modulate.a = wheel_show_modulate
+	result_root.modulate.a = 1 - wheel_show_modulate
+
+func tween_show_modulate(final: float):
+	await create_tween().tween_property(self, "wheel_show_modulate", final, 1).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD).finished
 
 func uniform_updates():
 	var texture_size = wheel.texture.get_size()
@@ -130,6 +162,33 @@ const maximum_tint_dist = 5
 var time_since_spinned = 0
 const highlight_disapate_duration = 0.4
 
+func setup_result_image_sprites(land_index: int):
+	result_root.show()
+	if not is_item_texture: setup_piece_sprites()
+	else: setup_minigame_sprites(land_index)
+
+func setup_piece_sprites():
+	var latest_move: Move = null
+	if GridState.active_game != null: latest_move = GridState.active_game.latest_move
+	var latest_moved_piece: Piece = Piece.ctor(GridState.PieceType.Wizard, SpecialTile.TeamRelation.Red)
+	if latest_move != null: latest_moved_piece = latest_move.moved_piece
+	var piece_atlas_pos = latest_moved_piece.get_atlas()
+	result_sprite.frame_coords = piece_atlas_pos
+	result_shadow.frame_coords = piece_atlas_pos
+
+func setup_minigame_sprites(land_index: int):
+	var texture_size = item_texture.get_size()
+	var tile_count = texture_size.x / texture_size.y
+	result_sprite.hframes = tile_count
+	result_shadow.hframes = tile_count
+	result_sprite.vframes = 1
+	result_shadow.vframes = 1
+	
+	result_sprite.frame_coords.x = land_index
+	result_shadow.frame_coords.x = land_index
+	result_sprite.texture = item_texture
+	result_shadow.texture = item_texture
+
 func handle_mouse_event():
 	var local_mouse_pos = get_local_mouse_position()
 	var mouse_from_dist = dist_from_center(local_mouse_pos)
@@ -144,9 +203,11 @@ func handle_mouse_event():
 
 var wheel_spinned = false
 const minimum_wheel_rotations = 5
-const wheel_spin_duration = 5
+const wheel_spin_duration = 4
 
-signal wheel_spin_finished
+signal wheel_spin_finished(item_node)
+
+const footer_progress_tween_duration = 1
 
 func spin_wheel():
 	if wheel_spinned: return
@@ -155,9 +216,16 @@ func spin_wheel():
 	var additional_wheel_rotations = minimum_wheel_rotations + chosen_rotation
 	await create_tween().tween_property(self, "wheel_rotation", wheel_rotation + additional_wheel_rotations, wheel_spin_duration).\
 		set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO).finished
-	wheel_spin_finished.emit()
 	var land_index = determine_land_index()
-	invisible_index = land_index
+	wheel_spin_finished.emit()
+	create_tween().tween_property(self, "footer_display_progress", 1, footer_progress_tween_duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
+	handle_footer_text(land_index + 1)
+	setup_result_image_sprites(land_index)
+
+func handle_footer_text(id_number):
+	var footer_text = "Hráč " + str(id_number)
+	if is_item_texture: footer_text = "Minihra " + str(id_number)
+	footer.text = footer_text
 
 var items_node: Node2D = null
 
@@ -166,15 +234,14 @@ func generate_item_nodes():
 		items_node.queue_free()
 		items_node = null
 	items_node = Node2D.new()
-	var tile_height = item_texture.get_height() if is_item_texture else 0
-	var tile_size = Vector2.ONE * tile_height
 	
 	for i in range(number_of_segments):
-		if i == invisible_index: continue
-		if is_item_texture: make_item_sprite(i, tile_size)
-		else: make_item_label(i)
+		items_node.add_child(make_item_node(i))
 	
 	add_child(items_node)
+
+func make_item_node(index: int) -> Node:
+	return make_item_sprite(index) if is_item_texture else make_item_label(index)
 
 func update_items_pos():
 	if items_node == null: return
@@ -208,7 +275,10 @@ func determine_land_index() -> int:
 	var result = 0 if unflipped_index == 0 else number_of_segments - unflipped_index
 	return result
 
-func make_item_sprite(index: int, tile_size: Vector2):
+func make_item_sprite(index: int) -> Sprite2D:
+	var tile_height = item_texture.get_height() if is_item_texture else 0
+	var tile_size = Vector2.ONE * tile_height
+	
 	var item_sprite := Sprite2D.new()
 	var atlas_texture := AtlasTexture.new()
 	var tile_index = Vector2(index, 0)
@@ -218,15 +288,28 @@ func make_item_sprite(index: int, tile_size: Vector2):
 	item_sprite.texture = atlas_texture
 	set_item_pos(item_sprite, index)
 	item_sprite.z_index = 1
-	items_node.add_child(item_sprite)
+	return item_sprite
 
-func make_item_label(index: int):
+func make_item_label(index: int) -> Node2D:
 	var item_container := Node2D.new()
 	var item_label := UID.wheel_item_label.instantiate()
 	
 	set_item_pos(item_container, index)
-	item_label.text = str(index)
+	item_label.text = str(index + 1)
 	item_label.z_index = 1
 	
 	item_container.add_child(item_label)
-	items_node.add_child(item_container)
+	return item_container
+
+const wheel_tween_duration = 0.75
+const wheel_tween_delay = 0.15
+
+func tween_portion_init(init_portion: Vector2, final_portion: Vector2):
+	wheel_pos_portion = init_portion
+	modulate.a = 0
+	create_tween().tween_property(self, "wheel_pos_portion", final_portion, wheel_tween_duration).\
+	set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD).set_delay(wheel_tween_delay)
+	create_tween().tween_property(self, "modulate:a", 1, wheel_tween_duration).set_trans(Tween.TRANS_QUAD)
+
+func tween_portion(final_portion: Vector2):
+	tween_portion_init(wheel_pos_portion, final_portion)

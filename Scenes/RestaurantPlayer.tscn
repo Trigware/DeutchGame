@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://yj5ak3w8wg1c"]
+
+[ext_resource type="SpriteFrames" uid="uid://bsr4ki7flg66i" path="res://Spriteframes/Ess.tres" id="1_rpqav"]
+[ext_resource type="Script" uid="uid://ccxxdpi1ui1u7" path="res://Scripts/RestaurantPlayer.gd" id="1_t0a1x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yutl7"]
+size = Vector2(8, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t0a1x"]
+size = Vector2(18, 2)
+
+[node name="Player" type="CharacterBody2D" unique_id=564817853]
+script = ExtResource("1_t0a1x")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=2121426599]
+position = Vector2(1, 15)
+shape = SubResource("RectangleShape2D_yutl7")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=355700057]
+sprite_frames = ExtResource("1_rpqav")
+animation = &"walk_right"
+
+[node name="CatchArea" type="Area2D" parent="." unique_id=871802687 groups=["PlayerCatchBody"]]
+
+[node name="Collider" type="CollisionShape2D" parent="CatchArea" unique_id=119079711]
+position = Vector2(-1, -21)
+shape = SubResource("RectangleShape2D_t0a1x")
+
+[node name="Player Ingredients" type="Node2D" parent="CatchArea" unique_id=2113633023]
+position = Vector2(0, -15)

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dxklliqwa653e"]
+
+[ext_resource type="Texture2D" uid="uid://bnpqjdn7v54u5" path="res://Textures/Team Name Container.png" id="1_u32xl"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_jj1ll"]
+[ext_resource type="Texture2D" uid="uid://mbelib1027em" path="res://Textures/Play.png" id="3_88uy0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_axru1"]
+font = ExtResource("2_jj1ll")
+font_size = 28
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="ReadyButton" type="Node2D" unique_id=1305220794]
+
+[node name="ReadyButton" type="NinePatchRect" parent="." unique_id=374665836]
+offset_left = 30.871674
+offset_top = 9.0
+offset_right = 163.74335
+offset_bottom = 49.0
+scale = Vector2(-1, 1)
+texture = ExtResource("1_u32xl")
+patch_margin_left = 6
+patch_margin_right = 57
+metadata/_edit_use_anchors_ = true
+
+[node name="ReadyShadow" type="NinePatchRect" parent="." unique_id=483693319]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+z_index = -1
+offset_left = 32.871674
+offset_top = 11.0
+offset_right = 165.74335
+offset_bottom = 51.0
+scale = Vector2(-1, 1)
+texture = ExtResource("1_u32xl")
+patch_margin_left = 6
+patch_margin_right = 57
+metadata/_edit_use_anchors_ = true
+
+[node name="ReadyLabel" type="Label" parent="." unique_id=1887511419]
+offset_left = -51.128326
+offset_top = 13.0
+offset_right = 26.871674
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 64
+text = "ready?"
+label_settings = SubResource("LabelSettings_axru1")
+metadata/_edit_use_anchors_ = true
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1375167904]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+position = Vector2(63.850914, 26.248104)
+rotation = -0.31415927
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_88uy0")
+
+[node name="Controller" type="Sprite2D" parent="." unique_id=1697638162]
+position = Vector2(63.09494, 24.168816)
+rotation = -0.31415927
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_88uy0")
