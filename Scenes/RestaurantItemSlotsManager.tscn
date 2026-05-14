@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bayywiecnbyrm"]
+
+[ext_resource type="Script" uid="uid://clmh4kdugfvyc" path="res://Scripts/Restaurant Item Slot Manager.gd" id="1_gskh1"]
+
+[sub_resource type="Gradient" id="Gradient_nlhsm"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gskh1"]
+gradient = SubResource("Gradient_nlhsm")
+
+[node name="Restaurant Item Slots Manager" type="CanvasLayer" unique_id=1272696717]
+script = ExtResource("1_gskh1")
+
+[node name="LeftGradient" type="TextureRect" parent="." unique_id=1423776871]
+offset_right = 175.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture1D_gskh1")
+expand_mode = 1
+
+[node name="RightGradient" type="TextureRect" parent="." unique_id=211872937]
+offset_left = 927.0
+offset_right = 1102.0
+offset_bottom = 648.0
+texture = SubResource("GradientTexture1D_gskh1")
+expand_mode = 1
+flip_h = true

@@ -1,3 +1,4 @@
+class_name IngredientCollider
 extends CollisionShape2D
 
 var player_ingredient: Node2D

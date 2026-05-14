@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="3_tncxx"]
 [ext_resource type="PackedScene" uid="uid://cfiu7vjy0bs1" path="res://Scenes/MinigameCountdown.tscn" id="5_3ie4c"]
 [ext_resource type="PackedScene" uid="uid://bgcipste7pq55" path="res://Scenes/IngredientSpawner.tscn" id="6_w14s2"]
+[ext_resource type="PackedScene" uid="uid://bayywiecnbyrm" path="res://Scenes/RestaurantItemSlotsManager.tscn" id="9_nbnhw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p4me"]
 texture = ExtResource("2_8p4me")
@@ -41,7 +42,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAD//wAAAAAAAAEAAAD+/wAAAAABAAA
 tile_set = SubResource("TileSet_w14s2")
 
 [node name="WalkableSpace" type="TileMapLayer" parent="Tiles" unique_id=1261083929]
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAAAAP//AAABAAAAAAAAAP7/AAABAAAAAAABAAAAAAAAAAEAAAACAAAAAAAAAAEAAAADAAAAAAAAAAEAAAAEAAAAAAADAAEAAAD//wAAAAAAAAEAAAD+/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAD8/wAAAAACAAEAAAA=")
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAAAAP//AAABAAAAAAAAAP7/AAABAAAAAAABAAAAAAAAAAEAAAACAAAAAAAAAAEAAAADAAAAAAAAAAEAAAAEAAAAAAADAAEAAAD//wAAAAAAAAEAAAD+/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAD8/wAAAAACAAEAAAD+//n/AAAEAAAAAAD9//3/AAAEAAAAAAD+//3/AAAEAAAAAAA=")
 tile_set = ExtResource("1_x35uu")
 
 [node name="Static Body" type="StaticBody2D" parent="Tiles/WalkableSpace" unique_id=1110959077]
@@ -73,7 +74,8 @@ offset_top = 24.0
 offset_right = 125.00958
 offset_bottom = 236.72198
 
-[node name="Food Station" parent="." unique_id=925608103 instance=ExtResource("2_x35uu")]
+[node name="Food Station" parent="." unique_id=925608103 node_paths=PackedStringArray("player") instance=ExtResource("2_x35uu")]
+player = NodePath("../Player")
 
 [node name="Left Spawner" parent="." unique_id=2098849133 node_paths=PackedStringArray("player") instance=ExtResource("6_w14s2")]
 position = Vector2(-128, 36)
@@ -92,3 +94,5 @@ zoom = Vector2(3.5, 3.5)
 
 [node name="MinigameCountdown" parent="." unique_id=311049360 instance=ExtResource("5_3ie4c")]
 visible = false
+
+[node name="Restaurant Item Slots Manager" parent="." unique_id=1272696717 instance=ExtResource("9_nbnhw")]

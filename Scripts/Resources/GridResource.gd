@@ -71,8 +71,11 @@ var grid_tiles = null
 var latest_move : Move
 
 # Restaurant Minigame
-var player_held_ingredient_count: int
-var transitional_held_item_count: float
+var player_held_items: Array[Ingredient.IngredientType]
+var player_held_ingredients_nodes: Array[IngredientObject]
+var ingredient_count_per_type: Dictionary[Ingredient.IngredientType, int]
+signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)
+signal ingredient_removed(ingredient_type: Ingredient.IngredientType)
 
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",

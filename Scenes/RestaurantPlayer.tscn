@@ -9,7 +9,7 @@ size = Vector2(8, 6)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t0a1x"]
 size = Vector2(18, 2)
 
-[node name="Player" type="CharacterBody2D" unique_id=564817853]
+[node name="Player" type="CharacterBody2D" unique_id=564817853 groups=["RestaurantPlayer"]]
 script = ExtResource("1_t0a1x")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=2121426599]

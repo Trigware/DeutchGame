@@ -10,10 +10,12 @@ const minimal_speed_item_count = 12
 const basic_window_size = Vector2(1152, 648)
 
 var movement_disabled = true
+var can_player_export = false
+var export_station_index = 0
 
 enum MoveDir { None, Left, Right, Up, Down }
 
-func _process(_delta):
+func _process(delta: float):
 	handle_movement()
 	handle_camera()
 
@@ -51,7 +53,7 @@ func handle_movement():
 	if move_dir_flags.size() == 0: return
 	var move_dir_vec = get_dir_as_vec(move_dir_flags)
 	
-	var item_portion = clamp(1 - inverse_lerp(0, minimal_speed_item_count, GridState.active_game.player_held_ingredient_count), 0, 1)
+	var item_portion = clamp(1 - inverse_lerp(0, minimal_speed_item_count, GridState.active_game.player_held_items.size()), 0, 1)
 	var player_speed = lerp(minimal_player_speed, maximum_player_speed, item_portion)
 	velocity = move_dir_vec * player_speed
 	var move_dir = get_prioritized_move_dir(move_dir_flags)
