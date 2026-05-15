@@ -15,6 +15,15 @@ enum IngredientType {
 	Oil
 }
 
+enum FoodType {
+	Unknown = -1,
+	Schnitzel,
+	Kasespatzle,
+	Currywurst,
+	FriedCheese,
+	Grostl
+}
+
 var ingredient_type: IngredientType
 
 static func generate() -> Ingredient:

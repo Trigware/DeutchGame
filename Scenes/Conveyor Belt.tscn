@@ -12,7 +12,7 @@ shader_parameter/tile_count = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_400ju"]
 shader = ExtResource("3_400ju")
-shader_parameter/offset = 388.59262199997283
+shader_parameter/offset = 22.93865866666664
 shader_parameter/arrow_count = nan
 shader_parameter/reversed_progress = false
 shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)

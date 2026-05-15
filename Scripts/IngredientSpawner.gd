@@ -8,12 +8,16 @@ extends Node2D
 @export var dist_from_center : float = 0
 @export var is_right_spawner: bool
 @export var player: RestaurantPlayer
+@export var minigame_countdown: MinigameCountdown
 
 const default_opener_y = 8
+const countdown_wait_duration = 1.4
 
 func _ready():
 	if Engine.is_editor_hint(): return
 	dist_from_center = 0
+	if not minigame_countdown.minigame_started:
+		await get_tree().create_timer(countdown_wait_duration).timeout
 	if is_right_spawner:
 		await get_tree().create_timer(spawn_wait_time).timeout
 	handle_spawn()

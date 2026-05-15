@@ -6,6 +6,7 @@ extends Node2D
 @export var unlocked_left := false
 @export var unlocked_right := false
 @export var player: RestaurantPlayer
+@export var produced_food := Ingredient.FoodType.Unknown
 
 @onready var walkable_area = $"Walkable Area"
 @onready var left_connector = $"Static Body/Left Connector"

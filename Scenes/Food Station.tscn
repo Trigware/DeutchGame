@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dq15cjvatvc6e" path="res://Scripts/FoodStation.gd" id="1_me4tm"]
 [ext_resource type="PackedScene" uid="uid://di2i3jpggila6" path="res://Scenes/Conveyor Belt.tscn" id="2_me4tm"]
 [ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="4_fnk2r"]
+[ext_resource type="Texture2D" uid="uid://6gwcuhsgyns8" path="res://Textures/RecipeBox.png" id="5_6de4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_me4tm"]
 size = Vector2(96, 24)
@@ -28,6 +29,7 @@ size = Vector2(24, 24)
 
 [node name="Food Station" type="Node2D" unique_id=925608103]
 script = ExtResource("1_me4tm")
+produced_food = 0
 
 [node name="Walkable Area" type="TileMapLayer" parent="." unique_id=1732023037]
 position = Vector2(12, -12)
@@ -99,9 +101,22 @@ offset_left = 82.32483
 offset_top = 12.0
 offset_right = 89.22891
 offset_bottom = 82.28027
+metadata/_edit_use_anchors_ = true
 
 [node name="Import Area" type="Area2D" parent="." unique_id=2074634664]
 
 [node name="Collider" type="CollisionShape2D" parent="Import Area" unique_id=382267087]
 position = Vector2(-48, -24)
 shape = SubResource("RectangleShape2D_lg3vr")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1443085131]
+offset_left = -29.0
+offset_top = -109.0
+offset_right = 43.0
+offset_bottom = -13.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("5_6de4d")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16

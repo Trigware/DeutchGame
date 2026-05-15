@@ -8,17 +8,17 @@
 [ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="6_bftnf"]
 [ext_resource type="Texture2D" uid="uid://db1xsx3wajk7x" path="res://Textures/Tiles.png" id="7_8lme0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ry022"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lme0"]
 shader = ExtResource("1_yyskf")
-shader_parameter/amount_of_segments = 7
-shader_parameter/wheel_rotation = 0.6785714285714286
-shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.69, 0.56925, 0.207, 1), Color(0.44849998, 0.69, 0.207, 1), Color(0.207, 0.69, 0.32775003, 1), Color(0.207, 0.69, 0.69, 1), Color(0.207, 0.32775003, 0.69, 1), Color(0.44849998, 0.207, 0.69, 1), Color(0.69, 0.207, 0.56925, 1)])
+shader_parameter/amount_of_segments = 2
+shader_parameter/wheel_rotation = 0.77
+shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.207, 0.69, 0.69, 1)])
 shader_parameter/texture_size = Vector2(100, 104)
 shader_parameter/seperator_size = 0.219
 shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
 shader_parameter/inner_radius = 0.2
 shader_parameter/inner_tint = Vector4(0, 0, 0, 0)
-shader_parameter/minimal_seperator_length = 0.05
+shader_parameter/minimal_seperator_length = 0.044
 shader_parameter/rotation_shift = 0.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_8lme0"]
@@ -38,13 +38,14 @@ scale = Vector2(6.991514, 6.991514)
 script = ExtResource("1_hk2ns")
 is_item_texture = false
 item_texture = ExtResource("2_pavpa")
-number_of_segments = 8
+number_of_segments = 2
+wheel_rotation = 0.27
 base_wheel_color = Color(0.69, 0.207, 0.207, 1)
 seperator_size = 0.219
 seperator_tint = Color(1.2722987, 1.2051998, 0.7690575, 1)
 inner_radius = 0.2
 inner_tint = Color(0.70199996, 0.7416, 0.9, 1)
-minimal_seperator_length = 0.05
+minimal_seperator_length = 0.044
 item_distance_portion = 0.767
 item_scale = 2.635
 maximum_item_scale = 0.32
@@ -55,7 +56,7 @@ scale = Vector2(1.07, 1.07)
 texture = ExtResource("1_va65w")
 
 [node name="Wheel" type="Sprite2D" parent="." unique_id=101584755]
-material = SubResource("ShaderMaterial_ry022")
+material = SubResource("ShaderMaterial_8lme0")
 texture = ExtResource("1_va65w")
 
 [node name="Pointer" type="Sprite2D" parent="." unique_id=214169454]

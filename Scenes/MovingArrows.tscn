@@ -6,8 +6,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a5nub"]
 shader = ExtResource("1_b458g")
-shader_parameter/offset = 1.7900143333334704
-shader_parameter/arrow_count = 1.0
+shader_parameter/offset = 58.38805866666376
+shader_parameter/arrow_count = nan
 shader_parameter/reversed_progress = false
 shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)
 
@@ -15,4 +15,3 @@ shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)
 material = SubResource("ShaderMaterial_a5nub")
 texture = ExtResource("2_a5nub")
 script = ExtResource("3_a5nub")
-arrow_modulate = Color(0.34, 0.24956, 0.05440001, 0)

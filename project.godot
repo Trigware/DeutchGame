@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Deutch Game"
-run/main_scene="uid://dci365yxq04no"
+run/main_scene="uid://bq8uq3y6war4f"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]

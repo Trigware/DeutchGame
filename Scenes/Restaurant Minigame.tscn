@@ -77,14 +77,16 @@ offset_bottom = 236.72198
 [node name="Food Station" parent="." unique_id=925608103 node_paths=PackedStringArray("player") instance=ExtResource("2_x35uu")]
 player = NodePath("../Player")
 
-[node name="Left Spawner" parent="." unique_id=2098849133 node_paths=PackedStringArray("player") instance=ExtResource("6_w14s2")]
+[node name="Left Spawner" parent="." unique_id=2098849133 node_paths=PackedStringArray("player", "minigame_countdown") instance=ExtResource("6_w14s2")]
 position = Vector2(-128, 36)
 player = NodePath("../Player")
+minigame_countdown = NodePath("../MinigameCountdown")
 
-[node name="Right Spawner" parent="." unique_id=1341126240 node_paths=PackedStringArray("player") instance=ExtResource("6_w14s2")]
+[node name="Right Spawner" parent="." unique_id=1341126240 node_paths=PackedStringArray("player", "minigame_countdown") instance=ExtResource("6_w14s2")]
 position = Vector2(128, 36)
 is_right_spawner = true
 player = NodePath("../Player")
+minigame_countdown = NodePath("../MinigameCountdown")
 
 [node name="Player" parent="." unique_id=564817853 groups=["Player"] instance=ExtResource("1_yutl7")]
 position = Vector2(0, 54)

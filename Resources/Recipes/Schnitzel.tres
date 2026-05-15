@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RestaurantRecipe" format=3 uid="uid://cxunov1l8rl5n"]
+
+[ext_resource type="Script" uid="uid://c7nf7y8rdqvqw" path="res://Scripts/Resources/RestaurantRecipe.gd" id="1_ww3ui"]
+
+[resource]
+script = ExtResource("1_ww3ui")
+resulting_food = 0
+ingredients = Array[int]([0, 1, 8, 5, 9])
+metadata/_custom_type_script = "uid://c7nf7y8rdqvqw"
