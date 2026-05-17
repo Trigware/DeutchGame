@@ -24,8 +24,22 @@ func _process(_delta):
 	if used_dir_state in arrow_colors:
 		moving_arrows.arrow_modulate = arrow_colors[used_dir_state]
 
-func add_to_conveyor(ingredient_type: Ingredient.IngredientType):
-	var conveyor_ingredient = UID.conveyor_ingredient.instantiate()
-	conveyor_ingredient.item_type = ingredient_type
+func create_conveyor_object(ingredient_or_food, is_food: bool, food_station_ref: FoodStation) -> ConveyorObject:
+	var conveyor_ingredient := UID.conveyor_ingredient.instantiate()
+	match is_food:
+		true: conveyor_ingredient.food_type = ingredient_or_food
+		false: conveyor_ingredient.item_type = ingredient_or_food
+	
+	conveyor_ingredient.is_output = is_food
 	conveyor_ingredient.convayor_belt_scale = scale.x
+	conveyor_ingredient.food_station_ref = food_station_ref
 	food_root.add_child(conveyor_ingredient)
+	return conveyor_ingredient
+
+func add_to_conveyor(ingredient_type: Ingredient.IngredientType, food_station_ref: FoodStation):
+	create_conveyor_object(ingredient_type, false, food_station_ref)
+
+func output_to_conveyor(food_type: Ingredient.FoodType, food_station_ref: FoodStation):
+	var convayor_food = create_conveyor_object(food_type, true, food_station_ref)
+	convayor_food.food_creation_index = food_station_ref.outputed_food_count
+	food_station_ref.outputed_food_count += 1

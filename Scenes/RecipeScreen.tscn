@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://lfdb3yymrx2c"]
+
+[ext_resource type="PackedScene" uid="uid://c0et5rb4hx584" path="res://Scenes/Tiled Diagonals.tscn" id="1_cv7us"]
+[ext_resource type="Script" uid="uid://bqqo5bnusiavk" path="res://Scripts/RecipeScreen.gd" id="1_v4gq3"]
+[ext_resource type="Texture2D" uid="uid://6gwcuhsgyns8" path="res://Textures/RecipeBox.png" id="2_v4gq3"]
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="4_si872"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="5_e4ymm"]
+
+[node name="RecipeScreen" type="Control" unique_id=1228381328]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v4gq3")
+crafted_food = 3
+
+[node name="Tiled Diagonals" parent="." unique_id=279757855 instance=ExtResource("1_cv7us")]
+layout_mode = 0
+offset_right = 57.540848
+offset_bottom = 76.69687
+diagonal_lines = 10.0
+line_color = Color(0.39479998, 0.42, 0.42, 1)
+value_offset = 0.06
+pattern_speed = 0.1
+
+[node name="Frame" type="NinePatchRect" parent="." unique_id=747040843]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 96.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_v4gq3")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+
+[node name="Display Elements" type="Control" parent="." unique_id=2137227481]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Produced Food Icon" type="Sprite2D" parent="Display Elements" unique_id=1196108351]
+position = Vector2(11, 13)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_si872")
+hframes = 10
+vframes = 2
+frame = 3
+
+[node name="Crafted Food" type="Label" parent="Display Elements" unique_id=1031136712]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 9.000001
+offset_right = 67.333336
+offset_bottom = 17.695652
+scale = Vector2(0.73333335, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_e4ymm")
+theme_override_font_sizes/font_size = 7
+text = "Gebratener Käse"
+
+[node name="Underline Shadow Container" type="Node2D" parent="Display Elements" unique_id=1377102588]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0.495, -0.205)
+
+[node name="Underline Shadow" type="ColorRect" parent="Display Elements/Underline Shadow Container" unique_id=205423225]
+offset_left = 17.505
+offset_top = 17.0
+offset_right = 34.74638
+offset_bottom = 34.17
+scale = Vector2(2.03, 0.05)
+color = Color(0.73, 0.73, 0.73, 1)
+
+[node name="Underline Container" type="Node2D" parent="Display Elements" unique_id=261585573]
+position = Vector2(0, -0.65)
+
+[node name="Underline" type="ColorRect" parent="Display Elements/Underline Container" unique_id=97626864]
+offset_left = 18.0
+offset_top = 17.0
+offset_right = 35.24138
+offset_bottom = 32.99997
+scale = Vector2(2.03, 0.05)
+color = Color(0.79, 0.79, 0.79, 1)
+
+[node name="Ingredients Header" type="Label" parent="Display Elements" unique_id=223410125]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 19.0
+offset_right = 87.0
+offset_bottom = 42.0
+scale = Vector2(0.435, 0.435)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("5_e4ymm")
+theme_override_font_sizes/font_size = 16
+text = "Ingredienz:"
+
+[node name="Ingredients List" type="RichTextLabel" parent="Display Elements" unique_id=1136928078]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 27.0
+offset_right = 131.67532
+offset_bottom = 119.0
+scale = Vector2(0.385, 0.385)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("5_e4ymm")
+bbcode_enabled = true

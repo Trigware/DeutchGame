@@ -26,6 +26,9 @@ func get_possible_moves(tile: Vector2i):
 
 const move_range = 2
 
+func _ready():
+	Audio.play_music(UID.board_music)
+
 func _process(_delta):
 	create_grid_shadow()
 

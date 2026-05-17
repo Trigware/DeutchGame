@@ -1,6 +1,7 @@
 extends Area2D
 
 @onready var ingredient_spr = $Ingredient
+@onready var ingredient_collider = $Collider
 
 @export var y_offset: float
 var player_pos: Vector2
@@ -83,6 +84,7 @@ func setup_ingredient_fall():
 		break
 	
 	throw_velocity = -fall_velocity
+	ingredient_collider.disabled = false
 
 const fall_full_alpha_y_global = 54
 const fall_no_alpha_y_global = 72
@@ -127,9 +129,8 @@ func finish_ingredient_pickup(area: Area2D):
 	player_ingredient.y_index = ingredient_count
 	
 	var ingredients_root = area.get_node("Player Ingredients")
-	var is_pork = picked_type == Ingredient.IngredientType.Pork
 	if ingredient_count == 1:
-		ingredients_root.position.y = pork_start_ingredients_root_y_pos if is_pork else regular_ingredients_root_y_pos
+		ingredients_root.position.y = regular_ingredients_root_y_pos
 	ingredients_root.add_child(player_ingredient)
 	
 	var collider_scene = UID.ingredient_collider_scene.instantiate()

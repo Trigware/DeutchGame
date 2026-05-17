@@ -42,7 +42,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAD//wAAAAAAAAEAAAD+/wAAAAABAAA
 tile_set = SubResource("TileSet_w14s2")
 
 [node name="WalkableSpace" type="TileMapLayer" parent="Tiles" unique_id=1261083929]
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAAAAP//AAABAAAAAAAAAP7/AAABAAAAAAABAAAAAAAAAAEAAAACAAAAAAAAAAEAAAADAAAAAAAAAAEAAAAEAAAAAAADAAEAAAD//wAAAAAAAAEAAAD+/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAD8/wAAAAACAAEAAAD+//n/AAAEAAAAAAD9//3/AAAEAAAAAAD+//3/AAAEAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAAAAP//AAABAAAAAAAAAP7/AAABAAAAAAABAAAAAAAAAAEAAAACAAAAAAAAAAEAAAADAAAAAAAAAAEAAAAEAAAAAAADAAEAAAD//wAAAAAAAAEAAAD+/wAAAAAAAAEAAAD9/wAAAAAAAAEAAAD8/wAAAAACAAEAAAA=")
 tile_set = ExtResource("1_x35uu")
 
 [node name="Static Body" type="StaticBody2D" parent="Tiles/WalkableSpace" unique_id=1110959077]
@@ -76,6 +76,7 @@ offset_bottom = 236.72198
 
 [node name="Food Station" parent="." unique_id=925608103 node_paths=PackedStringArray("player") instance=ExtResource("2_x35uu")]
 player = NodePath("../Player")
+produced_food = 2
 
 [node name="Left Spawner" parent="." unique_id=2098849133 node_paths=PackedStringArray("player", "minigame_countdown") instance=ExtResource("6_w14s2")]
 position = Vector2(-128, 36)

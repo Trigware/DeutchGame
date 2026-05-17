@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dq15cjvatvc6e" path="res://Scripts/FoodStation.gd" id="1_me4tm"]
 [ext_resource type="PackedScene" uid="uid://di2i3jpggila6" path="res://Scenes/Conveyor Belt.tscn" id="2_me4tm"]
 [ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="4_fnk2r"]
-[ext_resource type="Texture2D" uid="uid://6gwcuhsgyns8" path="res://Textures/RecipeBox.png" id="5_6de4d"]
+[ext_resource type="PackedScene" uid="uid://lfdb3yymrx2c" path="res://Scenes/RecipeScreen.tscn" id="5_6de4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_me4tm"]
 size = Vector2(96, 24)
@@ -33,7 +33,7 @@ produced_food = 0
 
 [node name="Walkable Area" type="TileMapLayer" parent="." unique_id=1732023037]
 position = Vector2(12, -12)
-tile_map_data = PackedByteArray("AAD8/wAAAAACAAEAAAD9////AAAEAAAAAAD9/wAAAAABAAEAAAD+/wAAAAAAAAEAAAABAP//AAADAAAAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAAAAAAAAAAAAAEAAAD//wAAAAACAAAAAAA=")
+tile_map_data = PackedByteArray("AAD8/wAAAAACAAEAAAD9////AAAEAAAAAAD9/wAAAAABAAEAAAD+/wAAAAAAAAEAAAABAP//AAAEAAEAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAAAAAAAAAAAAAEAAAD//wAAAAACAAAAAAA=")
 tile_set = ExtResource("1_3gt1o")
 
 [node name="ConveyorOut" parent="." unique_id=1045113374 instance=ExtResource("2_me4tm")]
@@ -109,14 +109,9 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(-48, -24)
 shape = SubResource("RectangleShape2D_lg3vr")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1443085131]
+[node name="RecipeScreen" parent="." unique_id=1228381328 instance=ExtResource("5_6de4d")]
 offset_left = -29.0
-offset_top = -109.0
-offset_right = 43.0
-offset_bottom = -13.0
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("5_6de4d")
-patch_margin_left = 16
-patch_margin_top = 16
-patch_margin_right = 16
-patch_margin_bottom = 16
+offset_top = -96.0
+offset_right = -29.0
+offset_bottom = -96.0
+crafted_food = 0

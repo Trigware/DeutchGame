@@ -1,4 +1,5 @@
 @tool
+class_name FoodStation
 extends Node2D
 
 @export var station_x := 0
@@ -13,7 +14,9 @@ extends Node2D
 @onready var right_connector = $"Static Body/Right Connector"
 @onready var enterance_collider = $"Static Body/Enterance"
 @onready var import_area = $"Import Area"
-@onready var conveyor_out = $ConveyorOut
+@onready var conveyor_out: ConveyorBelt = $ConveyorOut
+@onready var conveyor_in: ConveyorBelt = $ConveyorIn
+@onready var recipe_screen = $RecipeScreen
 
 const station_size = 24*7
 const middle_tile = Vector2i(-1, 0)
@@ -26,6 +29,9 @@ enum TileType {
 	XRightLocked,
 	FreeXDown
 }
+
+var stored_ingredients: Dictionary[Ingredient.IngredientType, int] = {}
+var outputed_food_count: int
 
 const tile_atlas_coords: Dictionary[TileType, Vector2] = {
 	TileType.FreeX: Vector2(0, 1),
@@ -52,6 +58,8 @@ func _process(_delta):
 func _ready():
 	import_area.body_entered.connect(body_enters_export_area)
 	import_area.body_exited.connect(body_exits_export_area)
+	recipe_screen.crafted_food = produced_food
+	recipe_screen.stored_ingredients = stored_ingredients
 	await get_tree().process_frame
 	GridState.active_game.ingredient_removed.connect(ingredient_removed_from_inventory)
 	
@@ -67,7 +75,8 @@ func body_exits_export_area(body: Node2D):
 func ingredient_removed_from_inventory(ingredient_type: Ingredient.IngredientType):
 	var export_index = player.export_station_index
 	if export_index != station_x: return
-	conveyor_out.add_to_conveyor(ingredient_type)
+	recipe_screen.add_ingredient(ingredient_type)
+	conveyor_out.add_to_conveyor(ingredient_type, self)
 	
 	var held_player_items = GridState.active_game.player_held_items
 	var ingredient_node_array = GridState.active_game.player_held_ingredients_nodes

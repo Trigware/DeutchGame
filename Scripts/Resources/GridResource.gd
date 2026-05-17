@@ -76,6 +76,7 @@ var player_held_ingredients_nodes: Array[IngredientObject]
 var ingredient_count_per_type: Dictionary[Ingredient.IngredientType, int]
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)
 signal ingredient_removed(ingredient_type: Ingredient.IngredientType)
+signal restaurant_game_started
 
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",
@@ -86,6 +87,8 @@ const number_of_players: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Red: 15,
 	SpecialTile.TeamRelation.Blue: 12
 }
+
+var restaurant_recipes: Dictionary[Ingredient.FoodType, RestaurantRecipe] = {}
 
 static var active_game: GridState
 
@@ -128,3 +131,30 @@ func decrement_power_up(power_up_kind: PowerUpType):
 	var player_power_up: PlayerPowerUp = player_power_ups[player_turn]
 	var power_up: PowerUp = player_power_up.power_ups[power_up_kind]
 	power_up.amount -= 1
+
+const recipe_list_directory := "res://Resources/Recipes/"
+
+func create_recipe_list():
+	if restaurant_recipes.size() > 0: return
+	var recipe_directory = DirAccess.open(recipe_list_directory)
+	if recipe_directory == null:
+		push_error("Recipe directory not found!")
+		return
+	
+	recipe_directory.list_dir_begin()
+	
+	while true:
+		var current_file := recipe_directory.get_next()
+		if current_file == "": break
+		if recipe_directory.current_is_dir() or current_file.begins_with("."): continue
+		
+		var full_file_path = recipe_list_directory + current_file
+		var recipe_resource := load(full_file_path)
+		if not recipe_resource is RestaurantRecipe: continue
+		var current_recipe := recipe_resource as RestaurantRecipe
+		restaurant_recipes[current_recipe.resulting_food] = current_recipe
+	
+	recipe_directory.list_dir_end()
+
+static func get_recipe(crafted_food: Ingredient.FoodType) -> RestaurantRecipe:
+	return GridState.active_game.restaurant_recipes[crafted_food]

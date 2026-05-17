@@ -19,3 +19,7 @@ const player_ingredient_scene := preload("uid://gi430yjahyj2")
 const ingredient_collider_scene := preload("uid://cuoijvayuffan")
 const restaurant_item_slot := preload("uid://srs2g7wicd1q")
 const conveyor_ingredient := preload("uid://b61nq8eg3e463")
+const checkmark_uid = "uid://dnhuyu2114nfn"
+
+const board_music := preload("uid://27wodk4ei5rl")
+const restaurant_music := preload("uid://duu7222knu0pl")

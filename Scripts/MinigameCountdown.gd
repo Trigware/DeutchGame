@@ -15,6 +15,7 @@ const start_text = "START"
 var minigame_started = false
 
 func _ready():
+	if minigame_started: GridState.active_game.restaurant_game_started.emit()
 	visible = not minigame_started
 
 func _process(delta: float):
@@ -28,6 +29,7 @@ func handle_countdown_size():
 	countdown.label_settings.shadow_offset = Vector2.ONE * countdown_size / 20
 
 const start_modulate_tween_duration = 0.5
+const movement_enable_prestart_duration = 0.5
 
 func handle_countdown_time(delta: float):
 	time_until_start -= delta
@@ -39,6 +41,7 @@ func handle_countdown_time(delta: float):
 	
 	tween_running = true
 	var is_start_activated = time_until_start < 0
+	if is_start_activated: countdown_size = minimum_size
 	var final_size = maximum_size if is_start_activated else minimum_size
 	var countdown_tween = create_tween().tween_property(self, "countdown_size", final_size, 1).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
@@ -48,4 +51,6 @@ func handle_countdown_time(delta: float):
 	
 	tween_running = false
 	countdown_size = minimum_size if time_until_start < 0 else maximum_size
-	if time_until_start < 0: minigame_started = true
+	if time_until_start < movement_enable_prestart_duration:
+		minigame_started = true
+		GridState.active_game.restaurant_game_started.emit()
