@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a5nub"]
 shader = ExtResource("1_b458g")
-shader_parameter/offset = 58.38805866666376
+shader_parameter/offset = 907.3921876665355
 shader_parameter/arrow_count = nan
 shader_parameter/reversed_progress = false
 shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)

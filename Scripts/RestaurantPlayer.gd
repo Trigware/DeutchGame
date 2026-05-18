@@ -50,7 +50,6 @@ func get_walk_anim_name(move_dir: MoveDir) -> String: return "walk_" + MoveDir.k
 func handle_movement():
 	if movement_disabled: return
 	var move_dir_flags = get_move_dir()
-	if move_dir_flags.size() == 0: return
 	var move_dir_vec = get_dir_as_vec(move_dir_flags)
 	
 	var item_portion = clamp(1 - inverse_lerp(0, minimal_speed_item_count, GridState.active_game.player_held_items.size()), 0, 1)
@@ -59,7 +58,7 @@ func handle_movement():
 	var move_dir = get_prioritized_move_dir(move_dir_flags)
 	var anim_name = get_walk_anim_name(move_dir)
 	var prev_position = position
-	
+
 	move_and_slide()
 	if pos_approx_equal(prev_position): return
 	anim_sprite.play(anim_name)

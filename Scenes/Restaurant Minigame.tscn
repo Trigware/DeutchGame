@@ -69,22 +69,27 @@ position = Vector2(132, -12)
 shape = SubResource("RectangleShape2D_3ie4c")
 
 [node name="TableShadow" parent="Tiles/WalkableSpace" unique_id=721408221 instance=ExtResource("3_tncxx")]
-offset_left = 118.10551
-offset_top = 24.0
-offset_right = 125.00958
-offset_bottom = 236.72198
+offset_left = 384.42706
+offset_top = 24.000011
+offset_right = 391.33115
+offset_bottom = 768.33215
+
+[node name="BarrelPaths" type="TileMapLayer" parent="Tiles" unique_id=1745861756]
+position = Vector2(0, 6)
+tile_map_data = PackedByteArray("AAD7////AAAIAAAAAAAFAP//AAAHAAAAAAD7/wAAAAAEAAEAAAAFAAAAAAAEAAEAAAD6/wAAAAAFAAEAAAD5/wAAAAAEAAEAAAD4/wAAAAAFAAEAAAD3/wAAAAAEAAEAAAD2/wAAAAAFAAEAAAD1/wAAAAAEAAEAAAD0/wAAAAAFAAEAAADz/wAAAAAEAAEAAADy/wAAAAAFAAEAAADx/wAAAAAEAAEAAAAGAAAAAAAFAAEAAAAHAAAAAAAEAAEAAAAIAAAAAAAFAAEAAAAJAAAAAAAEAAEAAAAKAAAAAAAFAAEAAAALAAAAAAAEAAEAAAAMAAAAAAAFAAEAAAANAAAAAAAEAAEAAAAOAAAAAAAFAAEAAAAPAAAAAAAEAAEAAAAGAP//AAAHAAAAAAAHAP//AAAHAAAAAAAIAP//AAAHAAAAAAAJAP//AAAHAAAAAAAKAP//AAAHAAAAAAALAP//AAAHAAAAAAAMAP//AAAHAAAAAAANAP//AAAHAAAAAAAOAP//AAAHAAAAAAAPAP//AAAHAAAAAAD6////AAAIAAAAAAD5////AAAIAAAAAAD4////AAAIAAAAAAD3////AAAIAAAAAAD2////AAAIAAAAAAD1////AAAIAAAAAAD0////AAAIAAAAAADz////AAAIAAAAAADy////AAAIAAAAAADx////AAAIAAAAAAA=")
+tile_set = ExtResource("1_x35uu")
 
 [node name="Food Station" parent="." unique_id=925608103 node_paths=PackedStringArray("player") instance=ExtResource("2_x35uu")]
 player = NodePath("../Player")
 produced_food = 2
 
 [node name="Left Spawner" parent="." unique_id=2098849133 node_paths=PackedStringArray("player", "minigame_countdown") instance=ExtResource("6_w14s2")]
-position = Vector2(-128, 36)
+position = Vector2(-72, 36)
 player = NodePath("../Player")
 minigame_countdown = NodePath("../MinigameCountdown")
 
 [node name="Right Spawner" parent="." unique_id=1341126240 node_paths=PackedStringArray("player", "minigame_countdown") instance=ExtResource("6_w14s2")]
-position = Vector2(128, 36)
+position = Vector2(72, 36)
 is_right_spawner = true
 player = NodePath("../Player")
 minigame_countdown = NodePath("../MinigameCountdown")

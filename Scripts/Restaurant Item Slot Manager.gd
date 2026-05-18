@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 var item_slots: Dictionary[Ingredient.IngredientType, Node2D]
+var food_slots: Dictionary[Ingredient.FoodType, Node2D]
 
 @onready var left_gradient = $LeftGradient
 @onready var right_gradient = $RightGradient
@@ -11,6 +12,7 @@ const gradient_window_width_portion = 0.2
 func _ready():
 	await get_tree().process_frame
 	GridState.active_game.ingredient_type_added.connect(add_ingredient)
+	GridState.active_game.food_type_added.connect(add_food_slot)
 
 func _process(_delta):
 	var window_size = DisplayServer.window_get_size()
@@ -22,15 +24,24 @@ func _process(_delta):
 
 const restaurant_slot_tween_duration = 0.4
 
-func add_ingredient(ingredient_type: Ingredient.IngredientType):
+func add_item_slot(ingredient_or_food, is_food: bool):
 	var restaurant_slot = UID.restaurant_item_slot.instantiate()
-	restaurant_slot.item_type = ingredient_type
-	restaurant_slot.item_index = item_slots.size()
+	var used_dict = food_slots if is_food else item_slots
+	match is_food:
+		false: restaurant_slot.item_type = ingredient_or_food
+		true: restaurant_slot.food_type = ingredient_or_food
+	restaurant_slot.item_index = used_dict.size()
+	
 	restaurant_slot.transition_value = 0
+	restaurant_slot.is_food = is_food
 	create_tween().tween_property(restaurant_slot, "transition_value", 1, restaurant_slot_tween_duration).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
+	
 	add_child(restaurant_slot)
-	item_slots[ingredient_type] = restaurant_slot
+	used_dict[ingredient_or_food] = restaurant_slot
+
+func add_ingredient(ingredient_type: Ingredient.IngredientType): add_item_slot(ingredient_type, false)
+func add_food_slot(food_type: Ingredient.FoodType): add_item_slot(food_type, true)
 
 const overlapping_slot_color = Color("ffe991")
 var overlapping_type: Ingredient.IngredientType

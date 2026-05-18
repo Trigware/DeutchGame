@@ -3,10 +3,17 @@
 [ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_jt0s8"]
 [ext_resource type="Script" uid="uid://brfvsgyn0ps7f" path="res://Scripts/ConveyorIngredient.gd" id="1_uoomo"]
 
-[node name="IngredientRoot" type="Node2D" unique_id=644252229]
+[sub_resource type="CircleShape2D" id="CircleShape2D_jt0s8"]
+radius = 17.0
+
+[node name="IngredientRoot" type="Area2D" unique_id=1785114322]
 script = ExtResource("1_uoomo")
 
 [node name="IngredientSprite" type="Sprite2D" parent="." unique_id=1672344232]
 texture = ExtResource("1_jt0s8")
 hframes = 10
 vframes = 2
+
+[node name="Collider" type="CollisionShape2D" parent="." unique_id=15436810]
+shape = SubResource("CircleShape2D_jt0s8")
+disabled = true

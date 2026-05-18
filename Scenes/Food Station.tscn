@@ -27,13 +27,16 @@ size = Vector2(48, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lg3vr"]
 size = Vector2(24, 24)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj20c"]
+size = Vector2(24, 15)
+
 [node name="Food Station" type="Node2D" unique_id=925608103]
 script = ExtResource("1_me4tm")
 produced_food = 0
 
 [node name="Walkable Area" type="TileMapLayer" parent="." unique_id=1732023037]
 position = Vector2(12, -12)
-tile_map_data = PackedByteArray("AAD8/wAAAAACAAEAAAD9////AAAEAAAAAAD9/wAAAAABAAEAAAD+/wAAAAAAAAEAAAABAP//AAAEAAEAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAAAAAAAAAAAAAEAAAD//wAAAAACAAAAAAA=")
+tile_map_data = PackedByteArray("AAD8/wAAAAACAAEAAAD9////AAAEAAAAAAD9/wAAAAABAAEAAAD+/wAAAAAAAAEAAAABAP//AAADAAAAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAAAAAAAAAAAAAEAAAD//wAAAAACAAAAAAA=")
 tile_set = ExtResource("1_3gt1o")
 
 [node name="ConveyorOut" parent="." unique_id=1045113374 instance=ExtResource("2_me4tm")]
@@ -103,11 +106,18 @@ offset_right = 89.22891
 offset_bottom = 82.28027
 metadata/_edit_use_anchors_ = true
 
-[node name="Import Area" type="Area2D" parent="." unique_id=2074634664]
-
-[node name="Collider" type="CollisionShape2D" parent="Import Area" unique_id=382267087]
+[node name="Export Area" type="Area2D" parent="." unique_id=2074634664]
 position = Vector2(-48, -24)
+
+[node name="Collider" type="CollisionShape2D" parent="Export Area" unique_id=382267087]
 shape = SubResource("RectangleShape2D_lg3vr")
+
+[node name="Import Area" type="Area2D" parent="." unique_id=1750711879]
+position = Vector2(48, -24)
+
+[node name="Collider" type="CollisionShape2D" parent="Import Area" unique_id=203333581]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_fj20c")
 
 [node name="RecipeScreen" parent="." unique_id=1228381328 instance=ExtResource("5_6de4d")]
 offset_left = -29.0

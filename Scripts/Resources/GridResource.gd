@@ -74,7 +74,9 @@ var latest_move : Move
 var player_held_items: Array[Ingredient.IngredientType]
 var player_held_ingredients_nodes: Array[IngredientObject]
 var ingredient_count_per_type: Dictionary[Ingredient.IngredientType, int]
+var player_held_foods: Dictionary[Ingredient.FoodType, int]
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)
+signal food_type_added(food_type: Ingredient.FoodType)
 signal ingredient_removed(ingredient_type: Ingredient.IngredientType)
 signal restaurant_game_started
 
@@ -157,4 +159,6 @@ func create_recipe_list():
 	recipe_directory.list_dir_end()
 
 static func get_recipe(crafted_food: Ingredient.FoodType) -> RestaurantRecipe:
+	if not crafted_food in GridState.active_game.restaurant_recipes:
+		active_game.create_recipe_list()
 	return GridState.active_game.restaurant_recipes[crafted_food]

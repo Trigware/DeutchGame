@@ -54,7 +54,7 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 		for i in range(1, actual_range+1):
 			var dest_pos = origin + dir * i
 			if not is_valid_tile(piece, dest_pos): break
-			var cost = Move.MoveCost.FastTrick if i > 1 else Move.MoveCost.Regular
+			var cost = Move.MoveCost.FastTrick if i > 2 else Move.MoveCost.Regular
 			
 			var move = Move.ctor(cost, is_in_trick_question(dest_pos))
 			move.moved_piece = piece

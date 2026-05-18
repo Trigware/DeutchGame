@@ -13,6 +13,7 @@ extends Node2D
 @onready var left_connector = $"Static Body/Left Connector"
 @onready var right_connector = $"Static Body/Right Connector"
 @onready var enterance_collider = $"Static Body/Enterance"
+@onready var export_area = $"Export Area"
 @onready var import_area = $"Import Area"
 @onready var conveyor_out: ConveyorBelt = $ConveyorOut
 @onready var conveyor_in: ConveyorBelt = $ConveyorIn
@@ -32,6 +33,7 @@ enum TileType {
 
 var stored_ingredients: Dictionary[Ingredient.IngredientType, int] = {}
 var outputed_food_count: int
+var foods_obtainted: int
 
 const tile_atlas_coords: Dictionary[TileType, Vector2] = {
 	TileType.FreeX: Vector2(0, 1),
@@ -56,8 +58,8 @@ func _process(_delta):
 	right_connector.disabled = unlocked_right
 
 func _ready():
-	import_area.body_entered.connect(body_enters_export_area)
-	import_area.body_exited.connect(body_exits_export_area)
+	export_area.body_entered.connect(body_enters_export_area)
+	export_area.body_exited.connect(body_exits_export_area)
 	recipe_screen.crafted_food = produced_food
 	recipe_screen.stored_ingredients = stored_ingredients
 	await get_tree().process_frame

@@ -22,6 +22,7 @@ func _ready():
 	ingredient_spr.frame_coords.x = ingredient_data.ingredient_type as int
 	scale = Vector2(ingredient_scale, ingredient_scale)
 	area_entered.connect(area_hit_ingredient)
+	z_index = 1
 	rotation_tween()
 
 const rotation_range = 30

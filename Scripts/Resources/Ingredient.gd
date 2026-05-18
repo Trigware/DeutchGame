@@ -40,7 +40,7 @@ const german_ingredient_dict: Dictionary[IngredientType, String] = {
 	IngredientType.Sausage: "Paar",
 	IngredientType.Tomato: "Tomate",
 	IngredientType.Breadcrumbs: "Paniermehl",
-	IngredientType.Oil: "Ol"
+	IngredientType.Oil: "Öl"
 }
 
 static func get_food_as_german(food: FoodType) -> String:
@@ -57,5 +57,6 @@ var ingredient_type: IngredientType
 static func generate() -> Ingredient:
 	var instance := Ingredient.new()
 	var ingredient_count = IngredientType.size() - 2
-	instance.ingredient_type = [IngredientType.Tomato, IngredientType.Potato, IngredientType.Sausage][randi_range(0, 2)]
+	var chosen_ingredient = [IngredientType.Sausage, IngredientType.Tomato, IngredientType.Potato][randi_range(0, 2)]
+	instance.ingredient_type = chosen_ingredient as Ingredient.IngredientType
 	return instance

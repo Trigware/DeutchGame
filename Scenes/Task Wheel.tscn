@@ -10,15 +10,15 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lme0"]
 shader = ExtResource("1_yyskf")
-shader_parameter/amount_of_segments = 2
-shader_parameter/wheel_rotation = 0.77
-shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.207, 0.69, 0.69, 1)])
+shader_parameter/amount_of_segments = 8
+shader_parameter/wheel_rotation = 0.6875
+shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.69, 0.56925, 0.207, 1), Color(0.44849998, 0.69, 0.207, 1), Color(0.207, 0.69, 0.32775003, 1), Color(0.207, 0.69, 0.69, 1), Color(0.207, 0.32775003, 0.69, 1), Color(0.44849998, 0.207, 0.69, 1), Color(0.69, 0.207, 0.56925, 1)])
 shader_parameter/texture_size = Vector2(100, 104)
 shader_parameter/seperator_size = 0.219
 shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
 shader_parameter/inner_radius = 0.2
 shader_parameter/inner_tint = Vector4(0, 0, 0, 0)
-shader_parameter/minimal_seperator_length = 0.044
+shader_parameter/minimal_seperator_length = 0.05
 shader_parameter/rotation_shift = 0.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_8lme0"]
@@ -38,8 +38,7 @@ scale = Vector2(6.991514, 6.991514)
 script = ExtResource("1_hk2ns")
 is_item_texture = false
 item_texture = ExtResource("2_pavpa")
-number_of_segments = 2
-wheel_rotation = 0.27
+number_of_segments = 8
 base_wheel_color = Color(0.69, 0.207, 0.207, 1)
 seperator_size = 0.219
 seperator_tint = Color(1.2722987, 1.2051998, 0.7690575, 1)
