@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 @onready var anim_sprite = $Sprite
 @onready var camera = $Camera
+@onready var item_slots_manager = $"../Restaurant Item Slots Manager"
 
 const minimal_player_speed = 20
 const maximum_player_speed = 115
@@ -14,6 +15,9 @@ var can_player_export = false
 var export_station_index = 0
 
 enum MoveDir { None, Left, Right, Up, Down }
+
+func _ready():
+	set_anim(get_walk_anim_name(MoveDir.Down))
 
 func _process(delta: float):
 	handle_movement()
@@ -61,7 +65,7 @@ func handle_movement():
 
 	move_and_slide()
 	if pos_approx_equal(prev_position): return
-	anim_sprite.play(anim_name)
+	if anim_sprite.sprite_frames.has_animation(anim_name): anim_sprite.play(anim_name)
 
 const base_camera_zoom = 2.85
 
@@ -70,3 +74,24 @@ func handle_camera():
 	var size_multiplier = window_size / basic_window_size
 	var camera_zoom = max(size_multiplier.x, size_multiplier.y)
 	camera.zoom = Vector2.ONE * camera_zoom * base_camera_zoom
+
+const player_going_down_tween_dur = 0.185
+const player_fallen_offset = 4
+const fallen_player_alpha_mod = 0.6
+const player_restore_duration = 1.15
+
+func fall_down():
+	anim_sprite.play("fallen")
+	movement_disabled = true
+	
+	create_tween().tween_property(anim_sprite, "offset:y", player_fallen_offset, player_going_down_tween_dur).set_trans(Tween.TRANS_QUAD)
+	await create_tween().tween_property(anim_sprite, "modulate:a", fallen_player_alpha_mod, player_going_down_tween_dur).finished
+	await get_tree().create_timer(player_restore_duration).timeout
+	
+	movement_disabled = false
+	anim_sprite.modulate.a = 1
+	anim_sprite.offset.y = 0
+	set_anim(get_walk_anim_name(MoveDir.Down))
+
+func set_anim(anim_name: String):
+	anim_sprite.play(anim_name, 0)

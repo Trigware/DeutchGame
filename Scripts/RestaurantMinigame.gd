@@ -10,5 +10,9 @@ func _ready():
 	Audio.play_music(UID.restaurant_music)
 	GridState.active_game.create_recipe_list()
 
+var been_enabled = false
+
 func _process(_delta):
+	if been_enabled: return
 	player.movement_disabled = not countdown.minigame_started
+	if not player.movement_disabled: been_enabled = true

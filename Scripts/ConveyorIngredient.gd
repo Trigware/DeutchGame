@@ -99,7 +99,7 @@ func is_outputting_food():
 var ingredient_obtainted = false
 
 func area_entered_ingredient(body: Node2D):
-	if not body.is_in_group("PlayerImport"): return
+	if not body.is_in_group("PlayerHitbox"): return
 	food_station_ref.foods_obtainted += 1
 	ingredient_obtainted = true
 	

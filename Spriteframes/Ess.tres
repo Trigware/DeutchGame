@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://b0ggoic82uptq" path="res://Textures/Ess.png" id="1_ju1pl"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0pj4"]
+atlas = ExtResource("1_ju1pl")
+region = Rect2(384, 48, 32, 48)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_hee13"]
 atlas = ExtResource("1_ju1pl")
 region = Rect2(256, 0, 32, 48)
@@ -68,6 +72,14 @@ region = Rect2(480, 0, 32, 48)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0pj4")
+}],
+"loop": true,
+"name": &"fallen",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hee13")

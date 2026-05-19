@@ -21,7 +21,7 @@ shape = SubResource("RectangleShape2D_yutl7")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=355700057]
 sprite_frames = ExtResource("1_rpqav")
-animation = &"walk_right"
+animation = &"walk_down"
 
 [node name="CatchArea" type="Area2D" parent="." unique_id=871802687 groups=["PlayerCatchBody"]]
 
@@ -32,8 +32,8 @@ shape = SubResource("RectangleShape2D_t0a1x")
 [node name="Player Ingredients" type="Node2D" parent="CatchArea" unique_id=2113633023]
 position = Vector2(0, -15)
 
-[node name="Import Area" type="Area2D" parent="." unique_id=1656960923 groups=["PlayerImport"]]
+[node name="Hitbox" type="Area2D" parent="." unique_id=1656960923 groups=["PlayerHitbox"]]
 
-[node name="Collider" type="CollisionShape2D" parent="Import Area" unique_id=1078444979]
+[node name="Collider" type="CollisionShape2D" parent="Hitbox" unique_id=1078444979]
 position = Vector2(0, 15.5)
 shape = SubResource("RectangleShape2D_jey2w")

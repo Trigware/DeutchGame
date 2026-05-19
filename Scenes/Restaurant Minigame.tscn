@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="3_tncxx"]
 [ext_resource type="PackedScene" uid="uid://cfiu7vjy0bs1" path="res://Scenes/MinigameCountdown.tscn" id="5_3ie4c"]
 [ext_resource type="PackedScene" uid="uid://bgcipste7pq55" path="res://Scenes/IngredientSpawner.tscn" id="6_w14s2"]
+[ext_resource type="Script" uid="uid://c14ykwh10i0da" path="res://Scripts/BarrelSpawner.gd" id="8_1fbie"]
 [ext_resource type="PackedScene" uid="uid://bayywiecnbyrm" path="res://Scenes/RestaurantItemSlotsManager.tscn" id="9_nbnhw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p4me"]
@@ -99,6 +100,9 @@ position = Vector2(0, 54)
 
 [node name="Camera" type="Camera2D" parent="Player" unique_id=1732760089]
 zoom = Vector2(3.5, 3.5)
+
+[node name="Barrel Spawner" type="Node2D" parent="." unique_id=882870914]
+script = ExtResource("8_1fbie")
 
 [node name="MinigameCountdown" parent="." unique_id=311049360 instance=ExtResource("5_3ie4c")]
 visible = false

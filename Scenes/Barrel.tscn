@@ -1,17 +1,21 @@
 [gd_scene format=3 uid="uid://l637mc00fqyq"]
 
+[ext_resource type="Script" uid="uid://bceteshbkqsd" path="res://Scripts/BarrelBehavior.gd" id="1_ayvs4"]
 [ext_resource type="Texture2D" uid="uid://bsl6hyqdyqinj" path="res://Textures/Barrel.png" id="1_smejn"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_smejn"]
-radius = 14.0
-height = 36.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ayvs4"]
+radius = 7.999843
+height = 29.99941
 
 [node name="Barrel" type="Area2D" unique_id=1468651966]
 rotation = 0.006262127
+script = ExtResource("1_ayvs4")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1859057731]
 texture = ExtResource("1_smejn")
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=1776513467]
-visible = false
-shape = SubResource("CapsuleShape2D_smejn")
+position = Vector2(0.031310428, 4.999902)
+shape = SubResource("CapsuleShape2D_ayvs4")
+
+[connection signal="area_entered" from="." to="." method="on_area_hit_by_barrel"]
