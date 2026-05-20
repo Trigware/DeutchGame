@@ -2,7 +2,7 @@ extends Area2D
 
 var spawned_left := false
 
-var barrel_speed = 150
+var barrel_speed: float
 const barrel_drop_off_x = 108
 const final_barrel_fall_y = 64
 const fall_speed_increase = 7
@@ -18,6 +18,7 @@ func _ready():
 func _process(delta: float):
 	if destroying_barrel: return
 	
+	hit_player_if_overlaps()
 	var is_on_top = abs(position.x) >= barrel_drop_off_x
 	if not is_on_top: fall_speed += fall_speed_increase * delta
 	barrel_speed -= barrel_speed * speed_decrease_mutliplier * delta
@@ -38,7 +39,8 @@ func handle_destruction():
 	await create_tween().tween_property(self, "modulate:a", 0, destruction_tween_duration).finished
 	queue_free()
 
-func on_area_hit_by_barrel(area: Area2D):
-	if not area.is_in_group("PlayerHitbox"): return
-	var player_root: RestaurantPlayer = area.get_parent()
-	player_root.fall_down()
+func hit_player_if_overlaps():
+	for area: Area2D in get_overlapping_areas():
+		if not area.is_in_group("PlayerHitbox"): return
+		var player_root: RestaurantPlayer = area.get_parent()
+		player_root.fall_down()

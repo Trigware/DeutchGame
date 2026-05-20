@@ -26,7 +26,7 @@ animation = &"walk_down"
 [node name="CatchArea" type="Area2D" parent="." unique_id=871802687 groups=["PlayerCatchBody"]]
 
 [node name="Collider" type="CollisionShape2D" parent="CatchArea" unique_id=119079711]
-position = Vector2(-1, -21)
+position = Vector2(0, -21)
 shape = SubResource("RectangleShape2D_t0a1x")
 
 [node name="Player Ingredients" type="Node2D" parent="CatchArea" unique_id=2113633023]

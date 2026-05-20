@@ -73,6 +73,7 @@ const fall_velocity = 72
 var generated_spawn_x: float
 
 func setup_ingredient_fall():
+	reached_y_peak = true
 	var index = 0
 	while true:
 		generated_spawn_x = randf_range(-x_spawn_ingredient_pos, x_spawn_ingredient_pos)
@@ -104,8 +105,9 @@ func handle_alpha_when_falling():
 
 func area_hit_ingredient(area: Area2D):
 	if not area.is_in_group("PlayerCatchBody"): return
+	var player_root: RestaurantPlayer = area.get_parent()
 	var is_unpickable = player_pos.y < invisible_ingredient_y_pos
-	if is_unpickable: return
+	if is_unpickable or player_root.player_fallen: return
 	finish_ingredient_pickup.bind(area).call_deferred()
 
 const regular_ingredients_root_y_pos = -19

@@ -60,3 +60,8 @@ static func generate() -> Ingredient:
 	var chosen_ingredient = [IngredientType.Sausage, IngredientType.Tomato, IngredientType.Potato][randi_range(0, 2)]
 	instance.ingredient_type = chosen_ingredient as Ingredient.IngredientType
 	return instance
+
+static func make(type: IngredientType) -> Ingredient:
+	var instance := Ingredient.new()
+	instance.ingredient_type = type
+	return instance
