@@ -64,6 +64,7 @@ func _ready():
 	recipe_screen.stored_ingredients = stored_ingredients
 	await get_tree().process_frame
 	GridState.active_game.ingredient_removed.connect(ingredient_removed_from_inventory)
+	GridState.active_game.unlocked_foods.append(produced_food)
 	
 func body_enters_export_area(body: Node2D):
 	if not body.is_in_group("RestaurantPlayer"): return

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bsl6hyqdyqinj" path="res://Textures/Barrel.png" id="1_smejn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ayvs4"]
-radius = 7.7776256
+radius = 8.888715
 height = 33.33268
 
 [node name="Barrel" type="Area2D" unique_id=1468651966]

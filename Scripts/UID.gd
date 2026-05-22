@@ -20,6 +20,10 @@ const ingredient_collider_scene := preload("uid://cuoijvayuffan")
 const restaurant_item_slot := preload("uid://srs2g7wicd1q")
 const conveyor_ingredient := preload("uid://b61nq8eg3e463")
 const barrel_scene := preload("uid://l637mc00fqyq")
+const dropped_ingredient := preload("uid://duum2avyhh1o")
+const restaurant_chair_scene := preload("uid://c25vd5istxvob")
+const customer_scene := preload("uid://csxq2bh054253")
+const customer_food_scene := preload("uid://drie3qituxqft")
 const checkmark_uid = "uid://dnhuyu2114nfn"
 
 const board_music := preload("uid://27wodk4ei5rl")

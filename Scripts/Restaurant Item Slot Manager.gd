@@ -10,6 +10,7 @@ var food_slots: Dictionary[Ingredient.FoodType, Node2D]
 const gradient_window_width_portion = 0.2
 
 func _ready():
+	show()
 	await get_tree().process_frame
 	GridState.active_game.ingredient_type_added.connect(add_ingredient)
 	GridState.active_game.food_type_added.connect(add_food_slot)

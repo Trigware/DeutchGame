@@ -122,13 +122,15 @@ func drop_items():
 	GridState.active_game.player_held_items.clear()
 	
 	for ingredient_object: IngredientObject in GridState.active_game.player_held_ingredients_nodes:
-		var falling_ingredient = UID.falling_ingredient_scene.instantiate()
-		falling_ingredient.ingredient_data = Ingredient.make(ingredient_object.player_ingredient.ingredient_type)
+		var dropped_ingredient = UID.dropped_ingredient.instantiate()
+		var current_ingredient = ingredient_object.player_ingredient
+		dropped_ingredient.ingredient_type = current_ingredient.ingredient_type
+		dropped_ingredient.restaurant_player = self
+		spawner.add_child(dropped_ingredient)
 		
+		dropped_ingredient.global_transform = current_ingredient.global_transform
 		ingredient_object.ingredient_collider.queue_free()
 		ingredient_object.player_ingredient.queue_free()
-		#spawner.add_child.call_deferred(falling_ingredient )
-		#falling_ingredient.setup_ingredient_fall.call_deferred()
 		
 	GridState.active_game.player_held_ingredients_nodes.clear()
 
@@ -141,9 +143,9 @@ const ingredients_y_offset = -18
 const jump_y_max_stretch = 1.075
 const jump_y_min_stretch = 0.915
 const stretch_tween_duration = 0.25
-const stretch_short_tween_duration = 0.12
+const stretch_short_tween_duration = 0.07
 var preparing_to_jump = false
-const maximum_jump_preparation_wait = 0.35
+const maximum_jump_preparation_wait = 0.05
 const maximum_preparion_wait_item_count = 10
 
 func handle_jumping(delta: float):
@@ -154,9 +156,6 @@ func handle_jumping(delta: float):
 		z_index = 1
 		await create_tween().tween_property(self, "scale:y", jump_y_min_stretch, stretch_short_tween_duration).finished
 		preparing_to_jump = true
-		var held_items_count: float = GridState.active_game.player_held_items.size()
-		var held_items_portion = clamp(held_items_count / maximum_preparion_wait_item_count, 0, 1)
-		await get_tree().create_timer(maximum_jump_preparation_wait).timeout
 		is_jumping = true
 		preparing_to_jump = false
 		await create_tween().tween_property(self, "scale:y", jump_y_max_stretch, stretch_tween_duration).finished

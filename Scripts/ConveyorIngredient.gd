@@ -102,12 +102,7 @@ func area_entered_ingredient(body: Node2D):
 	if not body.is_in_group("PlayerHitbox"): return
 	food_station_ref.foods_obtainted += 1
 	ingredient_obtainted = true
-	
-	var held_food_dict = GridState.active_game.player_held_foods 
-	if not food_type in held_food_dict:
-		held_food_dict[food_type] = 0
-		GridState.active_game.food_type_added.emit(food_type)
-	held_food_dict[food_type] += 1
+	GridState.add_food(food_type)
 	
 	await create_tween().tween_property(self, "modulate:a", 0, ingredient_disappear_tween_duration).finished
 	queue_free()

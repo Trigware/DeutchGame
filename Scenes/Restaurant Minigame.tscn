@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://u5jm4evd6o0j" path="res://Scenes/Food Station.tscn" id="2_x35uu"]
 [ext_resource type="PackedScene" uid="uid://dpsv5j6e1q4ti" path="res://Scenes/TableShadow.tscn" id="3_tncxx"]
 [ext_resource type="PackedScene" uid="uid://cfiu7vjy0bs1" path="res://Scenes/MinigameCountdown.tscn" id="5_3ie4c"]
+[ext_resource type="Texture2D" uid="uid://etalrgmfiq3n" path="res://Textures/RestaurantTable.png" id="5_7nlig"]
 [ext_resource type="PackedScene" uid="uid://bgcipste7pq55" path="res://Scenes/IngredientSpawner.tscn" id="6_w14s2"]
 [ext_resource type="Script" uid="uid://c14ykwh10i0da" path="res://Scripts/BarrelSpawner.gd" id="8_1fbie"]
 [ext_resource type="PackedScene" uid="uid://bayywiecnbyrm" path="res://Scenes/RestaurantItemSlotsManager.tscn" id="9_nbnhw"]
+[ext_resource type="Script" uid="uid://biiec0lf5qfe6" path="res://Scripts/CustomerManager.gd" id="11_fs50w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p4me"]
 texture = ExtResource("2_8p4me")
@@ -31,6 +33,21 @@ size = Vector2(96, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ie4c"]
 size = Vector2(24, 72)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8kf4u"]
+texture = ExtResource("5_7nlig")
+texture_region_size = Vector2i(24, 24)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+2:1/0 = 0
+1:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_iudc3"]
+tile_size = Vector2i(24, 24)
+sources/0 = SubResource("TileSetAtlasSource_8kf4u")
 
 [node name="Restaurant Root" type="Node2D" unique_id=954756602]
 script = ExtResource("1_3sf5n")
@@ -80,6 +97,11 @@ position = Vector2(0, 6)
 tile_map_data = PackedByteArray("AAD7////AAAIAAAAAAAFAP//AAAHAAAAAAD7/wAAAAAEAAEAAAAFAAAAAAAEAAEAAAD6/wAAAAAFAAEAAAD5/wAAAAAEAAEAAAD4/wAAAAAFAAEAAAD3/wAAAAAEAAEAAAD2/wAAAAAFAAEAAAD1/wAAAAAEAAEAAAD0/wAAAAAFAAEAAADz/wAAAAAEAAEAAADy/wAAAAAFAAEAAADx/wAAAAAEAAEAAAAGAAAAAAAFAAEAAAAHAAAAAAAEAAEAAAAIAAAAAAAFAAEAAAAJAAAAAAAEAAEAAAAKAAAAAAAFAAEAAAALAAAAAAAEAAEAAAAMAAAAAAAFAAEAAAANAAAAAAAEAAEAAAAOAAAAAAAFAAEAAAAPAAAAAAAEAAEAAAAGAP//AAAHAAAAAAAHAP//AAAHAAAAAAAIAP//AAAHAAAAAAAJAP//AAAHAAAAAAAKAP//AAAHAAAAAAALAP//AAAHAAAAAAAMAP//AAAHAAAAAAANAP//AAAHAAAAAAAOAP//AAAHAAAAAAAPAP//AAAHAAAAAAD6////AAAIAAAAAAD5////AAAIAAAAAAD4////AAAIAAAAAAD3////AAAIAAAAAAD2////AAAIAAAAAAD1////AAAIAAAAAAD0////AAAIAAAAAADz////AAAIAAAAAADy////AAAIAAAAAADx////AAAIAAAAAAA=")
 tile_set = ExtResource("1_x35uu")
 
+[node name="Table" type="TileMapLayer" parent="Tiles" unique_id=1700319500]
+position = Vector2(12, -72)
+tile_map_data = PackedByteArray("AAD//wQAAAABAAAAAAD8/wQAAAABAAAAAAD9/wQAAAABAAAAAAD+/wQAAAABAAAAAAAAAAQAAAABAAAAAAABAAQAAAABAAAAAAACAAQAAAABAAAAAAADAAQAAAABAAAAAAD7/wQAAAAAAAAAAAAEAAQAAAACAAAAAAD7/wUAAAAAAAEAAAAEAAUAAAACAAEAAAACAAUAAAADAAEAAAD9/wUAAAABAAEAAAA=")
+tile_set = SubResource("TileSet_iudc3")
+
 [node name="Food Station" parent="." unique_id=925608103 node_paths=PackedStringArray("player") instance=ExtResource("2_x35uu")]
 player = NodePath("../Player")
 produced_food = 2
@@ -108,3 +130,9 @@ script = ExtResource("8_1fbie")
 visible = false
 
 [node name="Restaurant Item Slots Manager" parent="." unique_id=1272696717 instance=ExtResource("9_nbnhw")]
+visible = false
+
+[node name="CustomerManager" type="Node2D" parent="." unique_id=1295020381 node_paths=PackedStringArray("item_slots", "player_root")]
+script = ExtResource("11_fs50w")
+item_slots = NodePath("../MinigameCountdown")
+player_root = NodePath("../Player")

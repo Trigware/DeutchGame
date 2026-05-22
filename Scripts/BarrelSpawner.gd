@@ -23,10 +23,10 @@ func spawn_barrel(most_effective_barrel_progress):
 	barrel_instance.spawned_left = spawned_left
 	add_child(barrel_instance)
 
-const spawn_delay_range = Vector2(6, 9)
-const lowest_multiplier = 0.6
+const spawn_delay_range = Vector2(6, 8.5)
+const lowest_multiplier = 0.725
 const time_at_lowest = 80
-const barrel_min_speed = 120
+const barrel_min_speed = 125
 const barrel_max_speed = 160
 
 func handle_spawning():

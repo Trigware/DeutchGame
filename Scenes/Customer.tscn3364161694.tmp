@@ -1,0 +1,198 @@
+[gd_scene format=3 uid="uid://csxq2bh054253"]
+
+[ext_resource type="Script" uid="uid://cr2441wnf6h71" path="res://Scripts/Customer.gd" id="1_r206j"]
+[ext_resource type="Texture2D" uid="uid://rf3jec1pafp1" path="res://Textures/Customers.png" id="2_kkvav"]
+[ext_resource type="Texture2D" uid="uid://bf06qcbwrwhv4" path="res://Textures/CustomerMessage.png" id="3_kkvav"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="4_rje0e"]
+[ext_resource type="Texture2D" uid="uid://duvcob66aaj7f" path="res://Textures/MessageSource.png" id="5_0hs7r"]
+[ext_resource type="Texture2D" uid="uid://bea0fv7dagjfk" path="res://Textures/CustomerRequest.png" id="6_cj036"]
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="7_yd18k"]
+[ext_resource type="LabelSettings" uid="uid://yde7hyop4yq4" path="res://ShadowText.tres" id="8_yd18k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j21p7"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(0, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rje0e"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(32, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hs7r"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(64, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cj036"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(96, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yd18k"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7i8l"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(32, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kosw0"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(64, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1r5ol"]
+atlas = ExtResource("2_kkvav")
+region = Rect2(96, 48, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6nvjr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j21p7")
+}],
+"loop": false,
+"name": &"sit_char_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rje0e")
+}],
+"loop": false,
+"name": &"sit_char_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hs7r")
+}],
+"loop": false,
+"name": &"sit_char_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cj036")
+}],
+"loop": false,
+"name": &"sit_char_4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yd18k")
+}],
+"loop": false,
+"name": &"walk_char_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7i8l")
+}],
+"loop": false,
+"name": &"walk_char_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kosw0")
+}],
+"loop": false,
+"name": &"walk_char_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1r5ol")
+}],
+"loop": false,
+"name": &"walk_char_4",
+"speed": 5.0
+}]
+
+[node name="Customer" type="Node2D" unique_id=745750620]
+z_index = 1
+script = ExtResource("1_r206j")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=758633161]
+sprite_frames = SubResource("SpriteFrames_6nvjr")
+animation = &"walk_char_4"
+
+[node name="Message" type="Control" parent="." unique_id=460607232]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.85, 0.85)
+
+[node name="MessageBox" type="NinePatchRect" parent="Message" unique_id=809360324]
+layout_mode = 0
+offset_left = -16.0
+offset_top = 5.8823524
+offset_right = 16.0
+offset_bottom = 21.176472
+texture = ExtResource("3_kkvav")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="MessageText" type="RichTextLabel" parent="Message" unique_id=2089952953]
+layout_mode = 0
+offset_left = -11.0
+offset_top = 8.0
+offset_right = 11.0
+offset_bottom = 19.0
+theme_override_fonts/normal_font = ExtResource("4_rje0e")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageSource" type="TextureRect" parent="Message" unique_id=589826237]
+layout_mode = 0
+offset_left = -2.352941
+offset_top = 2.352941
+offset_right = 37.64706
+offset_bottom = 42.35294
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_0hs7r")
+flip_v = true
+
+[node name="Request" type="Node2D" parent="." unique_id=1063932732]
+position = Vector2(-1, -39)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Request" unique_id=1947526588]
+offset_left = -9.0
+offset_top = 8.0
+offset_right = 30.175259
+offset_bottom = 47.17526
+scale = Vector2(0.485, 0.485)
+texture = ExtResource("6_cj036")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+
+[node name="MessageSource" type="TextureRect" parent="Request" unique_id=1948566706]
+offset_left = -1.0
+offset_top = 27.0
+offset_right = 39.0
+offset_bottom = 67.0
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("5_0hs7r")
+
+[node name="Sprite" type="Sprite2D" parent="Request" unique_id=2094929122]
+position = Vector2(0.5, 17.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_yd18k")
+hframes = 10
+vframes = 2
+
+[node name="ThrowHint" type="Label" parent="." unique_id=186160464]
+offset_left = -16.0
+offset_top = 23.0
+offset_right = 16.0
+offset_bottom = 46.0
+text = "Q"
+label_settings = ExtResource("8_yd18k")
+horizontal_alignment = 1

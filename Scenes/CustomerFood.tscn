@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://drie3qituxqft"]
+
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_tw3ny"]
+[ext_resource type="Script" uid="uid://fsh2vxeq76dy" path="res://Scripts/CustomerFood.gd" id="1_vuxbt"]
+
+[node name="Customer Food" type="Node2D" unique_id=1110576222]
+script = ExtResource("1_vuxbt")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1105136681]
+texture = ExtResource("1_tw3ny")
+hframes = 10
+vframes = 2
