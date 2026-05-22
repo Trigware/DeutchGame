@@ -25,6 +25,7 @@ const restaurant_chair_scene := preload("uid://c25vd5istxvob")
 const customer_scene := preload("uid://csxq2bh054253")
 const customer_food_scene := preload("uid://drie3qituxqft")
 const checkmark_uid = "uid://dnhuyu2114nfn"
+const timer_clock_uid = "uid://bi2k7iq18pxnx"
 
 const board_music := preload("uid://27wodk4ei5rl")
 const restaurant_music := preload("uid://duu7222knu0pl")

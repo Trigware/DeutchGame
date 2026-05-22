@@ -10,7 +10,7 @@ func _ready():
 const customer_food_y_dest = 96
 const food_delivery_duration = 0.55
 const obscure_food_tween_duration = 0.7
-const obscure_tween_delay = 2.5
+const obscure_tween_delay = 2
 
 func deliver_food():
 	await create_tween().tween_property(self, "position:y", customer_food_y_dest, food_delivery_duration).set_trans(Tween.TRANS_QUAD)

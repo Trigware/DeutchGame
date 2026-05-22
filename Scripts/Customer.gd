@@ -88,6 +88,7 @@ const char_speak_duration = 0.1
 
 func animate_message(message_text: String, color_annotation_index = -1, color_annotation_length = -1):
 	message.show()
+	message.modulate.a = 1
 	var message_length = message_text.length()
 	var tween_duration = char_speak_duration * message_length
 	await create_tween().tween_method(
@@ -133,7 +134,7 @@ const message_hide_tween_duration = 0.7
 const request_show_tween_duration = 0.6
 const final_request_y_offset = -6
 
-var order_completed = true
+var order_completed = false
 var food_delivered = false
 const max_dist_from_player = 60
 const min_modulate_affecting_player_dist = 55
@@ -153,17 +154,17 @@ func handle_player_food_throw():
 	var hint_visibility_end = customer_manager.customer_range / 2
 	
 	var hint_alpha = 1 - clamp(x_dist_to_player / hint_visibility_end, 0, 1)
-	if not does_player_have_food or not order_completed: hint_alpha = 0
+	if not does_player_have_food or not order_completed or food_delivered: hint_alpha = 0
 	throw_hint.modulate.a = hint_alpha
 
-const after_delivery_dialogue = 1.2
-const customer_after_food_delivered_exit_duration = 3.5
+const after_delivery_dialogue = 2
+const customer_after_food_delivered_exit_duration = 1
 
 func order_delivered():
 	create_tween().tween_property(request, "modulate:a", 0, request_show_tween_duration)
 	food_delivered = true
 	await get_tree().create_timer(after_delivery_dialogue).timeout
 	await animate_message("Danke!")
-	await get_tree().create_timer(customer_after_food_delivered_exit_duration).timeout
+	await create_tween().tween_property(message, "modulate:a", 0, 0.75).set_delay(customer_after_food_delivered_exit_duration).finished
 	is_sitting = false
 	movement_direction = -1

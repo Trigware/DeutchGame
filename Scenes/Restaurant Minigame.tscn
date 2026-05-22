@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://c14ykwh10i0da" path="res://Scripts/BarrelSpawner.gd" id="8_1fbie"]
 [ext_resource type="PackedScene" uid="uid://bayywiecnbyrm" path="res://Scenes/RestaurantItemSlotsManager.tscn" id="9_nbnhw"]
 [ext_resource type="Script" uid="uid://biiec0lf5qfe6" path="res://Scripts/CustomerManager.gd" id="11_fs50w"]
+[ext_resource type="PackedScene" uid="uid://busqxtrtkg14e" path="res://Scenes/PointsBar.tscn" id="12_8kf4u"]
+[ext_resource type="PackedScene" uid="uid://gqw74oaen34" path="res://Scenes/TimeView.tscn" id="13_iudc3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p4me"]
 texture = ExtResource("2_8p4me")
@@ -131,6 +133,11 @@ visible = false
 
 [node name="Restaurant Item Slots Manager" parent="." unique_id=1272696717 instance=ExtResource("9_nbnhw")]
 visible = false
+
+[node name="PointsBar" parent="." unique_id=189576063 instance=ExtResource("12_8kf4u")]
+
+[node name="Time View" parent="." unique_id=681712434 node_paths=PackedStringArray("minigame_countdown") instance=ExtResource("13_iudc3")]
+minigame_countdown = NodePath("../MinigameCountdown")
 
 [node name="CustomerManager" type="Node2D" parent="." unique_id=1295020381 node_paths=PackedStringArray("item_slots", "player_root")]
 script = ExtResource("11_fs50w")
