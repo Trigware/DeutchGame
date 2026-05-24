@@ -37,3 +37,7 @@ position = Vector2(0, -15)
 [node name="Collider" type="CollisionShape2D" parent="Hitbox" unique_id=1078444979]
 position = Vector2(0, 15.5)
 shape = SubResource("RectangleShape2D_jey2w")
+
+[node name="Score Root" type="Node2D" parent="." unique_id=377881110]
+position = Vector2(5, -18)
+scale = Vector2(0.705, 0.705)

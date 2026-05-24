@@ -21,6 +21,7 @@ var customer_kind: int
 var is_sitting = false
 var requested_food := Ingredient.FoodType.Unknown
 var customer_manager: CustomerManager
+var time_since_order: float
 
 func _ready():
 	message.hide()
@@ -32,6 +33,7 @@ var greetings_message_trigged = false
 var movement_direction := 1
 
 func _process(delta: float):
+	time_since_order += delta
 	var speed_multiplier = clamp(inverse_lerp(customer_slow_down_end, customer_slow_down_start, position.y), 0, 1)
 	if movement_direction == -1: speed_multiplier = 1
 	if position.y < customer_sit_pos_y and not is_sitting and movement_direction == 1:
@@ -127,6 +129,7 @@ func handle_order():
 	await create_tween().tween_property(message, "modulate:a", 0, message_hide_tween_duration).finished
 	message.hide()
 	order_completed = true
+	time_since_order = 0
 
 const order_message_delay = 3
 const order_message_time_until_hide = 3

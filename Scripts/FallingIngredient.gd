@@ -132,6 +132,8 @@ func finish_ingredient_pickup(area: Area2D):
 	player_ingredient.y_index = ingredient_count
 	
 	var ingredients_root = area.get_node("Player Ingredients")
+	var player: RestaurantPlayer = area.get_parent()
+	player.add_score_by_gain_type(RestaurantPlayer.ScoreGain.PickupIngredient)
 	if ingredient_count == 1:
 		ingredients_root.position.y = regular_ingredients_root_y_pos
 	ingredients_root.add_child(player_ingredient)

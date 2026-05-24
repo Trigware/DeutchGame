@@ -11,6 +11,7 @@ extends Node2D
 	false: Color("660000"),
 	true: Color("003f66")
 }
+var player_root: RestaurantPlayer
 
 func _process(_delta):
 	var tile_count = scale.x / scale.y
@@ -26,6 +27,7 @@ func _process(_delta):
 
 func create_conveyor_object(ingredient_or_food, is_food: bool, food_station_ref: FoodStation) -> ConveyorObject:
 	var conveyor_ingredient := UID.conveyor_ingredient.instantiate()
+	conveyor_ingredient.player_root = player_root
 	match is_food:
 		true: conveyor_ingredient.food_type = ingredient_or_food
 		false: conveyor_ingredient.item_type = ingredient_or_food

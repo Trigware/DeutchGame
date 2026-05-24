@@ -16,7 +16,7 @@ script = ExtResource("1_ayvs4")
 texture = ExtResource("1_smejn")
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=1776513467]
-position = Vector2(0.013915747, 2.222179)
+position = Vector2(0.014, 9)
 shape = SubResource("CapsuleShape2D_ayvs4")
 
 [connection signal="area_entered" from="." to="." method="on_area_hit_by_barrel"]

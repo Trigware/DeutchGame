@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c3bj8c75p3ikl"]
+
+[ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_yejy6"]
+[ext_resource type="Texture2D" uid="uid://dwkegx0hcaiuk" path="res://Textures/UnlockedFoodSeperator.png" id="2_f7qbi"]
+
+[node name="ScoreMilestone" type="Node2D" unique_id=2023023179]
+
+[node name="Food" type="Sprite2D" parent="." unique_id=1998289536]
+texture = ExtResource("1_yejy6")
+hframes = 10
+vframes = 2
+
+[node name="Pipe" type="Sprite2D" parent="." unique_id=2005282583]
+position = Vector2(0, 42)
+texture = ExtResource("2_f7qbi")

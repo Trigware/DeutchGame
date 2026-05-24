@@ -76,11 +76,13 @@ var player_held_ingredients_nodes: Array[IngredientObject]
 var ingredient_count_per_type: Dictionary[Ingredient.IngredientType, int]
 var player_held_foods: Dictionary[Ingredient.FoodType, int]
 var unlocked_foods: Array[Ingredient.FoodType]
+var cannot_unlock_foods := false
 
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)
 signal food_type_added(food_type: Ingredient.FoodType)
 signal ingredient_removed(ingredient_type: Ingredient.IngredientType)
 signal restaurant_game_started
+signal unlocked_all_foods
 
 const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",

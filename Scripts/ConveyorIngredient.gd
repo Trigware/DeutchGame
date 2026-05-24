@@ -3,6 +3,7 @@ extends Area2D
 
 @onready var ingredient_sprite = $IngredientSprite
 @onready var ingredient_collider = $Collider
+@export var player_root: RestaurantPlayer
 
 var item_type := Ingredient.IngredientType.Unknown
 var food_type := Ingredient.FoodType.Unknown
@@ -102,6 +103,7 @@ func area_entered_ingredient(body: Node2D):
 	if not body.is_in_group("PlayerHitbox"): return
 	food_station_ref.foods_obtainted += 1
 	ingredient_obtainted = true
+	player_root.add_score_by_gain_type(RestaurantPlayer.ScoreGain.PickupFood)
 	GridState.add_food(food_type)
 	
 	await create_tween().tween_property(self, "modulate:a", 0, ingredient_disappear_tween_duration).finished

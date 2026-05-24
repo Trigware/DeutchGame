@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c1uplv0ax4wmg"]
+
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="1_4yaeg"]
+[ext_resource type="Script" uid="uid://y7jm75ivgokh" path="res://Scripts/ScoreNotice.gd" id="1_d1rp1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d1rp1"]
+font = ExtResource("1_4yaeg")
+font_color = Color(0.45135996, 0.91, 0.33670002, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="Score Notice" type="Node2D" unique_id=828039912]
+script = ExtResource("1_d1rp1")
+
+[node name="Score Text" type="Label" parent="." unique_id=1423082997]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "+30"
+label_settings = SubResource("LabelSettings_d1rp1")

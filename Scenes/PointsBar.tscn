@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://busqxtrtkg14e"]
 
-[ext_resource type="Script" uid="uid://cqt0arjhligrk" path="res://Scripts/Timer.gd" id="1_gewlg"]
+[ext_resource type="Script" uid="uid://cqt0arjhligrk" path="res://Scripts/PointsBar.gd" id="1_gewlg"]
 [ext_resource type="Texture2D" uid="uid://82eq2i0v4xia" path="res://Textures/Timer Progress Bottom.png" id="2_t8y0m"]
 [ext_resource type="Texture2D" uid="uid://dvwn3qh4hadyo" path="res://Textures/Timer Progress Top.png" id="3_ihxis"]
 [ext_resource type="Texture2D" uid="uid://duoah60oknxqt" path="res://Textures/PointsIcon.png" id="4_dp55q"]
@@ -13,12 +13,11 @@ shadow_offset = Vector2(1.5, 1.5)
 
 [node name="Points Bar" type="CanvasLayer" unique_id=189576063]
 offset = Vector2(386, 648)
-scale = Vector2(1.5, 1.5)
-transform = Transform2D(1.5, 0, 0, 1.5, 386, 648)
+transform = Transform2D(1, 0, 0, 1, 386, 648)
 script = ExtResource("1_gewlg")
 
 [node name="Progress Bar" type="TextureProgressBar" parent="." unique_id=1880388206]
-offset_right = 500.0
+offset_right = 493.39
 offset_bottom = 40.0
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 0.0
@@ -35,6 +34,15 @@ offset_left = -46.0
 offset_right = -6.0
 offset_bottom = 40.0
 texture = ExtResource("4_dp55q")
+
+[node name="Seperators" type="Control" parent="." unique_id=1336235120]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 2.0
+offset_top = -37.333332
+offset_right = 42.0
+offset_bottom = 2.666668
+scale = Vector2(1.35, 1.35)
 
 [node name="PointsGathered" type="Label" parent="." unique_id=1529048686]
 modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)

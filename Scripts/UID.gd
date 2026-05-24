@@ -24,6 +24,9 @@ const dropped_ingredient := preload("uid://duum2avyhh1o")
 const restaurant_chair_scene := preload("uid://c25vd5istxvob")
 const customer_scene := preload("uid://csxq2bh054253")
 const customer_food_scene := preload("uid://drie3qituxqft")
+const score_notice_scene := preload("uid://c1uplv0ax4wmg")
+const score_milestone_scene := preload("uid://c3bj8c75p3ikl")
+const food_station_scene := preload("uid://u5jm4evd6o0j")
 const checkmark_uid = "uid://dnhuyu2114nfn"
 const timer_clock_uid = "uid://bi2k7iq18pxnx"
 
