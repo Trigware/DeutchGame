@@ -19,6 +19,7 @@ func _process(_delta):
 	moving_arrows.going_left = going_left
 	moving_arrows.used_scale = scale
 	food_root.scale = Vector2.ONE / scale
+	moving_arrows.time_scale = player_root.points_multiplier * GridState.conveyor_belt_speed_multiplier
 	
 	var used_dir_state = going_left
 	if invert_color: used_dir_state = not going_left

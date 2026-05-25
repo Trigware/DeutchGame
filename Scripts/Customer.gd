@@ -13,8 +13,8 @@ var player_root: RestaurantPlayer
 
 const customer_speed = 40
 const customer_slow_down_start = 130
-const customer_slow_down_end = 115
-const customer_sit_pos_y = 125
+const customer_slow_down_end = 105
+const customer_sit_pos_y = 115
 const customer_message_trigger = 160
 
 var customer_kind: int
@@ -38,7 +38,7 @@ func _process(delta: float):
 	if movement_direction == -1: speed_multiplier = 1
 	if position.y < customer_sit_pos_y and not is_sitting and movement_direction == 1:
 		is_sitting = true
-		update_sprite()
+		sprite.stop()
 	if not is_sitting:
 		var y_pos_change = delta * customer_speed * speed_multiplier * movement_direction
 		position.y -= y_pos_change
@@ -46,9 +46,7 @@ func _process(delta: float):
 	handle_player_food_throw()
 
 func update_sprite():
-	var anim_prefix = "sit" if is_sitting else "walk"
-	var anim_name = anim_prefix + "_char_" + str(customer_kind)
-	sprite.play(anim_name)
+	sprite.play("move_up" if movement_direction == 1 else "move_down")
 
 const message_box_padding = 18
 const message_char_size = 4.4
@@ -117,7 +115,7 @@ func handle_greetings():
 func handle_order():
 	var chosen_order_index = randi_range(0, order_messages.size() - 1)
 	var chosen_order_message: String = order_messages[chosen_order_index]
-	var requested_food_as_str = Ingredient.FoodType.keys()[Ingredient.FoodType.values().find(requested_food)]
+	var requested_food_as_str = Ingredient.get_food_as_german(requested_food)
 	
 	var bracket_index = chosen_order_message.find("{}")
 	var order_message_lhs = chosen_order_message.substr(0, bracket_index)
@@ -163,11 +161,16 @@ func handle_player_food_throw():
 const after_delivery_dialogue = 2
 const customer_after_food_delivered_exit_duration = 1
 
+const after_food_received_messages = ["Danke!", "Tschüss!", "Auf Wiedersehen!", "Vielen Dank!", "Danke schön!"]
+
 func order_delivered():
 	create_tween().tween_property(request, "modulate:a", 0, request_show_tween_duration)
 	food_delivered = true
 	await get_tree().create_timer(after_delivery_dialogue).timeout
-	await animate_message("Danke!")
+	var food_receive_message_index = randi_range(0, after_food_received_messages.size() - 1)
+	var food_receive_message = after_food_received_messages[food_receive_message_index]
+	await animate_message(food_receive_message)
 	await create_tween().tween_property(message, "modulate:a", 0, 0.75).set_delay(customer_after_food_delivered_exit_duration).finished
 	is_sitting = false
 	movement_direction = -1
+	update_sprite()

@@ -4,11 +4,9 @@
 [ext_resource type="Script" uid="uid://ddfsmve7dq366" path="res://Scripts/TimeView.gd" id="1_xlxia"]
 
 [node name="Time View" type="CanvasLayer" unique_id=681712434]
-offset = Vector2(1152, 648)
-transform = Transform2D(1, 0, 0, 1, 1152, 648)
 script = ExtResource("1_xlxia")
 
-[node name="Label" type="RichTextLabel" parent="." unique_id=1427064106]
+[node name="Time" type="RichTextLabel" parent="." unique_id=1427064106]
 offset_left = -1152.0
 offset_top = -648.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -20,4 +18,19 @@ theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
 text = "[font_size=96][img=72]uid://bi2k7iq18pxnx[/img]2:59"
 horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Multiplier" type="RichTextLabel" parent="." unique_id=1079925803]
+offset_left = 12.0
+offset_top = -9.0
+offset_right = 1164.0
+offset_bottom = 639.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/normal_font = ExtResource("1_ne3ew")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+text = "[font_size=64]1x"
 vertical_alignment = 2

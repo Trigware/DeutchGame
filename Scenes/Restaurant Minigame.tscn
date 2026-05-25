@@ -141,8 +141,9 @@ visible = false
 [node name="PointsBar" parent="." unique_id=189576063 node_paths=PackedStringArray("player_root") instance=ExtResource("12_8kf4u")]
 player_root = NodePath("../Player")
 
-[node name="Time View" parent="." unique_id=681712434 node_paths=PackedStringArray("minigame_countdown") instance=ExtResource("13_iudc3")]
+[node name="Time View" parent="." unique_id=681712434 node_paths=PackedStringArray("minigame_countdown", "player_root") instance=ExtResource("13_iudc3")]
 minigame_countdown = NodePath("../MinigameCountdown")
+player_root = NodePath("../Player")
 
 [node name="CustomerManager" type="Node2D" parent="." unique_id=1295020381 node_paths=PackedStringArray("item_slots", "player_root", "points_bar")]
 script = ExtResource("11_fs50w")

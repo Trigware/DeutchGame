@@ -4,11 +4,12 @@ extends Area2D
 var restaurant_player: RestaurantPlayer
 
 var ingredient_type := Ingredient.IngredientType.Unknown
-const throw_velocity = 72
+const throw_velocity = 65
 
 func _ready():
 	ingredient_sprite.frame_coords = Vector2(ingredient_type as int, 1)
 	z_index = 1
+	area_entered.connect(area_hit_ingredient)
 
 func _process(delta: float):
 	position.y += delta * throw_velocity
@@ -26,3 +27,9 @@ func handle_alpha_when_falling():
 	
 	var free_node = global_position.y > fall_no_alpha_y_global
 	if free_node: queue_free()
+
+func area_hit_ingredient(area: Area2D):
+	if not area.is_in_group("PlayerCatchBody"): return
+	var player_root: RestaurantPlayer = area.get_parent()
+	if player_root.player_fallen: return
+	player_root.finish_ingredient_pickup.call_deferred(self, Ingredient.make(ingredient_type), area, true)

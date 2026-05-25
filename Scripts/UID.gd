@@ -29,6 +29,7 @@ const score_milestone_scene := preload("uid://c3bj8c75p3ikl")
 const food_station_scene := preload("uid://u5jm4evd6o0j")
 const checkmark_uid = "uid://dnhuyu2114nfn"
 const timer_clock_uid = "uid://bi2k7iq18pxnx"
+const food_spritesheet_uid = "uid://ccvqa2ejeeolv"
 
 const board_music := preload("uid://27wodk4ei5rl")
 const restaurant_music := preload("uid://duu7222knu0pl")

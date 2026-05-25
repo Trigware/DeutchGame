@@ -2,14 +2,25 @@
 
 [ext_resource type="Texture2D" uid="uid://ccvqa2ejeeolv" path="res://Textures/FoodSpritesheet.png" id="1_yejy6"]
 [ext_resource type="Texture2D" uid="uid://dwkegx0hcaiuk" path="res://Textures/UnlockedFoodSeperator.png" id="2_f7qbi"]
+[ext_resource type="LabelSettings" uid="uid://yde7hyop4yq4" path="res://ShadowText.tres" id="3_yqns6"]
 
 [node name="ScoreMilestone" type="Node2D" unique_id=2023023179]
-
-[node name="Food" type="Sprite2D" parent="." unique_id=1998289536]
-texture = ExtResource("1_yejy6")
-hframes = 10
-vframes = 2
 
 [node name="Pipe" type="Sprite2D" parent="." unique_id=2005282583]
 position = Vector2(0, 42)
 texture = ExtResource("2_f7qbi")
+
+[node name="Food" type="Sprite2D" parent="." unique_id=1998289536]
+position = Vector2(0, 42)
+texture = ExtResource("1_yejy6")
+hframes = 10
+vframes = 2
+
+[node name="Multiplier" type="Label" parent="." unique_id=117382120]
+offset_left = -20.0
+offset_top = 6.0
+offset_right = 27.0
+offset_bottom = 29.0
+text = "1,5x"
+label_settings = ExtResource("3_yqns6")
+horizontal_alignment = 1

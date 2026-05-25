@@ -108,39 +108,4 @@ func area_hit_ingredient(area: Area2D):
 	var player_root: RestaurantPlayer = area.get_parent()
 	var is_unpickable = player_pos.y < invisible_ingredient_y_pos
 	if is_unpickable or player_root.player_fallen: return
-	finish_ingredient_pickup.bind(area).call_deferred()
-
-const regular_ingredients_root_y_pos = -19
-const pork_start_ingredients_root_y_pos = -14
-
-func finish_ingredient_pickup(area: Area2D):
-	var ingredient_dict = GridState.active_game.ingredient_count_per_type
-	
-	var picked_type = ingredient_data.ingredient_type
-	GridState.active_game.player_held_items.append(picked_type)
-	var ingredient_count = GridState.active_game.player_held_items.size()
-	
-	var is_type_new = not picked_type in ingredient_dict.keys()
-	if is_type_new:
-		ingredient_dict[picked_type] = 0
-		GridState.active_game.ingredient_type_added.emit(picked_type)
-	ingredient_dict[picked_type] += 1
-
-	var player_ingredient = UID.player_ingredient_scene.instantiate()
-	player_ingredient.scale = Vector2.ONE * ingredient_scale
-	player_ingredient.ingredient_type = picked_type
-	player_ingredient.y_index = ingredient_count
-	
-	var ingredients_root = area.get_node("Player Ingredients")
-	var player: RestaurantPlayer = area.get_parent()
-	player.add_score_by_gain_type(RestaurantPlayer.ScoreGain.PickupIngredient)
-	if ingredient_count == 1:
-		ingredients_root.position.y = regular_ingredients_root_y_pos
-	ingredients_root.add_child(player_ingredient)
-	
-	var collider_scene = UID.ingredient_collider_scene.instantiate()
-	collider_scene.player_ingredient = player_ingredient
-	area.add_child.call_deferred(collider_scene)
-	var ingredient_object = IngredientObject.ctor(player_ingredient, collider_scene)
-	GridState.active_game.player_held_ingredients_nodes.append(ingredient_object)
-	queue_free()
+	player_root.finish_ingredient_pickup.bind(self, ingredient_data, area).call_deferred()

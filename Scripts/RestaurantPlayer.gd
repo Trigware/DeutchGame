@@ -20,6 +20,7 @@ var movement_disabled = true
 var player_fallen = false
 var can_player_export = false
 var export_station_index = 0
+var points_multiplier : float = 1
 
 signal score_increased
 
@@ -131,7 +132,7 @@ func fall_down():
 	drop_items()
 	
 	create_tween().tween_property(anim_sprite, "offset:y", player_fallen_offset, player_going_down_tween_dur).set_trans(Tween.TRANS_QUAD)
-	await create_tween().tween_property(anim_sprite, "modulate:a", fallen_player_alpha_mod, player_going_down_tween_dur).finished
+	create_tween().tween_property(anim_sprite, "modulate:a", fallen_player_alpha_mod, player_going_down_tween_dur)
 	await get_tree().create_timer(player_restore_duration).timeout
 	
 	movement_disabled = false
@@ -207,8 +208,8 @@ const base_ingredient_belt_throw_score = 3
 const base_food_pickup_score = 25
 const jump_over_score_log_expo = 2.8
 const jump_over_score_log_divisor = 15
-const maximum_food_delivery_score_gain = 150
-const maximum_important_delivery_duration = 50
+const maximum_food_delivery_score_gain = 60
+const maximum_important_delivery_duration = 30
 const min_food_delivery_portion := 1.0 / 2
 
 func log10(x): return log(x) / log(10)
@@ -223,7 +224,7 @@ func add_score_by_gain_type(score_gain_type: ScoreGain, customer_order_time = -1
 		ScoreGain.IngredientBeltUsage: added_score = base_ingredient_belt_throw_score
 		ScoreGain.PickupFood: added_score = base_food_pickup_score
 	if added_score <= 0: return
-	add_to_score(added_score)
+	add_to_score(added_score * points_multiplier)
 
 func get_point_count_using_log(base_score):
 	var held_ingredient_count = GridState.active_game.player_held_items.size()
@@ -245,3 +246,36 @@ func add_to_score(added_score: float):
 	points_bar.add_score(added_score)
 	score_root.add_child(score_notice)
 	score_increased.emit()
+
+const ingredient_scale = 0.65
+const regular_ingredients_root_y_pos = -19
+
+func finish_ingredient_pickup(falling_ingredient, ingredient_data, area: Area2D, picking_dropped = false):
+	var ingredient_dict = GridState.active_game.ingredient_count_per_type
+	
+	var picked_type = ingredient_data.ingredient_type
+	GridState.active_game.player_held_items.append(picked_type)
+	var ingredient_count = GridState.active_game.player_held_items.size()
+	
+	var is_type_new = not picked_type in ingredient_dict.keys()
+	if is_type_new:
+		ingredient_dict[picked_type] = 0
+		GridState.active_game.ingredient_type_added.emit(picked_type)
+	ingredient_dict[picked_type] += 1
+
+	var player_ingredient = UID.player_ingredient_scene.instantiate()
+	player_ingredient.scale = Vector2.ONE * ingredient_scale
+	player_ingredient.ingredient_type = picked_type
+	player_ingredient.y_index = ingredient_count
+	
+	if not picking_dropped: add_score_by_gain_type(RestaurantPlayer.ScoreGain.PickupIngredient)
+	if ingredient_count == 1:
+		ingredients_root.position.y = regular_ingredients_root_y_pos
+	ingredients_root.add_child(player_ingredient)
+	
+	var collider_scene = UID.ingredient_collider_scene.instantiate()
+	collider_scene.player_ingredient = player_ingredient
+	area.add_child.call_deferred(collider_scene)
+	var ingredient_object = IngredientObject.ctor(player_ingredient, collider_scene)
+	GridState.active_game.player_held_ingredients_nodes.append(ingredient_object)
+	falling_ingredient.queue_free()

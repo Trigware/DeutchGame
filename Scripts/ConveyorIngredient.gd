@@ -47,7 +47,8 @@ func _process(delta: float):
 	if has_halted(): return
 	
 	time_traveled += delta
-	var distance_traveled = time_traveled * ingredient_speed
+	
+	var distance_traveled = time_traveled * ingredient_speed * player_root.points_multiplier * GridState.conveyor_belt_speed_multiplier
 	var travel_direction = -1 if is_output else 1
 	position.x = init_x_position + distance_traveled * travel_direction
 	modulate.a = min(time_traveled, modulate_alpha_duration) / modulate_alpha_duration

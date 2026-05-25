@@ -15,15 +15,25 @@ const maximum_points_count = 1000
 var points_count: float = 0
 const bar_padding = 0.5
 
+signal new_food_thrown(food_type: Ingredient.FoodType)
+
 const food_milestones_unlock_order : Array[Ingredient.FoodType] =\
 	[Ingredient.FoodType.Currywurst, Ingredient.FoodType.FriedCheese, Ingredient.FoodType.Kasespatzle, Ingredient.FoodType.Grostl, Ingredient.FoodType.Schnitzel]
 
 const score_food_unlock_dict: Dictionary[Ingredient.FoodType, float] = {
 	Ingredient.FoodType.Currywurst: 0,
-	Ingredient.FoodType.FriedCheese: 125,
-	Ingredient.FoodType.Kasespatzle: 335,
-	Ingredient.FoodType.Grostl: 700,
+	Ingredient.FoodType.FriedCheese: 200,
+	Ingredient.FoodType.Kasespatzle: 450,
+	Ingredient.FoodType.Grostl: 725,
 	Ingredient.FoodType.Schnitzel: 1200,
+}
+
+const score_multiplier_after_food_unlock: Dictionary[Ingredient.FoodType, float] = {
+	Ingredient.FoodType.Currywurst: 1.35,
+	Ingredient.FoodType.FriedCheese: 1.7,
+	Ingredient.FoodType.Kasespatzle: 2,
+	Ingredient.FoodType.Grostl: 2.4,
+	Ingredient.FoodType.Schnitzel: 2.75
 }
 
 func _ready():
@@ -31,8 +41,19 @@ func _ready():
 	create_tween().tween_property(self, "timer_y_offset", final_timer_offset, 1).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 	progress_bar.size.x = progress_x_bar
+	new_food_thrown.connect(on_food_throw_bonus_unlocked)
 	initalize_seperators()
-	#player_root.add_to_score(1)
+
+const final_multiplier_label_modulate = Color("55ff3b")
+const milestone_multiplier_label_modulate_tween_duration = 0.6
+const score_multiplier_tween_duration = 0.5
+
+func on_food_throw_bonus_unlocked(food_type: Ingredient.FoodType):
+	var milestone_root = progress_bar_seperator_dict[food_type]
+	var multiplier_label = milestone_root.get_node("Multiplier")
+	create_tween().tween_property(multiplier_label, "modulate", final_multiplier_label_modulate, milestone_multiplier_label_modulate_tween_duration)
+	var final_score_multiplier = score_multiplier_after_food_unlock[food_type]
+	create_tween().tween_property(player_root, "points_multiplier", final_score_multiplier, score_multiplier_tween_duration)
 
 func _process(delta: float):
 	var window_size = DisplayServer.window_get_size()
@@ -53,6 +74,7 @@ func add_score(added_score: float):
 	create_tween().tween_property(self, "points_count", final_point_count, time_to_update)
 
 const score_milestone_x_pos_multiplier = 0.732
+var progress_bar_seperator_dict: Dictionary[Ingredient.FoodType, Node2D]
 
 func initalize_seperators():
 	for food_type: Ingredient.FoodType in score_food_unlock_dict.keys():
@@ -61,8 +83,15 @@ func initalize_seperators():
 		var overall_goal = score_requirement / maximum_points_count
 		if overall_goal > 1: continue
 		score_milestone.position.x = overall_goal * progress_x_bar * score_milestone_x_pos_multiplier
-		score_milestone.get_node("Food").frame_coords = Vector2(food_type as int, 0)
+		
+		var food_sprite = score_milestone.get_node("Food")
+		var multiplier_label = score_milestone.get_node("Multiplier")
+		food_sprite.frame_coords = Vector2(food_type as int, 0)
+		var unlocked_multiplier = score_multiplier_after_food_unlock[food_type]
+		var multiplier_as_str = str(unlocked_multiplier) if unlocked_multiplier != floor(unlocked_multiplier) else str(int(unlocked_multiplier))
+		multiplier_label.text = multiplier_as_str + "x"
 		seperators.add_child(score_milestone)
+		progress_bar_seperator_dict[food_type] = score_milestone
 
 func get_closest_unlocked_food_requirement() -> int:
 	var highest_unlocked_requirement = -INF

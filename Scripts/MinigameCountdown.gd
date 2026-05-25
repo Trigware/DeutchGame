@@ -12,7 +12,7 @@ const maximum_size = 450
 var tween_running = false
 const start_text = "START"
 
-var minigame_started = true
+var minigame_started = false
 
 func _ready():
 	if minigame_started:

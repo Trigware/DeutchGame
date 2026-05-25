@@ -12,7 +12,7 @@ shader_parameter/tile_count = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_400ju"]
 shader = ExtResource("3_400ju")
-shader_parameter/offset = 56.006451888887064
+shader_parameter/offset = 1308.1915242214536
 shader_parameter/arrow_count = nan
 shader_parameter/reversed_progress = false
 shader_parameter/arrow_modulate = Vector4(0, 0, 0, 0)
@@ -27,6 +27,7 @@ texture = ExtResource("1_ft3hp")
 
 [node name="Moving Arrows" parent="." unique_id=1427566606 instance=ExtResource("2_x3neq")]
 material = SubResource("ShaderMaterial_400ju")
+time_scale = 1.0
 arrow_modulate = Color(0.4, 0, 0, 1)
 
 [node name="Food Root" type="Node2D" parent="." unique_id=247085553]

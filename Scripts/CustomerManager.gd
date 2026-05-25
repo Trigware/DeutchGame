@@ -25,16 +25,20 @@ func _ready():
 		restaurant_chair.position.x = pos_x
 		add_child(restaurant_chair)
 	
+	GridState.active_game.generatable_ingredients = []
+	add_to_generatable_ingredients(initial_food)
 	if item_slots.minigame_started:
 		spawn_initial_customer()
 		return
 	await GridState.active_game.restaurant_game_started
 	spawn_initial_customer()
 
-func spawn_initial_customer(): spawn_customer(initial_food)
+func spawn_initial_customer():
+	spawn_customer(initial_food)
 
-func _process(_delta):
+func _process(delta: float):
 	handle_food_throwing()
+	handle_time_based_customers(delta)
 
 const customer_spawning_y = 24*10
 
@@ -90,6 +94,8 @@ func handle_food_throwing():
 	if held_food_count == 0: held_foods.erase(food_type)
 	
 	customer_food.food_type = food_type
+	if not food_type in GridState.active_game.foods_thrown: thrown_new_food(food_type)
+	
 	customer_food.scale = Vector2.ONE * custom_food_scale
 	customer_food.position = Vector2(get_x_by_index(customer_index), customer_food_y_spawn_pos)
 	customer_at_index.order_delivered()
@@ -98,11 +104,30 @@ func handle_food_throwing():
 	add_child(customer_food)
 	active_customers.erase(customer_index)
 
-const customer_requesting_next_milestone_min_progress = 0.8
+const customer_requesting_next_milestone_min_progress = 0.75
 var can_spawn_score_customer = true
+
+func has_thrown_previous_foods(current_food: Ingredient.FoodType):
+	var unlock_order = points_bar.food_milestones_unlock_order
+	var current_index = unlock_order.find(current_food)
+	for food_index in range(current_index, 0):
+		var food_type = unlock_order[food_index]
+		var is_unlocked = food_type in GridState.active_game.foods_thrown
+		if not is_unlocked: return false
+	return true
+
+func thrown_new_food(food_type: Ingredient.FoodType):
+	GridState.active_game.foods_thrown.append(food_type)
+	if not has_thrown_previous_foods(food_type): return
+	points_bar.new_food_thrown.emit(food_type)
 
 func on_score_increased():
 	await get_tree().process_frame
+	var point_count = points_bar.points_count
+	var last_food = points_bar.food_milestones_unlock_order[points_bar.food_milestones_unlock_order.size() - 1]
+	var last_food_requirement = points_bar.score_food_unlock_dict[last_food]
+	if point_count >= last_food_requirement: return
+	
 	var closest_requirement = points_bar.get_closest_unlocked_food_requirement()
 	var next_requirement = points_bar.get_next_food_milestone_requirement()
 	var milestone_requirement_diff = next_requirement - closest_requirement
@@ -115,4 +140,24 @@ func on_score_increased():
 	
 	var requested_food = points_bar.get_food_from_requirement(next_requirement)
 	can_spawn_score_customer = false
+	spawn_customer(requested_food)
+	add_to_generatable_ingredients(requested_food)
+
+func add_to_generatable_ingredients(food_type: Ingredient.FoodType):
+	var food_recipe = GridState.get_recipe(food_type)
+	for ingredient: Ingredient.IngredientType in food_recipe.ingredients:
+		var generatable_ingredients = GridState.active_game.generatable_ingredients
+		if ingredient in generatable_ingredients: continue
+		generatable_ingredients.append(ingredient)
+
+const time_between_customer_spawns = 30
+var time_since_last_customer_spawn = 0
+
+func handle_time_based_customers(delta: float):
+	time_since_last_customer_spawn += delta
+	if time_since_last_customer_spawn < time_between_customer_spawns: return
+	time_since_last_customer_spawn = 0
+	var unlocked_foods_list = GridState.active_game.unlocked_foods
+	var food_index = randi_range(0, unlocked_foods_list.size() - 1)
+	var requested_food = unlocked_foods_list[food_index]
 	spawn_customer(requested_food)

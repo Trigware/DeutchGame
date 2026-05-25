@@ -24,7 +24,7 @@ func spawn_barrel(barrel_speed: float):
 
 const spawn_delay_range = Vector2(5, 7.5)
 const lowest_delay_multiplier = 0.65
-const barrel_min_speed = 130
+const barrel_min_speed = 100
 const barrel_max_speed = 215
 const barrel_show_tween_duration = 0.6
 

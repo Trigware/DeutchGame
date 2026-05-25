@@ -11,6 +11,8 @@ func _ready():
 	GridState.active_game.unlocked_foods = []
 	Audio.play_music(UID.restaurant_music)
 	GridState.active_game.create_recipe_list()
+	GridState.active_game.recipe_screens = {}
+	GridState.active_game.foods_thrown = []
 
 var been_enabled = false
 

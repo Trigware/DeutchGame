@@ -30,9 +30,10 @@ texture_under = ExtResource("2_t8y0m")
 texture_progress = ExtResource("3_ihxis")
 
 [node name="Points Icon" type="TextureRect" parent="." unique_id=1858917014]
-offset_left = -46.0
-offset_right = -6.0
-offset_bottom = 40.0
+offset_left = -61.0
+offset_top = 1.0
+offset_right = -21.0
+offset_bottom = 41.0
 texture = ExtResource("4_dp55q")
 
 [node name="Seperators" type="Control" parent="." unique_id=1336235120]

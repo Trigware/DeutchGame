@@ -53,12 +53,30 @@ static func get_ingredient_as_german(ingredient: IngredientType) -> String:
 	return german_ingredient_dict[ingredient]
 
 var ingredient_type: IngredientType
+const wanted_ingredient_pick_chance = 40
 
 static func generate() -> Ingredient:
 	var instance := Ingredient.new()
-	var ingredient_count = IngredientType.size() - 2
-	var chosen_ingredient = [IngredientType.Sausage, IngredientType.Tomato, IngredientType.Potato][randi_range(0, 2)]
+	var generatable_ingredients = GridState.active_game.generatable_ingredients
+	
+	var unlocked_foods = GridState.active_game.unlocked_foods
+	var wanted_ingredients = []
+	for unlocked_food: Ingredient.FoodType in unlocked_foods:
+		var food_recipe = GridState.get_recipe(unlocked_food)
+		var recipe_screen_list = GridState.active_game.recipe_screens
+		if not unlocked_food in recipe_screen_list: continue
+		
+		var stored_ingredients = recipe_screen_list[unlocked_food].stored_ingredients
+		for ingredient: Ingredient.IngredientType in food_recipe.ingredients:
+			if ingredient in stored_ingredients: continue
+			wanted_ingredients.append(ingredient)
+		
+	var pick_from_wanted = randf_range(0, 100) <= wanted_ingredient_pick_chance and wanted_ingredients.size() > 0
+	var ingredient_list = wanted_ingredients if pick_from_wanted else generatable_ingredients
+	var ingredient_index = randi_range(0, ingredient_list.size() - 1)
+	var chosen_ingredient = ingredient_list[ingredient_index]
 	instance.ingredient_type = chosen_ingredient as Ingredient.IngredientType
+	
 	return instance
 
 static func make(type: IngredientType) -> Ingredient:

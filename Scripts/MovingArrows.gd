@@ -11,7 +11,7 @@ enum UniformType {
 func uniform_as_str(uniform: UniformType) -> String: return UniformType.keys()[uniform].to_snake_case()
 func set_uniform(parameter: UniformType, value): material.set_shader_parameter(uniform_as_str(parameter), value)
 
-@export var time_scale: float = 1.0
+@export var time_scale: float = 2.0
 @export var going_left := false
 @export var arrow_modulate: Color
 

@@ -1,7 +1,9 @@
 extends CanvasLayer
 
 @export var minigame_countdown: MinigameCountdown
-@onready var time_label = $Label
+@export var player_root: RestaurantPlayer
+@onready var time_label = $Time
+@onready var multiplier_label = $Multiplier
 
 const minigame_duration: float = 180
 var time_until_end: float = minigame_duration
@@ -16,6 +18,7 @@ func _process(delta: float):
 	var window_size = DisplayServer.window_get_size()
 	handle_label_content(window_size)
 	handle_offset(window_size)
+	handle_multiplier_label()
 	if not minigame_countdown.minigame_started: return
 	time_until_end = max(time_until_end - delta, 0)
 
@@ -30,6 +33,8 @@ func handle_label_content(window_size):
 	var label_text = size_bbcode + UID.timer_clock_uid + "[/img]" + bbcode_color_tag + formatted_time
 	time_label.text = label_text
 
+const init_time_label_pos = Vector2(-1152, -648)
+
 func handle_offset(window_size):
 	var min_win_size = min(window_size.x, window_size.y)
 	var is_width_lesser = window_size.x < window_size.y
@@ -40,8 +45,9 @@ func handle_offset(window_size):
 		else Vector2(max_min_size_compare, 1)
 	var window_diameter = sqrt(init_window_size.x ** 2 + init_window_size.y ** 2)
 	var label_offset = init_window_size.x * diameter_label_offset_portion
-	offset = init_window_size - label_offset * normalized_win_size
+	time_label.position = init_time_label_pos + init_window_size - label_offset * normalized_win_size
 	time_label.size = window_size
+	multiplier_label.size = window_size
 
 func format_time_until_end() -> String:
 	var minutes = floori(time_until_end / 60)
@@ -55,3 +61,9 @@ func format_time_until_end() -> String:
 func get_formatted_time_color():
 	var color_progress = clamp(time_until_end / start_time_turn_red, 0, 1)
 	return Color.RED.lerp(Color.WHITE, color_progress)
+
+func handle_multiplier_label():
+	var multiplier_val = player_root.points_multiplier
+	var has_no_decimal = multiplier_val == floor(multiplier_val)
+	var multiplier_as_str = str(int(multiplier_val)) if has_no_decimal else str(floor(multiplier_val * 100) / 100)
+	multiplier_label.text = str(multiplier_as_str) + "x"
