@@ -76,10 +76,11 @@ var player_held_ingredients_nodes: Array[IngredientObject]
 var ingredient_count_per_type: Dictionary[Ingredient.IngredientType, int]
 var player_held_foods: Dictionary[Ingredient.FoodType, int]
 var unlocked_foods: Array[Ingredient.FoodType]
-var generatable_ingredients: Array[Ingredient.IngredientType]
 var cannot_unlock_foods := false
 var recipe_screens: Dictionary[Ingredient.FoodType, RecipeScreen]
 var foods_thrown: Array[Ingredient.FoodType]
+var custom_food_requests: Dictionary[Ingredient.FoodType, int]
+var food_stations: Dictionary[Ingredient.FoodType, FoodStation]
 static var conveyor_belt_speed_multiplier = 1.35
 
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)

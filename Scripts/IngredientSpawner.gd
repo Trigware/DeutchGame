@@ -19,7 +19,7 @@ func _ready():
 	if not minigame_countdown.minigame_started:
 		await get_tree().create_timer(countdown_wait_duration).timeout
 	if is_right_spawner:
-		await get_tree().create_timer(spawn_wait_time).timeout
+		await get_tree().create_timer(get_spawn_wait_time()).timeout
 	handle_spawn()
 
 func _process(_delta):
@@ -29,7 +29,8 @@ func _process(_delta):
 		ingredient.spawner_dist = dist_from_center
 		ingredient.player_pos = player.position
 
-const spawn_wait_time = 2.2
+const spawn_wait_time_max = 2.2
+const spawn_wait_time_min = 1.5
 const open_duration = 0.65
 const full_open_extend = 5
 
@@ -37,8 +38,15 @@ func handle_spawn():
 	await create_tween().tween_property(self, "dist_from_center", full_open_extend, open_duration).finished
 	await throw_ingredients()
 	await create_tween().tween_property(self, "dist_from_center", 0, open_duration).finished
-	await get_tree().create_timer(spawn_wait_time).timeout
+	await get_tree().create_timer(get_spawn_wait_time()).timeout
 	handle_spawn()
+
+func get_spawn_wait_time():
+	var until_end = player.time_view.time_until_end
+	var total_time = player.time_view.minigame_duration
+	var progress_to_end = clamp(inverse_lerp(total_time, 0, until_end), 0, 1)
+	var spawn_time = lerp(spawn_wait_time_max, spawn_wait_time_min, progress_to_end)
+	return spawn_time
 
 func spawn_ingredient():
 	var falling_ingredient = UID.falling_ingredient_scene.instantiate()

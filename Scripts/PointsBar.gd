@@ -17,7 +17,7 @@ const bar_padding = 0.5
 
 signal new_food_thrown(food_type: Ingredient.FoodType)
 
-const food_milestones_unlock_order : Array[Ingredient.FoodType] =\
+static var food_milestones_unlock_order : Array[Ingredient.FoodType] =\
 	[Ingredient.FoodType.Currywurst, Ingredient.FoodType.FriedCheese, Ingredient.FoodType.Kasespatzle, Ingredient.FoodType.Grostl, Ingredient.FoodType.Schnitzel]
 
 const score_food_unlock_dict: Dictionary[Ingredient.FoodType, float] = {
@@ -28,7 +28,7 @@ const score_food_unlock_dict: Dictionary[Ingredient.FoodType, float] = {
 	Ingredient.FoodType.Schnitzel: 1200,
 }
 
-const score_multiplier_after_food_unlock: Dictionary[Ingredient.FoodType, float] = {
+static var score_multiplier_after_food_unlock: Dictionary[Ingredient.FoodType, float] = {
 	Ingredient.FoodType.Currywurst: 1.35,
 	Ingredient.FoodType.FriedCheese: 1.7,
 	Ingredient.FoodType.Kasespatzle: 2,
@@ -46,9 +46,10 @@ func _ready():
 
 const final_multiplier_label_modulate = Color("55ff3b")
 const milestone_multiplier_label_modulate_tween_duration = 0.6
-const score_multiplier_tween_duration = 0.5
+const score_multiplier_tween_duration = 1.35
 
 func on_food_throw_bonus_unlocked(food_type: Ingredient.FoodType):
+	if not food_type in progress_bar_seperator_dict: return
 	var milestone_root = progress_bar_seperator_dict[food_type]
 	var multiplier_label = milestone_root.get_node("Multiplier")
 	create_tween().tween_property(multiplier_label, "modulate", final_multiplier_label_modulate, milestone_multiplier_label_modulate_tween_duration)

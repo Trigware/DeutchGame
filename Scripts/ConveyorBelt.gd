@@ -4,6 +4,7 @@ extends Node2D
 @onready var conveyor = $Conveyor
 @onready var moving_arrows = $"Moving Arrows"
 @onready var food_root = $"Food Root"
+@onready var food_station: FoodStation = get_parent()
 
 @export var going_left := false
 @export var invert_color := false
@@ -29,6 +30,7 @@ func _process(_delta):
 func create_conveyor_object(ingredient_or_food, is_food: bool, food_station_ref: FoodStation) -> ConveyorObject:
 	var conveyor_ingredient := UID.conveyor_ingredient.instantiate()
 	conveyor_ingredient.player_root = player_root
+	conveyor_ingredient.food_station = food_station
 	match is_food:
 		true: conveyor_ingredient.food_type = ingredient_or_food
 		false: conveyor_ingredient.item_type = ingredient_or_food

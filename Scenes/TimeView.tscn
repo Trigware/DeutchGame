@@ -21,10 +21,8 @@ horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="Multiplier" type="RichTextLabel" parent="." unique_id=1079925803]
-offset_left = 12.0
-offset_top = -9.0
-offset_right = 1164.0
-offset_bottom = 639.0
+offset_left = -1152.0
+offset_top = -648.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2

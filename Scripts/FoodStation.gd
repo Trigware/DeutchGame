@@ -1,4 +1,3 @@
-@tool
 class_name FoodStation
 extends Node2D
 
@@ -80,7 +79,8 @@ func _ready():
 	GridState.active_game.ingredient_removed.connect(ingredient_removed_from_inventory)
 	GridState.active_game.unlocked_all_foods.connect(hide_unlocked_tiles)
 	GridState.active_game.unlocked_foods.append(produced_food)
-	
+	GridState.active_game.food_stations[produced_food] = self
+
 func body_enters_export_area(body: Node2D):
 	if not body.is_in_group("RestaurantPlayer"): return
 	body.can_player_export = true
@@ -95,7 +95,10 @@ func ingredient_removed_from_inventory(ingredient_type: Ingredient.IngredientTyp
 	if export_index != station_x: return
 	recipe_screen.add_ingredient(ingredient_type)
 	conveyor_out.add_to_conveyor(ingredient_type, self)
-	player.add_score_by_gain_type(RestaurantPlayer.ScoreGain.PickupIngredient)
+	var recipe = GridState.get_recipe(produced_food)
+	var is_valid_ingredient = ingredient_type in recipe.ingredients
+	if is_valid_ingredient:
+		player.add_score_by_gain_type(RestaurantPlayer.ScoreGain.IngredientBeltUsage)
 	
 	var held_player_items = GridState.active_game.player_held_items
 	var ingredient_node_array = GridState.active_game.player_held_ingredients_nodes

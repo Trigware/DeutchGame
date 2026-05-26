@@ -13,6 +13,8 @@ func _ready():
 	GridState.active_game.create_recipe_list()
 	GridState.active_game.recipe_screens = {}
 	GridState.active_game.foods_thrown = []
+	GridState.active_game.custom_food_requests = {}
+	GridState.active_game.food_stations = {}
 
 var been_enabled = false
 

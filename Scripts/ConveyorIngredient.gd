@@ -4,6 +4,7 @@ extends Area2D
 @onready var ingredient_sprite = $IngredientSprite
 @onready var ingredient_collider = $Collider
 @export var player_root: RestaurantPlayer
+var food_station: FoodStation
 
 var item_type := Ingredient.IngredientType.Unknown
 var food_type := Ingredient.FoodType.Unknown
@@ -73,7 +74,6 @@ const food_creation_time: float = 1.5
 func spawn_crafted_food():
 	if not is_outputting_food(): return
 	await get_tree().create_timer(food_creation_time).timeout
-	var food_station: FoodStation = food_station_ref
 	var food_recipe = GridState.get_recipe(food_station.produced_food)
 	
 	for food_ingredient: Ingredient.IngredientType in food_recipe.ingredients:

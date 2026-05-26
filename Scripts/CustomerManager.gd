@@ -25,8 +25,6 @@ func _ready():
 		restaurant_chair.position.x = pos_x
 		add_child(restaurant_chair)
 	
-	GridState.active_game.generatable_ingredients = []
-	add_to_generatable_ingredients(initial_food)
 	if item_slots.minigame_started:
 		spawn_initial_customer()
 		return
@@ -68,6 +66,9 @@ func spawn_customer(requested_food):
 	
 	restaurant_customer.requested_food = requested_food
 	active_customers[customer_x] = restaurant_customer
+	var food_requests = GridState.active_game.custom_food_requests
+	if not requested_food in food_requests: food_requests[requested_food] = 0
+	food_requests[requested_food] += 1
 	
 	create_tween().tween_property(restaurant_customer, "modulate:a", 1, customer_show_tween_duration)
 	add_child(restaurant_customer)
@@ -103,6 +104,9 @@ func handle_food_throwing():
 	player_root.add_score_by_gain_type(RestaurantPlayer.ScoreGain.FoodDelivery, customer_at_index.time_since_order)
 	add_child(customer_food)
 	active_customers.erase(customer_index)
+	var food_requests = GridState.active_game.custom_food_requests
+	food_requests[food_type] -= 1
+	if food_requests[food_type] == 0: food_requests.erase(food_type)
 
 const customer_requesting_next_milestone_min_progress = 0.75
 var can_spawn_score_customer = true
@@ -141,14 +145,6 @@ func on_score_increased():
 	var requested_food = points_bar.get_food_from_requirement(next_requirement)
 	can_spawn_score_customer = false
 	spawn_customer(requested_food)
-	add_to_generatable_ingredients(requested_food)
-
-func add_to_generatable_ingredients(food_type: Ingredient.FoodType):
-	var food_recipe = GridState.get_recipe(food_type)
-	for ingredient: Ingredient.IngredientType in food_recipe.ingredients:
-		var generatable_ingredients = GridState.active_game.generatable_ingredients
-		if ingredient in generatable_ingredients: continue
-		generatable_ingredients.append(ingredient)
 
 const time_between_customer_spawns = 30
 var time_since_last_customer_spawn = 0

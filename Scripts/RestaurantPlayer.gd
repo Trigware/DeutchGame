@@ -2,6 +2,7 @@ class_name RestaurantPlayer
 extends CharacterBody2D
 
 @export var points_bar: PointsBar
+@export var time_view: TimeView
 
 @onready var anim_sprite = $Sprite
 @onready var camera = $Camera
@@ -202,8 +203,8 @@ func handle_jumping(delta: float):
 		z_index = 0
 	anim_sprite.offset.y = offset_y
 
-const base_jump_over_barrel_score = 6
-const base_ingredient_pickup_score = 4
+const base_jump_over_barrel_score = 8
+const base_ingredient_pickup_score = 5.5
 const base_ingredient_belt_throw_score = 3
 const base_food_pickup_score = 25
 const jump_over_score_log_expo = 2.8

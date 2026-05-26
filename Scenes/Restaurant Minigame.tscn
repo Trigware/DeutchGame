@@ -121,9 +121,10 @@ is_right_spawner = true
 player = NodePath("../Player")
 minigame_countdown = NodePath("../MinigameCountdown")
 
-[node name="Player" parent="." unique_id=564817853 node_paths=PackedStringArray("points_bar") groups=["Player"] instance=ExtResource("1_yutl7")]
+[node name="Player" parent="." unique_id=564817853 node_paths=PackedStringArray("points_bar", "time_view") groups=["Player"] instance=ExtResource("1_yutl7")]
 position = Vector2(0, 54)
 points_bar = NodePath("../PointsBar")
+time_view = NodePath("../Time View")
 
 [node name="Camera" type="Camera2D" parent="Player" unique_id=1732760089]
 zoom = Vector2(3.5, 3.5)
