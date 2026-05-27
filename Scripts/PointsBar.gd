@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var points_gathered = $PointsGathered
 @onready var seperators = $Seperators
 @export var player_root: RestaurantPlayer
+@export var time_view: TimeView
 
 const progress_x_bar = 500
 const icon_offset = 45
@@ -12,7 +13,7 @@ var timer_y_offset: float
 const timer_y_size = 40
 const final_y_size_multiplier = 1.5
 const maximum_points_count = 1000
-var points_count: float = 0
+var points_count: float = 999
 const bar_padding = 0.5
 
 signal new_food_thrown(food_type: Ingredient.FoodType)
@@ -61,11 +62,21 @@ func _process(delta: float):
 	var total_bar_width = progress_x_bar + icon_offset
 	var bar_scale = (window_size.x * (1 - bar_padding)) / total_bar_width
 	scale = Vector2.ONE * bar_scale
-	points_gathered.text = str(floori(points_count)) + "/" + str(maximum_points_count)
+	var used_points = min(maximum_points_count, points_count) if time_view.was_previously_time_over else points_count
+	points_gathered.text = str(floori(used_points)) + "/" + str(maximum_points_count)
 	
 	offset.x = window_size.x / 2 - progress_x_bar / 2 * bar_scale + icon_offset / 2 * bar_scale
 	offset.y = window_size.y - timer_y_offset * bar_scale
-	progress_bar.value = points_count / maximum_points_count
+	progress_bar.value = used_points / maximum_points_count
+	if points_count > maximum_points_count and not goal_reached_previously: point_goal_reached()
+
+var goal_reached_previously = false
+
+func point_goal_reached():
+	goal_reached_previously = true
+	Overlay.switch_scene(UID.board_scene, TimeView.minigame_cover_overlay_tween_duration, TimeView.minigame_overlay_inbetween_duration, goal_reached)
+
+func goal_reached(board_scene: BoardRoot): board_scene.push_piece()
 
 const time_per_point = 0.05
 

@@ -148,7 +148,7 @@ func handle_request():
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 
 func handle_player_food_throw():
-	var held_foods = GridState.active_game.player_held_foods
+	var held_foods = GameState.active_game.player_held_foods
 	var does_player_have_food = requested_food in held_foods
 	
 	var x_dist_to_player = abs(player_root.position.x - position.x)

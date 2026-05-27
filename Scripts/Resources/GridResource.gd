@@ -99,9 +99,10 @@ const number_of_players: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Blue: 12
 }
 
-var restaurant_recipes: Dictionary[Ingredient.FoodType, RestaurantRecipe] = {}
+var trick_move_origin: Vector2i
+var trick_move_destination: Vector2i
 
-static var active_game: GridState
+var restaurant_recipes: Dictionary[Ingredient.FoodType, RestaurantRecipe] = {}
 
 func invert_turn(): player_turn = get_inverted_turn()
 func get_inverted_turn():
@@ -168,13 +169,13 @@ func create_recipe_list():
 	recipe_directory.list_dir_end()
 
 static func get_recipe(crafted_food: Ingredient.FoodType) -> RestaurantRecipe:
-	if not crafted_food in GridState.active_game.restaurant_recipes:
-		active_game.create_recipe_list()
-	return GridState.active_game.restaurant_recipes[crafted_food]
+	if not crafted_food in GameState.active_game.restaurant_recipes:
+		GameState.active_game.create_recipe_list()
+	return GameState.active_game.restaurant_recipes[crafted_food]
 
 static func add_food(food_type: Ingredient.FoodType):
-	var held_food_dict = active_game.player_held_foods 
+	var held_food_dict = GameState.active_game.player_held_foods 
 	if not food_type in held_food_dict:
 		held_food_dict[food_type] = 0
-		active_game.food_type_added.emit(food_type)
+		GameState.active_game.food_type_added.emit(food_type)
 	held_food_dict[food_type] += 1

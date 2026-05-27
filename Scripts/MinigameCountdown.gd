@@ -12,12 +12,12 @@ const maximum_size = 450
 var tween_running = false
 const start_text = "START"
 
-var minigame_started = false
+var minigame_started = true
 
 func _ready():
 	if minigame_started:
-		GridState.active_game = UID.init_state
-		GridState.active_game.restaurant_game_started.emit()
+		GameState.active_game = UID.init_state
+		GameState.active_game.restaurant_game_started.emit()
 	visible = not minigame_started
 
 func _process(delta: float):
@@ -55,4 +55,4 @@ func handle_countdown_time(delta: float):
 	countdown_size = minimum_size if time_until_start < 0 else maximum_size
 	if time_until_start < movement_enable_prestart_duration:
 		minigame_started = true
-		GridState.active_game.restaurant_game_started.emit()
+		GameState.active_game.restaurant_game_started.emit()

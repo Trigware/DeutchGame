@@ -15,7 +15,7 @@ const name_label_x_offset = 8
 const blue_container_offset = 64
 
 func set_team_name(team: SpecialTile.TeamRelation):
-	var team_as_str = GridState.active_game.team_names[team]
+	var team_as_str = GameState.active_game.team_names[team]
 	name_label.text = team_as_str
 	var char_count = team_as_str.length()
 	var label_size = lowest_x_size + glyph_size * char_count

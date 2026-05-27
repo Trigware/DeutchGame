@@ -14,8 +14,8 @@ var stored_ingredients: Dictionary[Ingredient.IngredientType, int]
 func _ready():
 	display_elements.modulate.a = 0
 	await update_ingredients_list()
-	GridState.active_game.recipe_screens[crafted_food] = self
-	await GridState.active_game.restaurant_game_started
+	GameState.active_game.recipe_screens[crafted_food] = self
+	await GameState.active_game.restaurant_game_started
 	create_tween().tween_property(display_elements, "modulate:a", 1, ingredients_show_tween_duration)
 
 func _process(_delta):
@@ -31,8 +31,8 @@ const checkmark_bbcode = "[img=10]" + UID.checkmark_uid + "[/img]"
 const food_spritesheet_section_size = Vector2(32, 32)
 
 func update_ingredients_list():
-	if GridState.active_game == null: await get_tree().process_frame
-	if GridState.active_game == null: return
+	if GameState.active_game == null: await get_tree().process_frame
+	if GameState.active_game == null: return
 	
 	var recipe_resource = GridState.get_recipe(crafted_food)
 	var ingredient_text = ""
@@ -46,10 +46,10 @@ func update_ingredients_list():
 		if ingredient_count >= 2: added_text += "[font_size=10]" + '(' + str(ingredient_count) + ')' + "[/font_size]"
 		var ingredient_spritesheet_pos = Vector2(recipe_ingredient as int, 1)
 		
-		added_text += "[img=18 region=" + str(ingredient_spritesheet_pos.x * food_spritesheet_section_size.x) +\
+		'''added_text += "[img=18 region=" + str(ingredient_spritesheet_pos.x * food_spritesheet_section_size.x) +\
 			"," + str(ingredient_spritesheet_pos.y * food_spritesheet_section_size.y) + "," +\
 			str(food_spritesheet_section_size.x) + "," + str(food_spritesheet_section_size.y) + "]"\
-			+ UID.food_spritesheet_uid + "[/img]"
+			+ UID.food_spritesheet_uid + "[/img]"'''
 		
 		ingredient_text += added_text + '\n'
 	ingredients_list.text = ingredient_text

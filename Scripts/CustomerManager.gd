@@ -28,7 +28,7 @@ func _ready():
 	if item_slots.minigame_started:
 		spawn_initial_customer()
 		return
-	await GridState.active_game.restaurant_game_started
+	await GameState.active_game.restaurant_game_started
 	spawn_initial_customer()
 
 func spawn_initial_customer():
@@ -66,7 +66,7 @@ func spawn_customer(requested_food):
 	
 	restaurant_customer.requested_food = requested_food
 	active_customers[customer_x] = restaurant_customer
-	var food_requests = GridState.active_game.custom_food_requests
+	var food_requests = GameState.active_game.custom_food_requests
 	if not requested_food in food_requests: food_requests[requested_food] = 0
 	food_requests[requested_food] += 1
 	
@@ -88,23 +88,23 @@ func handle_food_throwing():
 	if not customer_at_index.order_completed or customer_at_index.food_delivered: return
 	
 	var food_type = customer_at_index.requested_food
-	var held_foods = GridState.active_game.player_held_foods
+	var held_foods = GameState.active_game.player_held_foods
 	if not food_type in held_foods: return
 	held_foods[food_type] -= 1
 	var held_food_count = held_foods[food_type]
 	if held_food_count == 0: held_foods.erase(food_type)
 	
 	customer_food.food_type = food_type
-	if not food_type in GridState.active_game.foods_thrown: thrown_new_food(food_type)
+	if not food_type in GameState.active_game.foods_thrown: thrown_new_food(food_type)
 	
 	customer_food.scale = Vector2.ONE * custom_food_scale
 	customer_food.position = Vector2(get_x_by_index(customer_index), customer_food_y_spawn_pos)
 	customer_at_index.order_delivered()
 	customer_food.deliver_food()
-	player_root.add_score_by_gain_type(RestaurantPlayer.ScoreGain.FoodDelivery, customer_at_index.time_since_order)
+	player_root.add_score_by_gain_type(RestaurantPlayer.ScoreGain.FoodDelivery, customer_at_index.time_since_order, food_type)
 	add_child(customer_food)
 	active_customers.erase(customer_index)
-	var food_requests = GridState.active_game.custom_food_requests
+	var food_requests = GameState.active_game.custom_food_requests
 	food_requests[food_type] -= 1
 	if food_requests[food_type] == 0: food_requests.erase(food_type)
 
@@ -116,12 +116,12 @@ func has_thrown_previous_foods(current_food: Ingredient.FoodType):
 	var current_index = unlock_order.find(current_food)
 	for food_index in range(current_index, 0):
 		var food_type = unlock_order[food_index]
-		var is_unlocked = food_type in GridState.active_game.foods_thrown
+		var is_unlocked = food_type in GameState.active_game.foods_thrown
 		if not is_unlocked: return false
 	return true
 
 func thrown_new_food(food_type: Ingredient.FoodType):
-	GridState.active_game.foods_thrown.append(food_type)
+	GameState.active_game.foods_thrown.append(food_type)
 	if not has_thrown_previous_foods(food_type): return
 	points_bar.new_food_thrown.emit(food_type)
 
@@ -153,7 +153,7 @@ func handle_time_based_customers(delta: float):
 	time_since_last_customer_spawn += delta
 	if time_since_last_customer_spawn < time_between_customer_spawns: return
 	time_since_last_customer_spawn = 0
-	var unlocked_foods_list = GridState.active_game.unlocked_foods
+	var unlocked_foods_list = GameState.active_game.unlocked_foods
 	var food_index = randi_range(0, unlocked_foods_list.size() - 1)
 	var requested_food = unlocked_foods_list[food_index]
 	spawn_customer(requested_food)

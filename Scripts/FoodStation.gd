@@ -76,10 +76,10 @@ func _ready():
 	recipe_screen.crafted_food = produced_food
 	recipe_screen.stored_ingredients = stored_ingredients
 	await get_tree().process_frame
-	GridState.active_game.ingredient_removed.connect(ingredient_removed_from_inventory)
-	GridState.active_game.unlocked_all_foods.connect(hide_unlocked_tiles)
-	GridState.active_game.unlocked_foods.append(produced_food)
-	GridState.active_game.food_stations[produced_food] = self
+	GameState.active_game.ingredient_removed.connect(ingredient_removed_from_inventory)
+	GameState.active_game.unlocked_all_foods.connect(hide_unlocked_tiles)
+	GameState.active_game.unlocked_foods.append(produced_food)
+	GameState.active_game.food_stations[produced_food] = self
 
 func body_enters_export_area(body: Node2D):
 	if not body.is_in_group("RestaurantPlayer"): return
@@ -97,11 +97,11 @@ func ingredient_removed_from_inventory(ingredient_type: Ingredient.IngredientTyp
 	conveyor_out.add_to_conveyor(ingredient_type, self)
 	var recipe = GridState.get_recipe(produced_food)
 	var is_valid_ingredient = ingredient_type in recipe.ingredients
-	if is_valid_ingredient:
-		player.add_score_by_gain_type(RestaurantPlayer.ScoreGain.IngredientBeltUsage)
+	var score_gain_type = RestaurantPlayer.ScoreGain.IngredientBeltUsage if is_valid_ingredient else RestaurantPlayer.ScoreGain.InvalidIngredientBeltUsage
+	if is_valid_ingredient: player.add_score_by_gain_type(score_gain_type)
 	
-	var held_player_items = GridState.active_game.player_held_items
-	var ingredient_node_array = GridState.active_game.player_held_ingredients_nodes
+	var held_player_items = GameState.active_game.player_held_items
+	var ingredient_node_array = GameState.active_game.player_held_ingredients_nodes
 	var removed_ingredient_index = held_player_items.find(ingredient_type)
 	held_player_items.remove_at(removed_ingredient_index)
 	
@@ -128,7 +128,7 @@ func cheapest_unlockable_food() -> Ingredient.FoodType:
 	var score_count = player.points_bar.points_count
 	var score_milestones_foods = player.points_bar.food_milestones_unlock_order
 	var score_milestone_dict = player.points_bar.score_food_unlock_dict
-	var unlocked_foods = GridState.active_game.unlocked_foods
+	var unlocked_foods = GameState.active_game.unlocked_foods
 	
 	for food_type: Ingredient.FoodType in score_milestones_foods:
 		var already_unlocked = food_type in unlocked_foods
@@ -176,11 +176,11 @@ func unlock_food_station(body: Node2D, unlocking_left: bool):
 
 func handle_station_all_food_unlocked_signal():
 	await get_tree().process_frame
-	GridState.active_game.cannot_unlock_foods = false
+	GameState.active_game.cannot_unlock_foods = false
 	var amount_of_foods = Ingredient.FoodType.size() - 1
-	var unlocked_food_count = GridState.active_game.unlocked_foods.size()
+	var unlocked_food_count = GameState.active_game.unlocked_foods.size()
 	if amount_of_foods != unlocked_food_count: return
-	GridState.active_game.unlocked_all_foods.emit()
+	GameState.active_game.unlocked_all_foods.emit()
 
 const unlock_tile_alpha_hide_duration = 0.45
 
@@ -192,7 +192,7 @@ func handle_station_tween_and_restrict(food_station: FoodStation, unlocking_left
 	food_station.produced_food = cheapest_unlockable
 	hide_station_extend_tiles(unlocking_left)
 	food_station.x_offset = actual_init_offset
-	GridState.active_game.cannot_unlock_foods = true
+	GameState.active_game.cannot_unlock_foods = true
 	
 	await get_tree().process_frame
 	food_station.recipe_screen.update_ingredients_list()
@@ -208,7 +208,7 @@ func hide_unlocked_tiles():
 
 func food_station_unlocking_disabled(unlocking_left: bool) -> bool:
 	var cheapest_unlockable = cheapest_unlockable_food()
-	var cannot_unlock = GridState.active_game.cannot_unlock_foods
+	var cannot_unlock = GameState.active_game.cannot_unlock_foods
 	if cheapest_unlockable == Ingredient.FoodType.Unknown or cannot_unlock: return true
 
 	var unlocking_disabled = unlocking_left and unlocked_left or not unlocking_left and unlocked_right

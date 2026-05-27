@@ -48,8 +48,8 @@ func update_slot():
 	return used_scale
 
 func get_item_count() -> int:
-	if not item_slot_team in GridState.active_game.player_power_ups: return 0
-	var team_items: PlayerPowerUp = GridState.active_game.player_power_ups[item_slot_team]
+	if not item_slot_team in GameState.active_game.player_power_ups: return 0
+	var team_items: PlayerPowerUp = GameState.active_game.player_power_ups[item_slot_team]
 	if not power_up_kind in team_items.power_ups: return 0
 	var power_up = team_items.power_ups[power_up_kind]
 	return power_up.amount

@@ -169,7 +169,7 @@ func setup_result_image_sprites(land_index: int):
 
 func setup_piece_sprites():
 	var latest_move: Move = null
-	if GridState.active_game != null: latest_move = GridState.active_game.latest_move
+	if GameState.active_game != null: latest_move = GameState.active_game.latest_move
 	var latest_moved_piece: Piece = Piece.ctor(GridState.PieceType.Wizard, SpecialTile.TeamRelation.Red)
 	if latest_move != null: latest_moved_piece = latest_move.moved_piece
 	var piece_atlas_pos = latest_moved_piece.get_atlas()

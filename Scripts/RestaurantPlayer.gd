@@ -76,6 +76,7 @@ enum ScoreGain {
 	PickupIngredient,
 	FoodDelivery,
 	IngredientBeltUsage,
+	InvalidIngredientBeltUsage,
 	PickupFood
 }
 
@@ -91,7 +92,7 @@ func handle_movement():
 	var move_dir_flags = get_move_dir()
 	var move_dir_vec = get_dir_as_vec(move_dir_flags)
 	
-	var item_portion = clamp(1 - inverse_lerp(0, minimal_speed_item_count, GridState.active_game.player_held_items.size()), 0, 1)
+	var item_portion = clamp(1 - inverse_lerp(0, minimal_speed_item_count, GameState.active_game.player_held_items.size()), 0, 1)
 	var player_speed = lerp(minimal_player_speed, maximum_player_speed, item_portion)
 	velocity = move_dir_vec * player_speed
 	var move_dir = get_prioritized_move_dir(move_dir_flags)
@@ -114,7 +115,7 @@ const player_going_down_tween_dur = 0.185
 const player_fallen_offset = 4
 const fallen_player_alpha_mod = 0.6
 const player_restore_duration = 0.75
-const barrel_hit_jump_maximum = 12
+const barrel_hit_jump_maximum = 14
 
 var is_jumping_over_barrel = false
 
@@ -146,14 +147,14 @@ func set_anim(anim_name: String):
 	anim_sprite.play(anim_name, 0)
 
 func drop_items():
-	GridState.active_game.ingredient_count_per_type.clear()
+	GameState.active_game.ingredient_count_per_type.clear()
 	for removed_ingredient: Ingredient.IngredientType in item_slots_manager.item_slots:
 		var item_slot = item_slots_manager.item_slots[removed_ingredient]
 		item_slot.queue_free()
 	item_slots_manager.item_slots.clear()
-	GridState.active_game.player_held_items.clear()
+	GameState.active_game.player_held_items.clear()
 	
-	for ingredient_object: IngredientObject in GridState.active_game.player_held_ingredients_nodes:
+	for ingredient_object: IngredientObject in GameState.active_game.player_held_ingredients_nodes:
 		var dropped_ingredient = UID.dropped_ingredient.instantiate()
 		var current_ingredient = ingredient_object.player_ingredient
 		dropped_ingredient.ingredient_type = current_ingredient.ingredient_type
@@ -164,9 +165,9 @@ func drop_items():
 		ingredient_object.ingredient_collider.queue_free()
 		ingredient_object.player_ingredient.queue_free()
 		
-	GridState.active_game.player_held_ingredients_nodes.clear()
+	GameState.active_game.player_held_ingredients_nodes.clear()
 
-const jumping_y_peak = 2.15
+const jumping_y_peak = 2.3 
 const player_jumping_speed = 10
 var upward_velocity = 0
 var is_jumping = false
@@ -186,12 +187,7 @@ func handle_jumping(delta: float):
 		reached_jumping_peak = false
 		upward_velocity = 0
 		z_index = 1
-		await create_tween().tween_property(self, "scale:y", jump_y_min_stretch, stretch_short_tween_duration).finished
-		preparing_to_jump = true
 		is_jumping = true
-		preparing_to_jump = false
-		await create_tween().tween_property(self, "scale:y", jump_y_max_stretch, stretch_tween_duration).finished
-		create_tween().tween_property(self, "scale:y", 1, stretch_tween_duration).set_delay(0.1)
 	
 	var y_velocity_multiplier = -1 if reached_jumping_peak else 1
 	if is_jumping: upward_velocity += delta * player_jumping_speed * y_velocity_multiplier
@@ -204,41 +200,49 @@ func handle_jumping(delta: float):
 	anim_sprite.offset.y = offset_y
 
 const base_jump_over_barrel_score = 8
-const base_ingredient_pickup_score = 5.5
-const base_ingredient_belt_throw_score = 3
-const base_food_pickup_score = 25
+const base_ingredient_pickup_score = 6.5
+const base_ingredient_belt_throw_score = 5
+const base_food_pickup_score = 30
 const jump_over_score_log_expo = 2.8
 const jump_over_score_log_divisor = 15
 const maximum_food_delivery_score_gain = 60
-const maximum_important_delivery_duration = 30
+const maximum_important_delivery_duration = 40
 const min_food_delivery_portion := 1.0 / 2
 
 func log10(x): return log(x) / log(10)
 
-func add_score_by_gain_type(score_gain_type: ScoreGain, customer_order_time = -1):
+func add_score_by_gain_type(score_gain_type: ScoreGain, customer_order_time = -1, food_type := Ingredient.IngredientType.Unknown):
 	var added_score: float
-	var held_ingredient_count = GridState.active_game.player_held_items.size()
+	var held_ingredient_count = GameState.active_game.player_held_items.size()
 	match score_gain_type:
 		ScoreGain.JumpOverBarrel: added_score = get_point_count_using_log(base_jump_over_barrel_score)
 		ScoreGain.PickupIngredient: added_score = get_point_count_using_log(base_ingredient_pickup_score)
-		ScoreGain.FoodDelivery: added_score = get_food_delivery_points(customer_order_time)
+		ScoreGain.FoodDelivery: added_score = get_food_delivery_points(customer_order_time, food_type)
 		ScoreGain.IngredientBeltUsage: added_score = base_ingredient_belt_throw_score
+		ScoreGain.InvalidIngredientBeltUsage: added_score = base_ingredient_belt_throw_score / 2
 		ScoreGain.PickupFood: added_score = base_food_pickup_score
 	if added_score <= 0: return
 	add_to_score(added_score * points_multiplier)
 
 func get_point_count_using_log(base_score):
-	var held_ingredient_count = GridState.active_game.player_held_items.size()
+	var held_ingredient_count = GameState.active_game.player_held_items.size()
 	var log_input = held_ingredient_count ** jump_over_score_log_expo / jump_over_score_log_divisor + 1
 	var score_multiplier = 1 + log10(log_input)
 	var added_score = base_score * score_multiplier
 	return added_score
 
-func get_food_delivery_points(customer_order_time):
+const food_delivery_multiplier_portion = 0.75
+
+func get_food_delivery_points(customer_order_time, food_type: Ingredient.IngredientType):
 	var min_gain_progress = clamp(customer_order_time / maximum_important_delivery_duration, 0, 1)
 	var max_score_gain: float = maximum_food_delivery_score_gain
 	var min_score_gain = max_score_gain * min_food_delivery_portion
 	var food_delivery_points = lerp(max_score_gain, min_score_gain, min_gain_progress)
+	var used_multiplier_index = PointsBar.food_milestones_unlock_order.find(food_type) - 1
+	var used_multiplier_food = PointsBar.food_milestones_unlock_order[used_multiplier_index] if used_multiplier_index >= 0 else Ingredient.IngredientType.Unknown
+	var used_multiplier = 1.0 if used_multiplier_food == Ingredient.IngredientType.Unknown else PointsBar.score_multiplier_after_food_unlock[used_multiplier_food]
+	used_multiplier = 1 + (used_multiplier - 1) * food_delivery_multiplier_portion
+	food_delivery_points *= used_multiplier
 	return food_delivery_points
 
 func add_to_score(added_score: float):
@@ -252,16 +256,16 @@ const ingredient_scale = 0.65
 const regular_ingredients_root_y_pos = -19
 
 func finish_ingredient_pickup(falling_ingredient, ingredient_data, area: Area2D, picking_dropped = false):
-	var ingredient_dict = GridState.active_game.ingredient_count_per_type
+	var ingredient_dict = GameState.active_game.ingredient_count_per_type
 	
 	var picked_type = ingredient_data.ingredient_type
-	GridState.active_game.player_held_items.append(picked_type)
-	var ingredient_count = GridState.active_game.player_held_items.size()
+	GameState.active_game.player_held_items.append(picked_type)
+	var ingredient_count = GameState.active_game.player_held_items.size()
 	
 	var is_type_new = not picked_type in ingredient_dict.keys()
 	if is_type_new:
 		ingredient_dict[picked_type] = 0
-		GridState.active_game.ingredient_type_added.emit(picked_type)
+		GameState.active_game.ingredient_type_added.emit(picked_type)
 	ingredient_dict[picked_type] += 1
 
 	var player_ingredient = UID.player_ingredient_scene.instantiate()
@@ -278,5 +282,5 @@ func finish_ingredient_pickup(falling_ingredient, ingredient_data, area: Area2D,
 	collider_scene.player_ingredient = player_ingredient
 	area.add_child.call_deferred(collider_scene)
 	var ingredient_object = IngredientObject.ctor(player_ingredient, collider_scene)
-	GridState.active_game.player_held_ingredients_nodes.append(ingredient_object)
+	GameState.active_game.player_held_ingredients_nodes.append(ingredient_object)
 	falling_ingredient.queue_free()

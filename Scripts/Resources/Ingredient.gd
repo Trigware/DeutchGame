@@ -71,10 +71,10 @@ const score_multiplier_eval_bonus = 1.75
 
 static func get_evaluation_of_ingredients() -> Dictionary[IngredientType, float]:
 	var ingredient_evals: Dictionary[IngredientType, float] = {}
-	var food_requests = GridState.active_game.custom_food_requests
-	var food_stations = GridState.active_game.food_stations
-	var ingredient_counts = GridState.active_game.ingredient_count_per_type
-	var held_foods = GridState.active_game.player_held_foods
+	var food_requests = GameState.active_game.custom_food_requests
+	var food_stations = GameState.active_game.food_stations
+	var ingredient_counts = GameState.active_game.ingredient_count_per_type
+	var held_foods = GameState.active_game.player_held_foods
 	var score_multipliers = PointsBar.score_multiplier_after_food_unlock
 	var milestone_order = PointsBar.food_milestones_unlock_order
 	
@@ -85,7 +85,7 @@ static func get_evaluation_of_ingredients() -> Dictionary[IngredientType, float]
 		var player_food_count = held_foods[food_type] if food_type in held_foods else 0
 		var food_left_at_station = food_station.outputed_food_count - food_station.foods_obtainted
 		
-		var was_food_thrown = food_type in GridState.active_game.foods_thrown
+		var was_food_thrown = food_type in GameState.active_game.foods_thrown
 		var score_multiplier_value = score_multipliers[food_type]
 		var prev_food_index = milestone_order.find(food_type) - 1
 		var prev_score_multiplier_value = 1 if prev_food_index == -1 else score_multipliers[milestone_order[prev_food_index]]

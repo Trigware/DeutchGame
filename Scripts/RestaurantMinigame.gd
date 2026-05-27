@@ -5,16 +5,16 @@ extends Node2D
 @onready var stations_root = $"Stations Root"
 
 func _ready():
-	if GridState.active_game == null: GridState.active_game = UID.init_state
-	GridState.active_game.player_held_items = []
-	GridState.active_game.player_held_ingredients_nodes = []
-	GridState.active_game.unlocked_foods = []
+	if GameState.active_game == null: GameState.active_game = UID.init_state
+	GameState.active_game.player_held_items = []
+	GameState.active_game.player_held_ingredients_nodes = []
+	GameState.active_game.unlocked_foods = []
 	Audio.play_music(UID.restaurant_music)
-	GridState.active_game.create_recipe_list()
-	GridState.active_game.recipe_screens = {}
-	GridState.active_game.foods_thrown = []
-	GridState.active_game.custom_food_requests = {}
-	GridState.active_game.food_stations = {}
+	GameState.active_game.create_recipe_list()
+	GameState.active_game.recipe_screens = {}
+	GameState.active_game.foods_thrown = []
+	GameState.active_game.custom_food_requests = {}
+	GameState.active_game.food_stations = {}
 
 var been_enabled = false
 

@@ -23,7 +23,7 @@ func get_y_pos():
 
 func set_x_position():
 	var time_as_sec = Time.get_ticks_msec() / 1000.0
-	var player_held_count = GridState.active_game.player_held_items.size()
+	var player_held_count = GameState.active_game.player_held_items.size()
 	var used_increase = min(player_held_count, maximum_wave_size_increase)
 	var wave_size = (y_index - 1) * used_increase
 

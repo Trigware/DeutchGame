@@ -36,7 +36,7 @@ func handle_item_slot_drawing():
 	count_label.position = count_pos
 	
 	item_sprite.frame_coords = frame_coords
-	var used_dict = GridState.active_game.player_held_foods if is_food else GridState.active_game.ingredient_count_per_type
+	var used_dict = GameState.active_game.player_held_foods if is_food else GameState.active_game.ingredient_count_per_type
 	var item_count = 0
 	if not is_food and item_type in used_dict: item_count = used_dict[item_type]
 	if is_food and food_type in used_dict: item_count = used_dict[food_type]

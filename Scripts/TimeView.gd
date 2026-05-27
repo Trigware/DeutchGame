@@ -6,7 +6,7 @@ extends CanvasLayer
 @onready var time_label = $Time
 @onready var multiplier_label = $Multiplier
 
-const minigame_duration: float = 180
+const minigame_duration: float = 1
 var time_until_end: float = minigame_duration
 const start_time_turn_red = 120
 
@@ -15,12 +15,16 @@ const clock_size_multiplier = 0.785
 const diameter_label_offset_portion = 0.01
 const init_window_size = Vector2(1152, 648)
 
+var was_previously_time_over = false
+
 func _process(delta: float):
 	var window_size = DisplayServer.window_get_size()
 	handle_label_content(window_size)
 	handle_offset(window_size)
 	if not minigame_countdown.minigame_started: return
 	time_until_end = max(time_until_end - delta, 0)
+	if time_until_end == 0 and not was_previously_time_over:
+		on_time_over()
 
 const seconds_in_minute = 60
 var label_size: float
@@ -79,3 +83,12 @@ func handle_multiplier_label():
 	multiplier_label.text = "[font_size=" + str(label_size * multiplier_label_size_multiplier) + "]" + str(multiplier_as_str) + "x"
 	var full_multiplier_label_color_progress = (min(multiplier_val, maximum_multiplier_label_color_affected_score_multiplier) - 1) / maximum_multiplier_label_color_affected_score_multiplier
 	multiplier_label.modulate = Color.WHITE.lerp(final_multiplier_label_modulate, full_multiplier_label_color_progress)
+
+const minigame_cover_overlay_tween_duration = 0.4
+const minigame_overlay_inbetween_duration = 0.2
+
+func on_time_over():
+	was_previously_time_over = true
+	await Overlay.switch_scene(UID.board_scene, minigame_cover_overlay_tween_duration, minigame_overlay_inbetween_duration, game_over_scene_func)
+
+func game_over_scene_func(board_scene: BoardRoot): board_scene.returned_after_minigame = true

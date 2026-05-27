@@ -12,8 +12,8 @@ const gradient_window_width_portion = 0.2
 func _ready():
 	show()
 	await get_tree().process_frame
-	GridState.active_game.ingredient_type_added.connect(add_ingredient)
-	GridState.active_game.food_type_added.connect(add_food_slot)
+	GameState.active_game.ingredient_type_added.connect(add_ingredient)
+	GameState.active_game.food_type_added.connect(add_food_slot)
 
 func _process(_delta):
 	var window_size = DisplayServer.window_get_size()
@@ -62,14 +62,14 @@ func handle_interactable_slot():
 	var selecting_item_slot = overlapping_type != Ingredient.IngredientType.Unknown
 	if not selecting_item_slot or not Input.is_action_just_pressed("item_slot_used"): return
 	
-	var item_dict = GridState.active_game.ingredient_count_per_type
+	var item_dict = GameState.active_game.ingredient_count_per_type
 	var overlapping_type_count = item_dict[overlapping_type]
 	if overlapping_type_count <= 0: return
 	
 	item_dict[overlapping_type] -= 1
 	
 	var is_removing_type = item_dict[overlapping_type] == 0
-	GridState.active_game.ingredient_removed.emit(overlapping_type)
+	GameState.active_game.ingredient_removed.emit(overlapping_type)
 	if is_removing_type: remove_item_type(overlapping_type)
 	else: return
 	
@@ -82,4 +82,4 @@ func remove_item_type(removed_type: Ingredient.IngredientType):
 	for i in range(removed_index+1, item_slots.size()):
 		var item_slot: RestaurantItemSlot = item_slots.values()[i]
 		item_slot.item_index -= 1
-	GridState.active_game.ingredient_count_per_type.erase(removed_type)
+	GameState.active_game.ingredient_count_per_type.erase(removed_type)

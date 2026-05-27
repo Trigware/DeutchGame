@@ -3,8 +3,8 @@ extends Node2D
 @export var points_bar: PointsBar
 
 func _ready():
-	if GridState.active_game == null: GridState.active_game = UID.init_state
-	await GridState.active_game.restaurant_game_started
+	if GameState.active_game == null: GameState.active_game = UID.init_state
+	await GameState.active_game.restaurant_game_started
 	handle_spawning()
 
 const tile_size = 24
@@ -24,8 +24,8 @@ func spawn_barrel(barrel_speed: float):
 
 const spawn_delay_range = Vector2(5, 7.5)
 const lowest_delay_multiplier = 0.65
-const barrel_min_speed = 100
-const barrel_max_speed = 215
+const barrel_min_speed = 95
+const barrel_max_speed = 145
 const barrel_show_tween_duration = 0.6
 
 func handle_spawning():

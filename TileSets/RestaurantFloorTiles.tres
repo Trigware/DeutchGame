@@ -1,0 +1,15 @@
+[gd_resource type="TileSet" format=3 uid="uid://d2jmse7iq7tiq"]
+
+[ext_resource type="Texture2D" uid="uid://bx2n3uffonhgv" path="res://Textures/RestaurantFloorTiles.png" id="1_35e6v"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p4me"]
+texture = ExtResource("1_35e6v")
+texture_region_size = Vector2i(24, 24)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[resource]
+tile_size = Vector2i(24, 24)
+sources/0 = SubResource("TileSetAtlasSource_8p4me")

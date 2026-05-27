@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bsl6hyqdyqinj" path="res://Textures/Barrel.png" id="1_smejn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ayvs4"]
-radius = 8.888715
-height = 33.33268
+radius = 7.7776256
+height = 31.110502
 
 [node name="Barrel" type="Area2D" unique_id=1468651966]
 rotation = 0.006262127
@@ -16,7 +16,7 @@ script = ExtResource("1_ayvs4")
 texture = ExtResource("1_smejn")
 
 [node name="Collider" type="CollisionShape2D" parent="." unique_id=1776513467]
-position = Vector2(0.014, 9)
+position = Vector2(0.048705116, 7.7776256)
 shape = SubResource("CapsuleShape2D_ayvs4")
 
 [connection signal="area_entered" from="." to="." method="on_area_hit_by_barrel"]

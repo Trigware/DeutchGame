@@ -51,7 +51,7 @@ func check_for_selected_slots():
 		actual_slot_combined_height = item_slot.actual_slot_combined_height
 		slots_x[item_slot.item_slot_team] = item_slot.position.x
 		var hovering_over_slot = item_slot.is_mouse_inside_slot()
-		var item_belongs_to_current_team = item_slot.item_slot_team == GridState.active_game.player_turn
+		var item_belongs_to_current_team = item_slot.item_slot_team == GameState.active_game.player_turn
 		var has_no_item_of_type = item_slot.get_item_count() == 0
 		
 		var slot_modulate = Color.WHITE
@@ -113,7 +113,7 @@ func stopped_affected_tiles_highlight():
 	var hovered_coord = tiles.get_hovered_tile()
 	if not hovered_coord in highlighted_tiles or not prev_frame_was_dragging: return
 	
-	GridState.active_game.decrement_power_up(latest_selected_power_up)
+	GameState.active_game.decrement_power_up(latest_selected_power_up)
 	var used_tricky_item = latest_selected_power_up == GridState.PowerUpType.TrickyItem
 	if used_tricky_item:
 		handle_trick_question_placement(hovered_coord)
@@ -121,48 +121,48 @@ func stopped_affected_tiles_highlight():
 	handle_regular_power_up_placement(hovered_coord)
 
 func handle_regular_power_up_placement(hovered_coord: Vector2i):
-	var piece: Piece = GridState.active_game.piece_locations[hovered_coord]
+	var piece: Piece = GameState.active_game.piece_locations[hovered_coord]
 	var status_effect = power_up_effect_equivalent[latest_selected_power_up]
 	piece.add_effect(status_effect)
 	tiles.draw_piece_to_board(piece, hovered_coord)
 
 func handle_trick_question_placement(hovered_coord: Vector2i):
-	var trick_color = GridState.active_game.get_inverted_turn()
+	var trick_color = GameState.active_game.get_inverted_turn()
 	var trick_question = SpecialTile.trick(trick_color)
-	GridState.active_game.special_tiles[hovered_coord] = trick_question
+	GameState.active_game.special_tiles[hovered_coord] = trick_question
 	var trick_atlas = trick_question.get_atlas()
 	special_tile_map.set_cell(hovered_coord, 1, trick_atlas)
 
 const current_team_power_ups : Array[GridState.PowerUpType] = [GridState.PowerUpType.SpeedBoost, GridState.PowerUpType.Shield]
 
 func update_highlighted_tiles():
-	if selected_power_up in current_team_power_ups: update_affected_pieces_of_team(GridState.active_game.player_turn)
+	if selected_power_up in current_team_power_ups: update_affected_pieces_of_team(GameState.active_game.player_turn)
 	match selected_power_up:
 		GridState.PowerUpType.OpponentSlowness:
-			var inverted_turn = GridState.active_game.get_inverted_turn()
+			var inverted_turn = GameState.active_game.get_inverted_turn()
 			update_affected_pieces_of_team(inverted_turn)
 		GridState.PowerUpType.WizardFreeze: update_affected_wizard_pieces()
 		GridState.PowerUpType.TrickyItem: update_tiles_with_tricky_item_positions()
 
 func update_affected_pieces_of_team(team_relation: SpecialTile.TeamRelation):
 	highlighted_tiles = []
-	for tile_coord: Vector2i in GridState.active_game.piece_locations.keys():
-		var piece: Piece = GridState.active_game.piece_locations[tile_coord]
+	for tile_coord: Vector2i in GameState.active_game.piece_locations.keys():
+		var piece: Piece = GameState.active_game.piece_locations[tile_coord]
 		var piece_is_fainted = piece.has_status_effect(Effect.StatusEffect.Fainted)
 		if piece.team_relation != team_relation or piece.kind == GridState.PieceType.Horse or piece_is_fainted: continue
 		highlighted_tiles.append(tile_coord)
 
 func update_affected_wizard_pieces():
 	highlighted_tiles = []
-	for tile_coord: Vector2i in GridState.active_game.piece_locations.keys():
-		var piece: Piece = GridState.active_game.piece_locations[tile_coord]
+	for tile_coord: Vector2i in GameState.active_game.piece_locations.keys():
+		var piece: Piece = GameState.active_game.piece_locations[tile_coord]
 		if piece.belongs_to_playing() or piece.kind != GridState.PieceType.Wizard: continue
 		highlighted_tiles.append(tile_coord)
 
 func update_tiles_with_tricky_item_positions():
 	highlighted_tiles = []
-	for tile_coord: Vector2i in GridState.active_game.piece_locations.keys():
-		var piece: Piece = GridState.active_game.piece_locations[tile_coord]
+	for tile_coord: Vector2i in GameState.active_game.piece_locations.keys():
+		var piece: Piece = GameState.active_game.piece_locations[tile_coord]
 		var is_frozen = piece.has_status_effect(Effect.StatusEffect.Frozen)
 		var is_fainted = piece.has_status_effect(Effect.StatusEffect.Fainted)
 		var is_not_sword = piece.kind != GridState.PieceType.Sword
@@ -173,8 +173,8 @@ func update_tiles_with_tricky_item_positions():
 		for move_dest: Vector2i in sword_moves.keys():
 			var move: Move = sword_moves[move_dest]
 			var expensive_move = move.move_cost == Move.MoveCost.FastTrick
-			var place_has_piece = move_dest in GridState.active_game.piece_locations
-			var place_has_special_tile = move_dest in GridState.active_game.special_tiles
+			var place_has_piece = move_dest in GameState.active_game.piece_locations
+			var place_has_special_tile = move_dest in GameState.active_game.special_tiles
 			var place_invalid = expensive_move or place_has_piece or place_has_special_tile
 			if place_invalid: continue
 			highlighted_tiles.append(move_dest)

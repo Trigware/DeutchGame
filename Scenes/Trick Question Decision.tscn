@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dp6cflpcbxoaq" path="res://Scenes/Task Wheel.tscn" id="1_bg8bi"]
 [ext_resource type="Script" uid="uid://dli7ks62ft5jj" path="res://Scripts/TrickQuestionDecision.gd" id="1_x0okj"]
+[ext_resource type="PackedScene" uid="uid://c0et5rb4hx584" path="res://Scenes/Tiled Diagonals.tscn" id="2_n3gfl"]
 [ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_xf8lj"]
 [ext_resource type="PackedScene" uid="uid://dxklliqwa653e" path="res://Scenes/ReadyButton.tscn" id="4_2mcop"]
 
@@ -13,6 +14,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x0okj")
+
+[node name="Tiled Diagonals" parent="." unique_id=279757855 instance=ExtResource("2_n3gfl")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+line_color = Color(0.44, 0.44, 0.44, 1)
+texture_scale = Vector2(20, 20)
+value_offset = 0.045
+pattern_speed = 0.115
 
 [node name="HeaderText" type="RichTextLabel" parent="." unique_id=1796555029]
 layout_mode = 0

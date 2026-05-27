@@ -37,7 +37,7 @@ const win_message: Dictionary[GridState.GameEndType, String] = {
 
 func display_menu():
 	if tween_active: return
-	var game_paused = GridState.active_game.game_end_type == GridState.GameEndType.Ongoing
+	var game_paused = GameState.active_game.game_end_type == GridState.GameEndType.Ongoing
 	extra_info.visible = not game_paused
 	handle_tween()
 	if not game_paused:
@@ -54,9 +54,9 @@ func handle_tween():
 	tween_active = false
 
 func display_menu_for_game_end():
-	GridState.active_game.invert_turn()
-	var winning_team = GridState.active_game.player_turn
-	var team_name = GridState.active_game.team_names[winning_team]
+	GameState.active_game.invert_turn()
+	var winning_team = GameState.active_game.player_turn
+	var team_name = GameState.active_game.team_names[winning_team]
 	title.text = "Vyhrál tým \"" + team_name + "\"!"
 	menu.modulate = GridState.team_modulate[winning_team]
-	description.text = win_message[GridState.active_game.game_end_type]
+	description.text = win_message[GameState.active_game.game_end_type]

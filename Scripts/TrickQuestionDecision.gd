@@ -31,8 +31,8 @@ func _ready():
 	header_pos_tween(1)
 	
 	var current_turn = SpecialTile.TeamRelation.Red
-	if GridState.active_game != null: current_turn = GridState.active_game.player_turn
-	var playing_team_member_count = GridState.active_game.team_member_count[current_turn]
+	if GameState.active_game != null: current_turn = GameState.active_game.player_turn
+	var playing_team_member_count = GameState.active_game.team_member_count[current_turn]
 	player_wheel.number_of_segments = playing_team_member_count
 	player_wheel.wheel_spin_finished.connect(on_player_wheel_spin_finished)
 	minigame_wheel.wheel_spin_finished.connect(on_minigames_wheel_spin_finished)
@@ -97,8 +97,9 @@ func after_spin_wheel_tween(wheel: FortuneWheel, goes_left: bool):
 
 func on_player_wheel_spin_finished():
 	await after_spin_wheel_tween(player_wheel, true)
-	minigame_wheel.tween_portion(minigame_final_pos_portion)
-	change_header_text_tweened("Výběr minihry!")
+	on_minigames_wheel_spin_finished()
+	#minigame_wheel.tween_portion(minigame_final_pos_portion)
+	#change_header_text_tweened("Výběr minihry!")
 
 const ready_button_y_move_tween_dur = 0.75
 const ready_final_tween_y = 0.5
@@ -107,7 +108,7 @@ var can_press_ready = false
 var time_since_able_to_press_ready = 0
 
 func on_minigames_wheel_spin_finished():
-	after_spin_wheel_tween(minigame_wheel, false)
+	#after_spin_wheel_tween(minigame_wheel, false)
 	change_header_text_tweened("Stiskněte READY!")
 	await get_tree().create_timer(ready_tween_delay).timeout
 	await create_tween().tween_property(self, "ready_button_y_portion", ready_final_tween_y, ready_button_y_move_tween_dur).\

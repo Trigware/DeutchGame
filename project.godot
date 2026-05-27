@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Deutch Game"
-run/main_scene="uid://dci365yxq04no"
+run/main_scene="uid://bq8uq3y6war4f"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]
 
-Overlay="*uid://ng4upc00l53v"
+GameState="*uid://be4tqm3t6kja4"
 UID="*uid://b1wrjvym1fuln"
+Overlay="*uid://ng4upc00l53v"
 Audio="*uid://jslau24ok4jl"
 
 [global_group]

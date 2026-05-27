@@ -1,3 +1,4 @@
+class_name BoardRoot
 extends Node2D
 
 @onready var tiles = $Tiles
@@ -14,9 +15,9 @@ const horse_offsets : Array[Vector2i] =\
 	[Vector2i(-1, -2), Vector2i(1, -2), Vector2i(-2, -1), Vector2i(2, -1),\
 	Vector2i(-2, 1), Vector2i(2, 1), Vector2i(-1, 2), Vector2i(1, 2)]
 
-func has_piece(tile: Vector2i) -> bool: return tile in GridState.active_game.piece_locations.keys()
+func has_piece(tile: Vector2i) -> bool: return tile in GameState.active_game.piece_locations.keys()
 func get_possible_moves(tile: Vector2i):
-	var piece: Piece = GridState.active_game.piece_locations[tile]
+	var piece: Piece = GameState.active_game.piece_locations[tile]
 	var is_frozen = piece.has_status_effect(Effect.StatusEffect.Frozen)
 	if is_frozen: return {}
 	match piece.kind:
@@ -111,57 +112,73 @@ func get_possible_horse_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 		result[dest_pos] = move
 	return result
 
+func is_capturing(tile):
+	return tile in GameState.active_game.piece_locations
+
 func is_valid_tile(piece: Piece, tile) -> bool:
 	var out_of_bounds = tiles.get_cell_source_id(tile) == -1
-	var is_in_wall = tile in GridState.active_game.special_tiles and\
-		GridState.active_game.special_tiles[tile].kind == SpecialTile.TileType.Wall
+	var is_in_wall = tile in GameState.active_game.special_tiles and\
+		GameState.active_game.special_tiles[tile].kind == SpecialTile.TileType.Wall
 	
-	var capturing_piece = tile in GridState.active_game.piece_locations
-	var has_same_team_piece = capturing_piece and GridState.active_game.piece_locations[tile].team_relation == piece.team_relation
+	var capturing_piece = tile in GameState.active_game.piece_locations
+	var has_same_team_piece = capturing_piece and GameState.active_game.piece_locations[tile].team_relation == piece.team_relation
 	
 	var is_in_grave = is_tile_in_grave(tile)
-	var attempting_to_capture_protected = capturing_piece and GridState.active_game.piece_locations[tile].has_status_effect(Effect.StatusEffect.Protected)
-	var is_capture_frozen = capturing_piece and GridState.active_game.piece_locations[tile].has_status_effect(Effect.StatusEffect.Frozen)
+	var attempting_to_capture_protected = capturing_piece and GameState.active_game.piece_locations[tile].has_status_effect(Effect.StatusEffect.Protected)
+	var is_capture_frozen = capturing_piece and GameState.active_game.piece_locations[tile].has_status_effect(Effect.StatusEffect.Frozen)
 	
-	var is_invalid = out_of_bounds or is_in_wall or has_same_team_piece or is_in_grave or attempting_to_capture_protected or is_capture_frozen
+	var is_invalid = out_of_bounds or is_in_wall or has_same_team_piece or is_in_grave\
+		or attempting_to_capture_protected or is_capture_frozen
 	return not is_invalid
 
-func is_tile_in_grave(tile: Vector2i) -> bool: return tile in GridState.active_game.grave_tiles
+func is_tile_in_grave(tile: Vector2i) -> bool: return tile in GameState.active_game.grave_tiles
 func is_wizard_reviving(tile) -> bool:
 	var is_tile_grave = is_tile_in_grave(tile)
 	var in_piece = is_in_piece(tile)
 	if not in_piece or not is_tile_grave: return false
-	var revivee: Piece = GridState.active_game.piece_locations[tile]
+	var revivee: Piece = GameState.active_game.piece_locations[tile]
 	var effect_over = revivee.is_effect_over(Effect.StatusEffect.Fainted)
 	return effect_over
 
 func is_in_piece(tile) -> bool:
-	return tile in GridState.active_game.piece_locations.keys()
+	return tile in GameState.active_game.piece_locations.keys()
 
 func is_stopping_path(piece: Piece, tile):
-	var is_capturing_piece = tile in GridState.active_game.piece_locations and\
-		GridState.active_game.piece_locations[tile].team_relation != piece.team_relation
+	var is_capturing_piece = tile in GameState.active_game.piece_locations and\
+		GameState.active_game.piece_locations[tile].team_relation != piece.team_relation
 	if is_capturing_piece: return true
 	if is_in_trick_question(tile): return true
 	return false
 
 func is_in_trick_question(tile):
-	var in_special_tile = tile in GridState.active_game.special_tiles
+	var in_special_tile = tile in GameState.active_game.special_tiles
+	var capturing_piece = is_capturing(tile)
+	if capturing_piece: return true
 	if not in_special_tile: return false
-	var special_tile: SpecialTile = GridState.active_game.special_tiles[tile]
+	
+	var special_tile: SpecialTile = GameState.active_game.special_tiles[tile]
 	var is_tricky_question = special_tile.kind == SpecialTile.TileType.TrickQuestion
 	if not is_tricky_question: return false
+	
 	var is_general_question = special_tile.relation == SpecialTile.TeamRelation.Other
-	var is_same_color = special_tile.relation == GridState.active_game.player_turn
+	var is_same_color = special_tile.relation == GameState.active_game.player_turn
 	var is_correct_color = is_general_question or is_same_color
 	return is_correct_color
 
 func is_lack_of_moves_win_condition_valid() -> bool:
 	var number_of_valid_pieces = 0
-	for piece_coord: Vector2i in GridState.active_game.piece_locations:
-		var piece: Piece = GridState.active_game.piece_locations[piece_coord]
-		var opponent_piece = piece.team_relation != GridState.active_game.player_turn
+	for piece_coord: Vector2i in GameState.active_game.piece_locations:
+		var piece: Piece = GameState.active_game.piece_locations[piece_coord]
+		var opponent_piece = piece.team_relation != GameState.active_game.player_turn
 		var piece_has_fainted = Effect.StatusEffect.Fainted in piece.status_effects
 		if opponent_piece or piece_has_fainted: continue
 		number_of_valid_pieces += 1
 	return number_of_valid_pieces == 0
+
+var returned_after_minigame = false
+
+func push_piece():
+	var main_loop = Engine.get_main_loop()
+	returned_after_minigame = true
+	for i in range(2): await main_loop.process_frame
+	tiles.push_piece()

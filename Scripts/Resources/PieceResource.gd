@@ -66,7 +66,7 @@ func flag_kind() -> SpecialTile.TeamRelation:
 	return SpecialTile.TeamRelation.Blue if team_relation == SpecialTile.TeamRelation.Red\
 		else SpecialTile.TeamRelation.Red
 
-func belongs_to_playing(): return team_relation == GridState.active_game.player_turn
+func belongs_to_playing(): return team_relation == GameState.active_game.player_turn
 
 const flag_effect_dict : Dictionary[SpecialTile.TeamRelation, Effect.StatusEffect] = {
 	SpecialTile.TeamRelation.Red: Effect.StatusEffect.RedFlag,
