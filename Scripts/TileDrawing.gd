@@ -148,7 +148,6 @@ func update_selected_tile():
 	var selecting_tile = is_clicking and not items.dragging_power_up
 	if not selecting_tile: return
 	
-	
 	if selector.visible: play_move_if_possible()
 	hide_previous_hovered_tile()
 	var selection_cancelled = selected_tile == hovered_tile
@@ -242,11 +241,11 @@ func play_move_if_possible():
 		return
 	play_move()
 
-func play_move(ignore_trick_question = false):
-	var current_move: Move = GameState.active_game.latest_move if ignore_trick_question\
+func play_move(called_after_event = false):
+	var current_move: Move = GameState.active_game.latest_move if called_after_event\
 		else possible_moves[hovered_tile]
 	GameState.active_game.latest_move = current_move
-	if not ignore_trick_question: GameState.active_game.next_turn()
+	if not called_after_event: GameState.active_game.next_turn()
 	var piece_locations = GameState.active_game.piece_locations
 	var moved_piece: Piece = piece_locations[selected_tile]
 	var diagonal_color = GridState.diagonals_modulate[GameState.active_game.player_turn]
@@ -255,9 +254,9 @@ func play_move(ignore_trick_question = false):
 	var affected_piece: Piece = null
 	var has_captured_piece = hovered_tile in piece_locations
 	if has_captured_piece: affected_piece = piece_locations[hovered_tile]
-	var entered_trick_question = has_entered_tile_with_trick(current_move)
-	if entered_trick_question and not trick_questions_disabled and not ignore_trick_question:
-		handle_trick_question()
+	var handle_event = not questions_minigames_disabled and not called_after_event
+	if handle_event:
+		handle_pre_move_event(current_move)
 		return
 	
 	match current_move.attribute:
@@ -386,10 +385,13 @@ var trick_question_transition_duration = 0.35
 const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
-const trick_questions_disabled = false
+const questions_minigames_disabled = false
 const after_trick_question_scene = UID.restaurant_minigame #UID.trick_question_decision
 
-func handle_trick_question():
+func handle_pre_move_event(current_move: Move):
+	var entered_trick_question = has_entered_tile_with_trick(current_move)
+	var next_scene = after_trick_question_scene if entered_trick_question else UID.question_scene
+	
 	var center_grid_tile = (board_tile_count - Vector2.ONE) / 2
 	var offset_from_center = Vector2(selected_tile) - center_grid_tile
 	var absolute_offset = offset_from_center * tile_size * scale
@@ -399,7 +401,9 @@ func handle_trick_question():
 	GameState.active_game.trick_move_destination = hovered_tile
 	selected_tile = hovered_tile
 	
-	Overlay.switch_scene(after_trick_question_scene)
+	var instantiated_scene = next_scene.instantiate()
+	if instantiated_scene is Question: instantiated_scene.question_total_time = Move.move_cost_duration[current_move.move_cost]
+	Overlay.switch_scene(instantiated_scene)
 	make_camera_component_tween(absolute_offset)
 	make_camera_component_tween()
 

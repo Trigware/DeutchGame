@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform vec2 pixel_count;
+uniform vec2 pixel_count = vec2(1000, 1000);
 uniform vec2 texture_size;
 uniform vec2 texture_scale;
 uniform float diagonal_lines;

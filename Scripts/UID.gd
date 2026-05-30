@@ -31,6 +31,13 @@ const checkmark_uid = "uid://dnhuyu2114nfn"
 const timer_clock_uid = "uid://bi2k7iq18pxnx"
 const food_spritesheet_uid = "uid://ccvqa2ejeeolv"
 var board_scene = load("uid://bq8uq3y6war4f")
+const question_scene = preload("uid://bmpo8accv5c6")
+const ingredients_question := preload("uid://646kf0uhtr74")
+const question_ingredient_scene := preload("uid://cl6fwuolftma6")
 
 const board_music := preload("uid://27wodk4ei5rl")
 const restaurant_music := preload("uid://duu7222knu0pl")
+
+const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = {
+	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74")
+}

@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://b7itb1gmis7pn"]
+
+[ext_resource type="Script" uid="uid://bgkhkiwtksou5" path="res://Scripts/QuestionButton.gd" id="1_8bxxr"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_p3102"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_a506e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8bxxr"]
+font = ExtResource("2_a506e")
+font_size = 32
+font_color = Color(1, 0.72, 0.72, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a506e"]
+size = Vector2(191, 50.5)
+
+[node name="Button" type="Control" unique_id=295966951]
+self_modulate = Color(1, 0.4392157, 0.4392157, 1)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 703.44867
+offset_top = 817.7998
+offset_right = 910.94867
+offset_bottom = 868.8018
+scale = Vector2(2.70054, 2.70054)
+script = ExtResource("1_8bxxr")
+button_type = 2
+
+[node name="Button Shadow" type="NinePatchRect" parent="." unique_id=1538621730]
+modulate = Color(0.012617188, 0.0017662158, 0.0017662158, 1)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 194.5
+offset_bottom = 55.5
+texture = ExtResource("1_p3102")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Button Base" type="NinePatchRect" parent="." unique_id=4120028]
+modulate = Color(0.65882355, 0.19607843, 0.19607843, 1)
+layout_mode = 0
+offset_right = 190.5
+offset_bottom = 51.5
+texture = ExtResource("1_p3102")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Label" type="Label" parent="." unique_id=874803336]
+modulate = Color(1.0088235, 0.30024508, 0.30024508, 1)
+layout_mode = 0
+offset_top = 0.5
+offset_right = 191.0
+offset_bottom = 51.0
+text = "Špatně"
+label_settings = SubResource("LabelSettings_8bxxr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mouse Area" type="Area2D" parent="." unique_id=1289460465]
+
+[node name="Collider" type="CollisionShape2D" parent="Mouse Area" unique_id=410293054]
+position = Vector2(95, 25.75)
+shape = SubResource("RectangleShape2D_a506e")

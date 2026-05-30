@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://du22gaoqrlry7"]
+
+[ext_resource type="Shader" uid="uid://bmlwx4lgvy1m7" path="res://Shaders/TilingDiagonals.gdshader" id="1_cq3n1"]
+
+[resource]
+shader = ExtResource("1_cq3n1")
+shader_parameter/pixel_count = Vector2(0, 0)
+shader_parameter/texture_size = Vector2(2.7948298, 1.2848394)
+shader_parameter/texture_scale = Vector2(1, 1)
+shader_parameter/diagonal_lines = 19.075
+shader_parameter/gap_size = 0.525
+shader_parameter/pattern_repeated = 5.546706660000017
+shader_parameter/line_color = Vector4(0, 0, 0, 0)
+shader_parameter/gap_color = Vector4(0, 0, 0, 0)

@@ -1,21 +1,10 @@
 [gd_scene format=3 uid="uid://c0et5rb4hx584"]
 
-[ext_resource type="Shader" uid="uid://bmlwx4lgvy1m7" path="res://Shaders/TilingDiagonals.gdshader" id="1_3h15j"]
+[ext_resource type="Material" uid="uid://du22gaoqrlry7" path="res://Shaders/TiledDiagonals.tres" id="1_c04io"]
 [ext_resource type="Script" uid="uid://rbq0xydnvtfu" path="res://Scripts/TiledDiagonals.gd" id="2_c04io"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_c04io"]
-shader = ExtResource("1_3h15j")
-shader_parameter/pixel_count = Vector2(0, 0)
-shader_parameter/texture_size = Vector2(2.7948298, 1.2848394)
-shader_parameter/texture_scale = Vector2(1, 1)
-shader_parameter/diagonal_lines = 19.075
-shader_parameter/gap_size = 0.525
-shader_parameter/pattern_repeated = 33.375916829444165
-shader_parameter/line_color = Vector4(0, 0, 0, 0)
-shader_parameter/gap_color = Vector4(0, 0, 0, 0)
-
 [node name="Tiled Diagonals" type="ColorRect" unique_id=279757855]
-material = SubResource("ShaderMaterial_c04io")
+material = ExtResource("1_c04io")
 offset_right = 111.7932
 offset_bottom = 51.393578
 rotation = -5.410683e-05

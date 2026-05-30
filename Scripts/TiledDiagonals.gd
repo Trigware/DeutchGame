@@ -1,4 +1,5 @@
 @tool
+class_name TiledDiagonals
 extends ColorRect
 
 enum UniformType {

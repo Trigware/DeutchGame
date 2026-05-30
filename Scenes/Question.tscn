@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://bmpo8accv5c6"]
+
+[ext_resource type="PackedScene" uid="uid://c0et5rb4hx584" path="res://Scenes/Tiled Diagonals.tscn" id="1_snxqv"]
+[ext_resource type="Script" uid="uid://x2fhmljsr16d" path="res://Scripts/Question.gd" id="1_sqkgd"]
+[ext_resource type="Shader" uid="uid://bmlwx4lgvy1m7" path="res://Shaders/TilingDiagonals.gdshader" id="3_3p72k"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="3_cwy3f"]
+[ext_resource type="PackedScene" uid="uid://xsth1e3iphgi" path="res://Scenes/TimerBar.tscn" id="5_pnglj"]
+[ext_resource type="PackedScene" uid="uid://b7itb1gmis7pn" path="res://Scenes/Button.tscn" id="6_111x1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pnglj"]
+shader = ExtResource("3_3p72k")
+shader_parameter/pixel_count = Vector2(1000, 1000)
+shader_parameter/texture_size = Vector2(28.8, 16.2)
+shader_parameter/texture_scale = Vector2(20, 20)
+shader_parameter/diagonal_lines = 20.0
+shader_parameter/gap_size = 0.441
+shader_parameter/pattern_repeated = 1.5863940861111099
+shader_parameter/line_color = Vector4(0, 0, 0, 0)
+shader_parameter/gap_color = Vector4(0, 0, 0, 0)
+
+[node name="Question" type="Control" unique_id=171311678]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sqkgd")
+
+[node name="Tiled Diagonals" parent="." unique_id=279757855 instance=ExtResource("1_snxqv")]
+material = SubResource("ShaderMaterial_pnglj")
+layout_mode = 1
+offset_right = 1152.0
+offset_bottom = 648.0
+diagonal_lines = 20.0
+gap_size = 0.441
+line_color = Color(0.35875002, 0.287, 0.41, 1)
+pixel_count = Vector2i(2048, 2048)
+texture_scale = Vector2(20, 20)
+value_offset = 0.038
+pattern_speed = 0.035
+metadata/_edit_use_anchors_ = true
+
+[node name="TimeLeft" type="RichTextLabel" parent="." unique_id=1839829553]
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 649.0
+theme_override_fonts/normal_font = ExtResource("3_cwy3f")
+bbcode_enabled = true
+text = "0.0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="TimerBar" parent="." unique_id=1926639516 instance=ExtResource("5_pnglj")]
+
+[node name="Question Title" type="RichTextLabel" parent="." unique_id=1351925217]
+layout_mode = 0
+offset_top = -176.0
+offset_right = 1153.0
+offset_bottom = 645.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/normal_font = ExtResource("3_cwy3f")
+bbcode_enabled = true
+text = "[font_size=140]DEUTCH"
+horizontal_alignment = 1
+
+[node name="Answer Button" parent="." unique_id=295966951 instance=ExtResource("6_111x1")]
+layout_mode = 0
+offset_top = 817.7998
+offset_right = 1597.3973
+offset_bottom = 868.7998
+button_type = 1

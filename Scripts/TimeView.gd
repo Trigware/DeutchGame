@@ -6,7 +6,7 @@ extends CanvasLayer
 @onready var time_label = $Time
 @onready var multiplier_label = $Multiplier
 
-const minigame_duration: float = 1
+const minigame_duration: float = 240
 var time_until_end: float = minigame_duration
 const start_time_turn_red = 120
 

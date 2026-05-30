@@ -152,9 +152,10 @@ func is_stopping_path(piece: Piece, tile):
 
 func is_in_trick_question(tile):
 	var in_special_tile = tile in GameState.active_game.special_tiles
-	var capturing_piece = is_capturing(tile)
-	if capturing_piece: return true
 	if not in_special_tile: return false
+	
+	var in_flag_origin = tile in GameState.active_game.flag_origin.values()
+	if in_flag_origin: return true
 	
 	var special_tile: SpecialTile = GameState.active_game.special_tiles[tile]
 	var is_tricky_question = special_tile.kind == SpecialTile.TileType.TrickQuestion
