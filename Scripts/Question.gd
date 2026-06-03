@@ -143,7 +143,11 @@ func on_show_answers(interacted_with_answer_button = false):
 	create_question_button(QuestionButton.ButtonType.Correct, null, 0)
 	create_question_button(QuestionButton.ButtonType.Incorrect, null, 1)
 
+var evaluating_question = false
+
 func on_answer_evaluate(answered_correctly: bool):
+	if evaluating_question: return
+	evaluating_question = true
 	var scene_modifier = func(board_scene: BoardRoot): board_scene.push_piece()
 	var used_modifier = scene_modifier if answered_correctly else func(board_scene: BoardRoot): board_scene.returned_after_minigame = true
 	Overlay.switch_scene_def(UID.board_scene, used_modifier)

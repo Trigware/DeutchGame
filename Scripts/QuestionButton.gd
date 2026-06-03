@@ -106,7 +106,7 @@ const after_press_tween_duration = 0.6
 const final_y_progress_after_press = 1.35
 
 func on_press():
-	if pressed_previously: return
+	if pressed_previously or question_root.evaluating_question: return
 	Audio.play_sound(UID.button_clicked_sfx)
 	pressed_previously = true
 	create_tween().tween_property(self, "button_relative_pos:y", final_y_progress_after_press, after_press_tween_duration).\

@@ -15,7 +15,7 @@ shader_parameter/texture_size = Vector2(28.8, 16.2)
 shader_parameter/texture_scale = Vector2(20, 20)
 shader_parameter/diagonal_lines = 20.0
 shader_parameter/gap_size = 0.5
-shader_parameter/pattern_repeated = 1.2292577577778292
+shader_parameter/pattern_repeated = 36.00836077222956
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
 
@@ -64,8 +64,10 @@ texture = ExtResource("5_emot1")
 
 [node name="Options" type="Node2D" parent="." unique_id=852328042]
 
-[node name="RedTeam" parent="Options" unique_id=1427259180 instance=ExtResource("7_7whhf")]
+[node name="RedTeam" parent="Options" unique_id=1427259180 node_paths=PackedStringArray("title_screen") instance=ExtResource("7_7whhf")]
 team_color = 0
+title_screen = NodePath("../..")
 
-[node name="BlueTeam" parent="Options" unique_id=2071148301 instance=ExtResource("7_7whhf")]
+[node name="BlueTeam" parent="Options" unique_id=2071148301 node_paths=PackedStringArray("title_screen") instance=ExtResource("7_7whhf")]
 team_color = 1
+title_screen = NodePath("../..")

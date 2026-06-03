@@ -1,3 +1,4 @@
+class_name TitleScreen
 extends Node2D
 
 @onready var info_label = $Info
@@ -29,3 +30,12 @@ func _process(_delta):
 	logo.scale = scale_multiplier * Vector2.ONE
 	logo.position.x = window_size.x / 2
 	logo.position.y = logo_height * scale_multiplier * y_logo_progress - logo_height * scale_multiplier / 2
+
+const diagonals_tween_duration = 0.8
+
+const title_screen_diagonals_red_team_color = Color("873a3aff")
+
+func diagonals_tween(team_color: SpecialTile.TeamRelation):
+	var final_color = GridState.diagonals_modulate[team_color]
+	if team_color == SpecialTile.TeamRelation.Red: final_color = title_screen_diagonals_red_team_color
+	create_tween().tween_property(tiled_diagonals, "line_color", final_color, diagonals_tween_duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)

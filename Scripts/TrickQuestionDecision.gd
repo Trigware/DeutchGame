@@ -32,7 +32,8 @@ func _ready():
 	
 	var current_turn = SpecialTile.TeamRelation.Red
 	if GameState.active_game != null: current_turn = GameState.active_game.player_turn
-	var playing_team_member_count = GameState.active_game.team_member_count[current_turn]
+	var member_count_dict = GameState.active_game.team_member_count
+	var playing_team_member_count = member_count_dict[current_turn] if current_turn in member_count_dict else 1
 	player_wheel.number_of_segments = playing_team_member_count
 	player_wheel.wheel_spin_finished.connect(on_player_wheel_spin_finished)
 	minigame_wheel.wheel_spin_finished.connect(on_minigames_wheel_spin_finished)

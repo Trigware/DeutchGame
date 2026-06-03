@@ -33,7 +33,7 @@ const team_modulate : Dictionary[SpecialTile.TeamRelation, Color] = {
 }
 
 const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
-	SpecialTile.TeamRelation.Red: Color("6b3838"),
+	SpecialTile.TeamRelation.Red: Color("853d3dff"),
 	SpecialTile.TeamRelation.Blue: Color("38546bff")
 }
 
@@ -58,10 +58,10 @@ const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
 	])
 }
 
-const team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
-	SpecialTile.TeamRelation.Red: 12,
-	SpecialTile.TeamRelation.Blue: 15
-} #placeholder
+var team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
+	SpecialTile.TeamRelation.Red: 10,
+	SpecialTile.TeamRelation.Blue: 10
+}
 
 var player_turn := SpecialTile.TeamRelation.Red
 var grave_tiles: Array[Vector2i] = []
@@ -89,15 +89,10 @@ signal ingredient_removed(ingredient_type: Ingredient.IngredientType)
 signal restaurant_game_started
 signal unlocked_all_foods
 
-const team_names : Dictionary[SpecialTile.TeamRelation, String] = {
+var team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 	SpecialTile.TeamRelation.Red: "červení",
 	SpecialTile.TeamRelation.Blue: "modří"
 } #placeholder
-
-const number_of_players: Dictionary[SpecialTile.TeamRelation, int] = {
-	SpecialTile.TeamRelation.Red: 15,
-	SpecialTile.TeamRelation.Blue: 12
-}
 
 var trick_move_origin: Vector2i
 var trick_move_destination: Vector2i

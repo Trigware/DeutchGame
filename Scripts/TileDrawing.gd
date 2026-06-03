@@ -393,7 +393,7 @@ const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
 const questions_minigames_disabled = false
-const after_trick_question_scene = UID.restaurant_minigame #UID.trick_question_decision
+const after_trick_question_scene = UID.trick_question_decision
 
 func handle_pre_move_event(current_move: Move):
 	var entered_trick_question = has_entered_tile_with_trick(current_move)
