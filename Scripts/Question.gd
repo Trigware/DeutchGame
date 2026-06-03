@@ -1,7 +1,7 @@
 class_name Question
 extends Control
 
-var question_total_time: float = 15
+var question_total_time: float = 2
 var time_left: float
 
 enum QuestionType {
@@ -23,7 +23,10 @@ const base_question_titles_y_pos = -200
 const ui_show_up_tween_duration = 0.6
 const final_question_titles_y_pos = 22
 
+var timeout_previously = false
+
 func _ready():
+	Audio.stop_music()
 	time_left = question_total_time
 	question_title.position.y = base_question_titles_y_pos
 	create_tween().tween_property(question_title, "position:y", final_question_titles_y_pos, ui_show_up_tween_duration).\
@@ -41,9 +44,14 @@ func display_time_left(delta: float):
 	var time_with_decimal = int(time_left * 10) / 10.0
 	var show_integer = time_left >= decimal_show_threshold
 	var time_label_text = str(int(time_left)) if show_integer else str(time_with_decimal)
+	
 	if time_left == 0: time_label_text = "0"
 	time_left_label.text = font_size_bbcode(time_left_font_size, time_label_text)
-	time_left = max(time_left - delta, 0)
+	if not shown_answers_early: time_left = max(time_left - delta, 0)
+	if time_left != 0 or timeout_previously: return
+	
+	timeout_previously = true
+	on_show_answers()
 
 var timeout_progress: float
 
@@ -107,6 +115,35 @@ func update_question_text():
 func font_size_bbcode(font_size: float, inner_text: String):
 	return "[font_size=" + str(font_size) + "]" + inner_text + "[/font_size]"
 
+var answer_button: QuestionButton
+
+func create_question_button(button_type: QuestionButton.ButtonType, question_subscene = null, index = 0) -> QuestionButton:
+	var question_button = UID.question_button.instantiate()
+	question_button.button_type = button_type
+	question_button.question_subscene = question_subscene
+	question_button.question_root = self
+	question_button.button_index = index
+	add_child(question_button)
+	return question_button
+
 func add_question_scene():
-	var question_subscene = UID.question_subscene_dict[question_type]
-	add_child(question_subscene.instantiate())
+	var question_subscene = UID.question_subscene_dict[question_type].instantiate()
+	add_child(question_subscene)
+	answer_button = create_question_button(QuestionButton.ButtonType.ShowAnswers, question_subscene)
+	
+	number_of_question_buttons = 1
+
+var number_of_question_buttons = 0
+var shown_answers_early = false
+
+func on_show_answers(interacted_with_answer_button = false):
+	if not interacted_with_answer_button: answer_button.on_press()
+	shown_answers_early = true
+	number_of_question_buttons = 2
+	create_question_button(QuestionButton.ButtonType.Correct, null, 0)
+	create_question_button(QuestionButton.ButtonType.Incorrect, null, 1)
+
+func on_answer_evaluate(answered_correctly: bool):
+	var scene_modifier = func(board_scene: BoardRoot): board_scene.push_piece()
+	var used_modifier = scene_modifier if answered_correctly else func(board_scene: BoardRoot): board_scene.returned_after_minigame = true
+	Overlay.switch_scene_def(UID.board_scene, used_modifier)

@@ -113,6 +113,7 @@ func stopped_affected_tiles_highlight():
 	var hovered_coord = tiles.get_hovered_tile()
 	if not hovered_coord in highlighted_tiles or not prev_frame_was_dragging: return
 	
+	Audio.play_sound(UID.power_up_sfx)
 	GameState.active_game.decrement_power_up(latest_selected_power_up)
 	var used_tricky_item = latest_selected_power_up == GridState.PowerUpType.TrickyItem
 	if used_tricky_item:

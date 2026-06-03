@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://trlib1xcwskt"]
+
+[ext_resource type="Script" uid="uid://cwlbg7a8ambyq" path="res://Scripts/TeamOption.gd" id="1_8t5h8"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_aybt0"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_owyr3"]
+[ext_resource type="Texture2D" uid="uid://bjmg8b7sc28vt" path="res://Textures/Team Name Container Rect.png" id="3_8m077"]
+[ext_resource type="PackedScene" uid="uid://cmkc6hqfb03bm" path="res://Scenes/TeamOptionButton.tscn" id="3_twp8j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8m077"]
+font = ExtResource("2_owyr3")
+font_size = 48
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="TeamOption" type="Node2D" unique_id=1427259180]
+script = ExtResource("1_8t5h8")
+
+[node name="Button" type="Control" parent="." unique_id=2007793701]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Shadow" type="NinePatchRect" parent="Button" unique_id=2041188416]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 25.0
+offset_right = 72.0
+offset_bottom = 91.0
+texture = ExtResource("1_aybt0")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Main" type="NinePatchRect" parent="Button" unique_id=1711991240]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 73.0
+offset_bottom = 91.0
+texture = ExtResource("1_aybt0")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Label" type="Label" parent="Button" unique_id=1956149070]
+layout_mode = 0
+offset_top = 15.0
+offset_right = 73.0
+offset_bottom = 82.0
+text = "10"
+label_settings = SubResource("LabelSettings_8m077")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button Left" parent="Button" unique_id=285152658 instance=ExtResource("3_twp8j")]
+layout_mode = 1
+offset_left = 19.0
+offset_top = 81.00001
+offset_right = 19.0
+offset_bottom = 81.00001
+rotation = 4.712389
+scale = Vector2(0.2, 0.2)
+
+[node name="Button Right" parent="Button" unique_id=329204363 instance=ExtResource("3_twp8j")]
+layout_mode = 1
+offset_left = 54.0
+offset_top = 66.0
+offset_right = 54.0
+offset_bottom = 66.0
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+
+[node name="Team Name" type="Control" parent="." unique_id=114160366]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1.0
+offset_top = -2.0
+offset_right = 39.0
+offset_bottom = 38.0
+
+[node name="Container Shadow" type="NinePatchRect" parent="Team Name" unique_id=498366991]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+layout_mode = 0
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 78.0
+offset_bottom = 20.0
+texture = ExtResource("3_8m077")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Container" type="NinePatchRect" parent="Team Name" unique_id=1751144370]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -9.0
+offset_right = 75.0
+offset_bottom = 17.0
+texture = ExtResource("3_8m077")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Team Name Input" type="LineEdit" parent="Team Name" unique_id=1328263422]
+layout_mode = 0
+offset_left = -80.0
+offset_top = -8.0
+offset_right = 151.0
+offset_bottom = 18.0
+theme_override_fonts/font = ExtResource("2_owyr3")
+placeholder_text = "jméno týmu"
+alignment = 1
+max_length = 30
+editable = false
+expand_to_text_length = true
+flat = true
+secret_character = "*"

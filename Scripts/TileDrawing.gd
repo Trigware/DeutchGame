@@ -22,11 +22,18 @@ var possible_moves: Dictionary
 func _ready(): load_init_state()
 func load_init_state():
 	if not board.returned_after_minigame: GameState.active_game = UID.init_state
+	if GameState.active_game == null: GameState.active_game = UID.init_state
 	GameState.active_game.grid_tiles = self
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
 	load_kind_of_tile(GameState.active_game.special_tiles)
 	tiled_diagonals.line_color = GameState.active_game.diagonals_modulate[GameState.active_game.player_turn]
 	setup_power_ups_at_start()
+	if board.returned_after_minigame: handle_after_minigame_return()
+
+func handle_after_minigame_return():
+	var was_task_successful = board.task_was_successful
+	var played_sfx = UID.task_success_sfx if was_task_successful else UID.task_failure_sfx
+	Audio.play_sound(played_sfx)
 
 func setup_power_ups_at_start():
 	for tile_coord: Vector2i in GameState.active_game.power_up_tiles:

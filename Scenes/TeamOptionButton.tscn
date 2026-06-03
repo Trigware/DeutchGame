@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cmkc6hqfb03bm"]
+
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_ob80s"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_iosro"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_eimlo"]
+font = ExtResource("2_iosro")
+font_size = 96
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(3, 3)
+
+[node name="Team Button" type="Control" unique_id=285152658]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="NinePatchRect" parent="." unique_id=950784464]
+layout_mode = 0
+offset_right = 75.0
+offset_bottom = 75.0
+texture = ExtResource("1_ob80s")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Arrow" type="Label" parent="." unique_id=1714659651]
+layout_mode = 0
+offset_top = -8.0
+offset_right = 83.0
+offset_bottom = 122.0
+text = "^"
+label_settings = SubResource("LabelSettings_eimlo")
+horizontal_alignment = 1
+vertical_alignment = 1

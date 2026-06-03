@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtn0x1gqt7s37"
-path="res://.godot/imported/Tiles.png-884391f8ffa09632c42b8abb71cd4f47.ctex"
+uid="uid://6m335yxqnns8"
+path="res://.godot/imported/SachovlajkyLogo.png-75f66212562adc5e910ae0e02f5c8b8f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Tiles.png"
-dest_files=["res://.godot/imported/Tiles.png-884391f8ffa09632c42b8abb71cd4f47.ctex"]
+source_file="res://Textures/SachovlajkyLogo.png"
+dest_files=["res://.godot/imported/SachovlajkyLogo.png-75f66212562adc5e910ae0e02f5c8b8f.ctex"]
 
 [params]
 

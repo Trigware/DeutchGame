@@ -23,5 +23,8 @@ func switch_scene(next_scene, visibility_change_duration = default_visibility_di
 	get_tree().change_scene_to_node(switched_scene)
 	await tween_alpha(show_alpha, visibility_change_duration)
 
+func switch_scene_def(next_scene, scene_modifier = null):
+	await switch_scene(next_scene, default_visibility_diff, default_inbetween_duration, scene_modifier)
+
 func tween_alpha(final_alpha, duration: float = default_visibility_diff):
 	await create_tween().tween_property(self, "alpha_value", final_alpha, duration).set_ease(Tween.EASE_IN_OUT).finished

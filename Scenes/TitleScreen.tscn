@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bpgi4bffsy83i"]
+
+[ext_resource type="Script" uid="uid://cow3b06c3eups" path="res://Scripts/TitleScreen.gd" id="1_n15yj"]
+[ext_resource type="PackedScene" uid="uid://c0et5rb4hx584" path="res://Scenes/Tiled Diagonals.tscn" id="1_uebgo"]
+[ext_resource type="Shader" uid="uid://bmlwx4lgvy1m7" path="res://Shaders/TilingDiagonals.gdshader" id="2_vmg2h"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="3_8l4an"]
+[ext_resource type="Texture2D" uid="uid://6m335yxqnns8" path="res://Textures/SachovlajkyLogo.png" id="5_emot1"]
+[ext_resource type="PackedScene" uid="uid://cqydhxxn3q6q3" path="res://Scenes/PlayButton.tscn" id="6_i5sur"]
+[ext_resource type="PackedScene" uid="uid://trlib1xcwskt" path="res://Scenes/TeamOption.tscn" id="7_7whhf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8l4an"]
+shader = ExtResource("2_vmg2h")
+shader_parameter/pixel_count = Vector2(1000, 1000)
+shader_parameter/texture_size = Vector2(28.8, 16.2)
+shader_parameter/texture_scale = Vector2(20, 20)
+shader_parameter/diagonal_lines = 20.0
+shader_parameter/gap_size = 0.5
+shader_parameter/pattern_repeated = 1.2292577577778292
+shader_parameter/line_color = Vector4(0, 0, 0, 0)
+shader_parameter/gap_color = Vector4(0, 0, 0, 0)
+
+[node name="Title Screen" type="Node2D" unique_id=1320341074]
+script = ExtResource("1_n15yj")
+
+[node name="Tiled Diagonals" parent="." unique_id=279757855 instance=ExtResource("1_uebgo")]
+material = SubResource("ShaderMaterial_8l4an")
+offset_right = 1152.0
+offset_bottom = 648.0
+diagonal_lines = 20.0
+gap_size = 0.5
+line_color = Color(0.41, 0.41, 0.41, 1)
+pixel_count = Vector2i(2048, 2048)
+texture_scale = Vector2(20, 20)
+value_offset = 0.038
+pattern_speed = 0.035
+metadata/_edit_use_anchors_ = true
+
+[node name="Info" type="RichTextLabel" parent="." unique_id=1863253092]
+offset_top = 4.0
+offset_right = 1152.0
+offset_bottom = 649.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/normal_font = ExtResource("3_8l4an")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "verze 1.0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Logo" type="Node2D" parent="." unique_id=630993303]
+position = Vector2(573, 132)
+
+[node name="Shadow" type="Sprite2D" parent="Logo" unique_id=790056484]
+modulate = Color(0.012617188, 0.012617188, 0.012617188, 1)
+position = Vector2(3, 3)
+texture = ExtResource("5_emot1")
+
+[node name="Main" type="Sprite2D" parent="Logo" unique_id=492087021]
+texture = ExtResource("5_emot1")
+
+[node name="PlayButton" parent="." unique_id=513283286 instance=ExtResource("6_i5sur")]
+
+[node name="Options" type="Node2D" parent="." unique_id=852328042]
+
+[node name="RedTeam" parent="Options" unique_id=1427259180 instance=ExtResource("7_7whhf")]
+team_color = 0
+
+[node name="BlueTeam" parent="Options" unique_id=2071148301 instance=ExtResource("7_7whhf")]
+team_color = 1

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cqydhxxn3q6q3"]
+
+[ext_resource type="Script" uid="uid://dncmu0ye8w46j" path="res://Scripts/PlayButton.gd" id="1_em7tm"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_xdsjw"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_em7tm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xdsjw"]
+font = ExtResource("2_em7tm")
+font_size = 32
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="PlayButton" type="Node2D" unique_id=513283286]
+modulate = Color(0.61, 0.844, 1, 1)
+script = ExtResource("1_em7tm")
+final_play_button_color = Color(0.73, 1, 0.81549996, 1)
+
+[node name="Button Shadow" type="NinePatchRect" parent="." unique_id=1240514818]
+modulate = Color(0.012617188, 0.0017662158, 0.0017662158, 1)
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 194.5
+offset_bottom = 55.5
+texture = ExtResource("1_xdsjw")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Button Base" type="NinePatchRect" parent="." unique_id=2009677145]
+offset_right = 190.5
+offset_bottom = 51.5
+texture = ExtResource("1_xdsjw")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Label" type="Label" parent="." unique_id=1718218980]
+offset_right = 190.0
+offset_bottom = 51.0
+text = "Začni hru"
+label_settings = SubResource("LabelSettings_xdsjw")
+horizontal_alignment = 1
+vertical_alignment = 1

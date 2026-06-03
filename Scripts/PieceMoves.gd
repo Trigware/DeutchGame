@@ -2,6 +2,9 @@ class_name BoardRoot
 extends Node2D
 
 @onready var tiles = $Tiles
+@onready var tiled_diagonals = $"Tiled Diagonals"
+
+const init_diagonals_gap_size = 0.5
 
 var grid_shadow: TileMapLayer = null
 
@@ -28,7 +31,8 @@ func get_possible_moves(tile: Vector2i):
 const move_range = 2
 
 func _ready():
-	Audio.play_music(UID.board_music)
+	if not Audio.music_playing or returned_after_minigame: Audio.play_music(UID.board_music)
+	tiled_diagonals.gap_size = init_diagonals_gap_size
 
 func _process(_delta):
 	create_grid_shadow()
@@ -55,7 +59,11 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 		for i in range(1, actual_range+1):
 			var dest_pos = origin + dir * i
 			if not is_valid_tile(piece, dest_pos): break
-			var cost = Move.MoveCost.FastTrick if i > 2 else Move.MoveCost.Regular
+			var cost: Move.MoveCost
+			match i:
+				1: cost = Move.MoveCost.Regular
+				2: cost = Move.MoveCost.Fast
+				_: cost = Move.MoveCost.FastTrick
 			
 			var move = Move.ctor(cost, is_in_trick_question(dest_pos))
 			move.moved_piece = piece
@@ -67,7 +75,7 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	for dir in diagonal_offsets:
 		var dest_pos = origin + dir
 		if not is_valid_tile(piece, dest_pos): continue
-		var move = Move.ctor(Move.MoveCost.Fast, is_in_trick_question(dest_pos))
+		var move = Move.ctor(Move.MoveCost.Medium, is_in_trick_question(dest_pos))
 		move.moved_piece = piece
 		result[dest_pos] = move
 	return result
@@ -177,9 +185,11 @@ func is_lack_of_moves_win_condition_valid() -> bool:
 	return number_of_valid_pieces == 0
 
 var returned_after_minigame = false
+var task_was_successful = false
 
 func push_piece():
 	var main_loop = Engine.get_main_loop()
 	returned_after_minigame = true
+	task_was_successful = true
 	for i in range(2): await main_loop.process_frame
 	tiles.push_piece()

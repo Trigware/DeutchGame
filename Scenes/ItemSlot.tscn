@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bgajujigxxlkd" path="res://Textures/ItemSlot.png" id="2_3536x"]
 [ext_resource type="Texture2D" uid="uid://dj4mi5ki58hnp" path="res://Textures/PowerUps.png" id="3_omo84"]
 [ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="4_weffw"]
+[ext_resource type="AudioStream" uid="uid://dadnawol3qnog" path="res://Audio/SFX/TaskSuccess.wav" id="6_omo84"]
 
 [node name="Item Slot" type="Node2D" unique_id=841954273]
 script = ExtResource("1_3388o")
@@ -36,3 +37,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("4_weffw")
 text = "??"
 horizontal_alignment = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1141950609]
+stream = ExtResource("6_omo84")
+pitch_scale = 1.11

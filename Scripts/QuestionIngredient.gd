@@ -3,19 +3,25 @@ extends Node2D
 
 @onready var sprite = $Sprite
 @onready var shadow = $Shadow
-@onready var label = $Label
+@onready var label_offset = $"Label Offset"
+@onready var label = $"Label Offset/Label"
 
 var ingredient_type := Ingredient.IngredientType.Unknown
 var ingredient_index: int
 
-const ingredient_size = 32
+const ingredient_size: float = 32
 const scale_portion = 0.6
-var ingredient_y_portion = 0.435
+var ingredient_y_portion = 0.47
+const init_label_y_pos = 40
+const final_label_y_pos = 15
 
 func _ready():
 	var frame_coord = Vector2i(ingredient_type as int, 1)
 	sprite.frame_coords = frame_coord
 	shadow.frame_coords = frame_coord
+	label.modulate.a = 0
+	label_offset.position.y = init_label_y_pos
+	label.text = Ingredient.german_ingredient_dict[ingredient_type]
 
 func _process(_delta):
 	var window_size = DisplayServer.window_get_size()
@@ -26,3 +32,9 @@ func _process(_delta):
 	scale = Vector2.ONE * ingredient_scale * scale_portion
 	position.x = ingredient_pos_x
 	position.y = window_size.y * ingredient_y_portion
+
+const label_visibility_tween_duration = 0.6
+
+func show_answers():
+	create_tween().tween_property(label, "modulate:a", 1, label_visibility_tween_duration)
+	create_tween().tween_property(label_offset, "position:y", final_label_y_pos, label_visibility_tween_duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)

@@ -7,22 +7,14 @@
 [sub_resource type="LabelSettings" id="LabelSettings_8bxxr"]
 font = ExtResource("2_a506e")
 font_size = 32
-font_color = Color(1, 0.72, 0.72, 1)
 shadow_color = Color(0, 0, 0, 1)
 shadow_offset = Vector2(1.5, 1.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a506e"]
-size = Vector2(191, 50.5)
-
 [node name="Button" type="Control" unique_id=295966951]
-self_modulate = Color(1, 0.4392157, 0.4392157, 1)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 703.44867
-offset_top = 817.7998
-offset_right = 910.94867
-offset_bottom = 868.8018
-scale = Vector2(2.70054, 2.70054)
+offset_right = 207.5
+offset_bottom = 51.002014
 script = ExtResource("1_8bxxr")
 button_type = 2
 
@@ -60,9 +52,3 @@ text = "Špatně"
 label_settings = SubResource("LabelSettings_8bxxr")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Mouse Area" type="Area2D" parent="." unique_id=1289460465]
-
-[node name="Collider" type="CollisionShape2D" parent="Mouse Area" unique_id=410293054]
-position = Vector2(95, 25.75)
-shape = SubResource("RectangleShape2D_a506e")
