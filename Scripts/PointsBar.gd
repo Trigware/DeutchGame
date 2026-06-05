@@ -13,7 +13,7 @@ var timer_y_offset: float
 const timer_y_size = 40
 const final_y_size_multiplier = 1.5
 const maximum_points_count = 1000
-var points_count: float = 0
+var points_count: float = 900
 const bar_padding = 0.5
 
 signal new_food_thrown(food_type: Ingredient.FoodType)

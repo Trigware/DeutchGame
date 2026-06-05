@@ -85,5 +85,6 @@ minimal_seperator_length = 1.0
 item_distance_portion = 0.851
 
 [node name="ReadyButton" parent="." unique_id=1305220794 instance=ExtResource("4_2mcop")]
+z_index = 1
 position = Vector2(576, 324)
-scale = Vector2(2.5, 2.5)
+scale = Vector2(6, 6)

@@ -13,6 +13,7 @@ enum QuestionType {
 @onready var tiled_diagonals: TiledDiagonals = $"Tiled Diagonals"
 @onready var question_title = $"Question Title"
 @onready var timer_bar = $TimerBar
+@onready var ready_button = $ReadyButton
 var question_type := QuestionType.Unknown
 
 const decimal_show_threshold = 10
@@ -24,21 +25,52 @@ const ui_show_up_tween_duration = 0.6
 const final_question_titles_y_pos = 22
 
 var timeout_previously = false
+var pressed_ready = false
+
+signal pressed_ready_event
 
 func _ready():
-	Audio.stop_music()
+	Audio.play_music(UID.quiz_music)
 	time_left = question_total_time
 	question_title.position.y = base_question_titles_y_pos
 	create_tween().tween_property(question_title, "position:y", final_question_titles_y_pos, ui_show_up_tween_duration).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 	pick_question_type()
+	await pressed_ready_event
 	add_question_scene()
 
 func _process(delta: float):
 	style_tiled_diagonals(delta)
 	display_time_left(delta)
 	account_for_window_sizes()
+	handle_ready_button()
 	update_question_text()
+
+var ready_button_relative_pos = Vector2(0.5, 0.5)
+const ready_button_size = Vector2(110, 40)
+const ready_button_screen_size_portion = 0.2
+const button_origin_offset = Vector2(-79, 13)
+const ready_button_tween_duration = 0.5
+
+func handle_ready_button():
+	var window_size = Vector2(DisplayServer.window_get_size())
+	var scale_multiplier = window_size.y * ready_button_screen_size_portion / ready_button_size.y
+	ready_button.position = window_size * ready_button_relative_pos
+	ready_button.position.y -= ready_button_size.y * scale_multiplier / 2
+	ready_button.scale = Vector2.ONE * scale_multiplier
+	
+	var local_mouse = ready_button.get_local_mouse_position()
+	local_mouse -= button_origin_offset
+	var hovering_over_button = local_mouse.x >= 0 and local_mouse.y >= 0 and\
+		local_mouse.x <= ready_button_size.x and local_mouse.y <= ready_button_size.y
+	var is_clicking = Input.is_action_just_pressed("button_press")
+	if not hovering_over_button or not is_clicking or pressed_ready: return
+	
+	pressed_ready_event.emit()
+	pressed_ready = true
+	create_tween().tween_property(ready_button, "modulate:a", 0, ready_button_tween_duration * 2.0/3)
+	create_tween().tween_property(self, "ready_button_relative_pos:y", 1, ready_button_tween_duration).\
+		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 
 func display_time_left(delta: float):
 	var time_with_decimal = int(time_left * 10) / 10.0
@@ -47,7 +79,7 @@ func display_time_left(delta: float):
 	
 	if time_left == 0: time_label_text = "0"
 	time_left_label.text = font_size_bbcode(time_left_font_size, time_label_text)
-	if not shown_answers_early: time_left = max(time_left - delta, 0)
+	if not shown_answers_early and pressed_ready: time_left = max(time_left - delta, 0)
 	if time_left != 0 or timeout_previously: return
 	
 	timeout_previously = true
@@ -107,9 +139,14 @@ func pick_question_type():
 	german_question = german_question_title_dict[question_type]
 	czech_question = czech_question_title_dict[question_type]
 
+const press_ready_notice_text_upper = "Zmáčkněte READY!"
+const press_ready_notice_text_lower = "Pak se spustí otázka."
+
 func update_question_text():
-	var compounded_question = font_size_bbcode(question_title_font_size, german_question) + '\n' +\
-		font_size_bbcode(question_title_font_size / 2, czech_question)
+	var displayed_upper = german_question if pressed_ready else press_ready_notice_text_upper
+	var displayed_lower = czech_question if pressed_ready else press_ready_notice_text_lower
+	var compounded_question = font_size_bbcode(question_title_font_size, displayed_upper) + '\n' +\
+		font_size_bbcode(question_title_font_size / 2, displayed_lower)
 	question_title.text = compounded_question
 
 func font_size_bbcode(font_size: float, inner_text: String):
@@ -140,6 +177,7 @@ func on_show_answers(interacted_with_answer_button = false):
 	if not interacted_with_answer_button: answer_button.on_press()
 	shown_answers_early = true
 	number_of_question_buttons = 2
+	if not interacted_with_answer_button: return
 	create_question_button(QuestionButton.ButtonType.Correct, null, 0)
 	create_question_button(QuestionButton.ButtonType.Incorrect, null, 1)
 

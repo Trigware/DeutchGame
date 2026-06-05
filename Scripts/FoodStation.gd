@@ -62,11 +62,14 @@ func _process(_delta):
 	right_connector.disabled = unlocked_right
 
 func _ready():
+	if GameState.active_game == null: GameState.active_game = UID.init_state
+	GameState.active_game.foods_encountered.append(produced_food)
 	left_unlock_tile.modulate.a = 0
 	right_unlock_tile.modulate.a = 0
 	player.score_increased.connect(update_unlock_tiles)
 	export_area.body_entered.connect(body_enters_export_area)
 	export_area.body_exited.connect(body_exits_export_area)
+	
 	left_extend_area.body_entered.connect(unlock_food_station.bind(true))
 	right_extend_area.body_entered.connect(unlock_food_station.bind(false))
 	center_shadow.visible = station_x != 0

@@ -7,6 +7,8 @@ extends Node2D
 @onready var label = $"Label Offset/Label"
 
 var ingredient_type := Ingredient.IngredientType.Unknown
+var food_type := Ingredient.FoodType.Unknown
+var is_food := false
 var ingredient_index: int
 
 const ingredient_size: float = 32
@@ -16,12 +18,15 @@ const init_label_y_pos = 40
 const final_label_y_pos = 15
 
 func _ready():
-	var frame_coord = Vector2i(ingredient_type as int, 1)
+	var frame_coord = Vector2i(food_type as int, 0) if is_food else Vector2i(ingredient_type as int, 1)
 	sprite.frame_coords = frame_coord
 	shadow.frame_coords = frame_coord
 	label.modulate.a = 0
 	label_offset.position.y = init_label_y_pos
-	label.text = Ingredient.german_ingredient_dict[ingredient_type]
+	var german_name = Ingredient.get_food_as_german(food_type) if is_food else Ingredient.get_ingredient_as_german(ingredient_type)
+	label.text = german_name
+	var is_fried_cheese = food_type == Ingredient.FoodType.FriedCheese
+	if is_fried_cheese: label.label_settings.font_size = 7
 
 func _process(_delta):
 	var window_size = DisplayServer.window_get_size()

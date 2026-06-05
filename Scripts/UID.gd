@@ -43,6 +43,7 @@ const task_failure_sfx := preload("uid://by1jlkv6u6w8l")
 
 const board_music := preload("uid://27wodk4ei5rl")
 const restaurant_music := preload("uid://duu7222knu0pl")
+const quiz_music := preload("uid://b8dmhbhel5d6d")
 
 const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = {
 	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74")

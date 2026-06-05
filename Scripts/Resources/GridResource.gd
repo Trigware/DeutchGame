@@ -81,6 +81,8 @@ var recipe_screens: Dictionary[Ingredient.FoodType, RecipeScreen]
 var foods_thrown: Array[Ingredient.FoodType]
 var custom_food_requests: Dictionary[Ingredient.FoodType, int]
 var food_stations: Dictionary[Ingredient.FoodType, FoodStation]
+var ingredients_encountered: Array[Ingredient.IngredientType]
+var foods_encountered: Array[Ingredient.FoodType]
 static var conveyor_belt_speed_multiplier = 1.35
 
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)

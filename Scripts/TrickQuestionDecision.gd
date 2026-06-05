@@ -51,7 +51,7 @@ func _process(delta):
 
 const ready_button_max_anim_range = 0.085
 const ready_button_anim_dur = 2.5
-const ready_button_scale_portion = 0.35
+const ready_button_scale_portion = 0.45
 
 func update_wheel():
 	var window_size: Vector2 = DisplayServer.window_get_size()

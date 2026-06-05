@@ -6,7 +6,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_dhxcb"]
 font = ExtResource("2_dhxcb")
-font_size = 10
+font_size = 8
 shadow_color = Color(0, 0, 0, 1)
 
 [node name="Question Ingredient" type="Node2D" unique_id=569061636]

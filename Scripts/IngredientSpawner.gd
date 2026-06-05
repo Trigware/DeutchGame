@@ -51,6 +51,7 @@ func get_spawn_wait_time():
 func spawn_ingredient():
 	var falling_ingredient = UID.falling_ingredient_scene.instantiate()
 	ingredient_root.add_child(falling_ingredient)
+	GameState.active_game.ingredients_encountered.append(falling_ingredient.ingredient_data.ingredient_type)
 
 const another_ingredient_rate: int = 3
 
