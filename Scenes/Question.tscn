@@ -14,7 +14,7 @@ shader_parameter/texture_size = Vector2(28.8, 16.2)
 shader_parameter/texture_scale = Vector2(20, 20)
 shader_parameter/diagonal_lines = 20.0
 shader_parameter/gap_size = 0.5
-shader_parameter/pattern_repeated = 47.6714140583217
+shader_parameter/pattern_repeated = 1.6152136116667433
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
 

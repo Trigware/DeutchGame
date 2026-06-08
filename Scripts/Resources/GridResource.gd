@@ -40,6 +40,7 @@ const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
 @export var piece_locations: Dictionary[Vector2i, Piece]
 @export var special_tiles: Dictionary[Vector2i, SpecialTile]
 @export var power_up_tiles: Dictionary[Vector2i, PowerUpType] = {}
+@export var player_turn := SpecialTile.TeamRelation.Red
 var power_up_spawn_tiles: Array[Vector2i]
 
 @export var player_power_ups: Dictionary[SpecialTile.TeamRelation, PlayerPowerUp]
@@ -49,7 +50,6 @@ var team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Blue: 10
 }
 
-var player_turn := SpecialTile.TeamRelation.Red
 var grave_tiles: Array[Vector2i] = []
 var flag_origin: Dictionary[SpecialTile.TeamRelation, Vector2i]
 var game_end_type := GameEndType.Ongoing
@@ -86,6 +86,7 @@ var trick_move_origin: Vector2i
 var trick_move_destination: Vector2i
 
 var restaurant_recipes: Dictionary[Ingredient.FoodType, RestaurantRecipe] = {}
+var current_dialog_index = -1
 
 func invert_turn(): player_turn = get_inverted_turn()
 func get_inverted_turn():
@@ -105,6 +106,7 @@ func update_effect_durations():
 const power_up_generation_limit = 1000
 
 func generate_power_up(tile_coord: Vector2i, tile_map: TileMapLayer):
+	
 	var last_power_up = PowerUpType.values()[PowerUpType.values().size()-1]
 	var chosen_power_up: PowerUpType
 	for i in range(power_up_generation_limit):
@@ -112,6 +114,8 @@ func generate_power_up(tile_coord: Vector2i, tile_map: TileMapLayer):
 		var already_generated = chosen_power_up in power_up_tiles.values()
 		if already_generated: continue
 		break
+	var has_predetermined_power_up = power_up_tiles[tile_coord] != PowerUpType.None
+	if has_predetermined_power_up: chosen_power_up = power_up_tiles[tile_coord]
 	
 	power_up_tiles[tile_coord] = chosen_power_up
 	power_up_spawn_tiles.append(tile_coord)
@@ -125,6 +129,8 @@ func update_power_up_tile(tile_coord: Vector2i, tile_map: TileMapLayer):
 func has_tile_power_up(tile_coord: Vector2i):
 	return tile_coord in power_up_tiles
 
+const int_max = 9223372036854775807
+
 func receive_power_up(tile_coord: Vector2i, power_up_kind: PowerUpType):
 	var actual_team = get_inverted_turn()
 	var wanted_player_power_up_setup = actual_team in player_power_ups
@@ -134,7 +140,11 @@ func receive_power_up(tile_coord: Vector2i, power_up_kind: PowerUpType):
 	var no_wanted_kind_power_up = not power_up_kind in playing_power_ups.power_ups
 	if no_wanted_kind_power_up:
 		playing_power_ups.power_ups[power_up_kind] = PowerUp.new()
-	playing_power_ups.power_ups[power_up_kind].amount += 1
+	var prev_amount = playing_power_ups.power_ups[power_up_kind]
+	
+	var will_give_infinite_power_ups = current_dialog_index >= TutorialUI.TutorialDialogType.PowerUpRules
+	var updated_amount = int_max if will_give_infinite_power_ups else prev_amount + 1
+	playing_power_ups.power_ups[power_up_kind].amount = updated_amount
 	power_up_piece_info[tile_coord] = PowerUpHolder.ctor(tile_coord)
 
 func decrement_power_up(power_up_kind: PowerUpType):

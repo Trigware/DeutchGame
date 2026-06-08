@@ -3,7 +3,7 @@ extends Resource
 
 @export var kind := GridState.PieceType.Unknown
 @export var team_relation: SpecialTile.TeamRelation
-var respawn_pos: Vector2i
+@export var respawn_pos := -Vector2i.ONE
 var status_effects: Dictionary[Effect.StatusEffect, Effect]
 
 const red_piece = 1

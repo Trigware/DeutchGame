@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="GridState" format=3 uid="uid://cwkh6rk77ggh2"]
 
 [ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/Resources/PieceResource.gd" id="1_vbvah"]
+[ext_resource type="Script" uid="uid://dl3w4u42jqb36" path="res://Scripts/Resources/PlayerPowerUpRes.gd" id="2_ab3l3"]
 [ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/Resources/GridResource.gd" id="2_fwst3"]
 [ext_resource type="Script" uid="uid://q3c88fb6vgof" path="res://Scripts/Resources/SpecialTile.gd" id="3_fwst3"]
 
@@ -145,5 +146,4 @@ Vector2i(0, 4): 0,
 Vector2i(5, 4): 0,
 Vector2i(10, 4): 0
 })
-player_power_ups = null
 metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"

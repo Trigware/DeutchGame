@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="GridState" format=3 uid="uid://b5nlnubo2etxf"]
+
+[ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/Resources/PieceResource.gd" id="1_0vuns"]
+[ext_resource type="Script" uid="uid://dl3w4u42jqb36" path="res://Scripts/Resources/PlayerPowerUpRes.gd" id="2_rqwti"]
+[ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/Resources/GridResource.gd" id="3_osab5"]
+[ext_resource type="Script" uid="uid://q3c88fb6vgof" path="res://Scripts/Resources/SpecialTile.gd" id="4_s0rwx"]
+
+[sub_resource type="Resource" id="Resource_0vuns"]
+script = ExtResource("1_0vuns")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_rqwti"]
+script = ExtResource("4_s0rwx")
+kind = 2
+relation = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_osab5"]
+script = ExtResource("4_s0rwx")
+kind = 2
+relation = 0
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[resource]
+script = ExtResource("3_osab5")
+piece_locations = Dictionary[Vector2i, ExtResource("1_0vuns")]({
+Vector2i(5, 4): SubResource("Resource_0vuns")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("4_s0rwx")]({
+Vector2i(5, 0): SubResource("Resource_rqwti"),
+Vector2i(5, 8): SubResource("Resource_osab5")
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"

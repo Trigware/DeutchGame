@@ -1,3 +1,4 @@
+class_name ItemsManager
 extends CanvasLayer
 
 var item_power_up_slots: Array[Node2D] = []
@@ -9,6 +10,7 @@ var team_name_containers: Dictionary[SpecialTile.TeamRelation, TeamNameContainer
 @onready var special_tile_map = tiles.get_node("Special Tiles")
 
 func _ready(): setup()
+
 func setup():
 	var last_power_up = GridState.PowerUpType.values()[GridState.PowerUpType.size()-1]+1
 	for i in range(1, last_power_up):
@@ -19,7 +21,12 @@ func setup():
 
 func create_item_slot(team: SpecialTile.TeamRelation, power_up: SpecialTile.TeamRelation, last_power_up: GridState.PowerUpType):
 	var slot_instance = UID.item_slot.instantiate()
+	slot_instance.deactivated = board.is_playing_tutorial
 	slot_instance.setup(self, item_power_up_slots, power_up, team, last_power_up)
+
+func activate_item_slots():
+	for item_slot in item_power_up_slots:
+		item_slot.deactivated = false
 
 func create_team_container(team: SpecialTile.TeamRelation):
 	if team == SpecialTile.TeamRelation.Other or board.is_playing_tutorial: return

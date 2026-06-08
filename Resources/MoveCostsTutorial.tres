@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="GridState" format=3 uid="uid://ccgjkvlrcyrre"]
+
+[ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/Resources/PieceResource.gd" id="1_cqaee"]
+[ext_resource type="Script" uid="uid://dl3w4u42jqb36" path="res://Scripts/Resources/PlayerPowerUpRes.gd" id="2_wml1j"]
+[ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/Resources/GridResource.gd" id="3_77vfu"]
+[ext_resource type="Script" uid="uid://q3c88fb6vgof" path="res://Scripts/Resources/SpecialTile.gd" id="4_3dcw8"]
+
+[sub_resource type="Resource" id="Resource_77vfu"]
+script = ExtResource("1_cqaee")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_rqwti"]
+script = ExtResource("4_3dcw8")
+kind = 2
+relation = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_osab5"]
+script = ExtResource("4_3dcw8")
+kind = 2
+relation = 0
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_cqaee"]
+script = ExtResource("4_3dcw8")
+kind = 3
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_wml1j"]
+script = ExtResource("4_3dcw8")
+kind = 3
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[resource]
+script = ExtResource("3_77vfu")
+piece_locations = Dictionary[Vector2i, ExtResource("1_cqaee")]({
+Vector2i(5, 4): SubResource("Resource_77vfu")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("4_3dcw8")]({
+Vector2i(5, 0): SubResource("Resource_rqwti"),
+Vector2i(5, 3): SubResource("Resource_cqaee"),
+Vector2i(5, 5): SubResource("Resource_wml1j"),
+Vector2i(5, 8): SubResource("Resource_osab5")
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"

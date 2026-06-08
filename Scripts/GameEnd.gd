@@ -54,7 +54,6 @@ func handle_tween():
 	tween_active = false
 
 func display_menu_for_game_end():
-	GameState.active_game.invert_turn()
 	var winning_team = GameState.active_game.player_turn
 	var team_name = GameState.active_game.team_names[winning_team]
 	title.text = "Vyhrál tým \"" + team_name + "\"!"

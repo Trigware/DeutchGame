@@ -22,7 +22,7 @@ const horse_offsets : Array[Vector2i] =\
 func has_piece(tile: Vector2i) -> bool: return tile in GameState.active_game.piece_locations.keys()
 
 var move_generation_index = 0
-var is_playing_tutorial = false
+var is_playing_tutorial = true
 
 func get_possible_moves(tile: Vector2i):
 	var piece: Piece = GameState.active_game.piece_locations[tile]
@@ -61,6 +61,7 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	var actual_range = move_range
 	var is_slow = piece.has_status_effect(Effect.StatusEffect.Slowness)
 	var is_fast = piece.has_status_effect(Effect.StatusEffect.Speed)
+	
 	if is_fast: actual_range += 1
 	for dir in orthogonal_offsets:
 		for i in range(1, actual_range+1):
@@ -76,7 +77,6 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 			move.moved_piece = piece
 			result[dest_pos] = move
 			if is_stopping_path(piece, dest_pos): break
-	
 	if is_slow: return result
 	
 	for dir in diagonal_offsets:
@@ -105,7 +105,7 @@ func get_possible_wizard_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 			var is_freezing_piece = not is_reviving and is_in_piece(dest_pos)
 			var move_attribute = Move.Attribute.None
 			if is_reviving: move_attribute = Move.Attribute.SwordRevive
-			if is_freezing_piece: move_attribute = Move.Attribute.PieceFreeze
+			#if is_freezing_piece: move_attribute = Move.Attribute.PieceFreeze unused
 			
 			var move_invalidated = not is_valid_tile(piece, dest_pos) and not is_reviving
 			if move_invalidated: break
@@ -148,9 +148,12 @@ func is_valid_tile(piece: Piece, tile) -> bool:
 	
 	var is_invalid = out_of_bounds or is_in_wall or has_same_team_piece or is_in_grave\
 		or attempting_to_capture_protected or is_capture_frozen
+	
 	return not is_invalid
 
-func is_tile_in_grave(tile: Vector2i) -> bool: return tile in GameState.active_game.grave_tiles
+func is_tile_in_grave(tile: Vector2i) -> bool:
+	return tile in GameState.active_game.grave_tiles
+
 func is_wizard_reviving(tile) -> bool:
 	var is_tile_grave = is_tile_in_grave(tile)
 	var in_piece = is_in_piece(tile)

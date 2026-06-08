@@ -12,6 +12,7 @@ extends TileMapLayer
 @onready var items = $"../Items"
 @onready var special_tiles = $"Special Tiles"
 @onready var tiled_diagonals = $"../Tiled Diagonals"
+@export var tutorial_ui: TutorialUI
 
 var screen_size: Vector2i
 const tile_size := 32
@@ -19,11 +20,22 @@ const board_tile_count := Vector2(11, 9)
 
 var possible_moves: Dictionary
 
-func _ready(): load_init_state()
+func _ready():
+	var initial_game_state = UID.tutorial_state if board.is_playing_tutorial else UID.init_state
+	load_state(initial_game_state, true)
 
-func load_init_state():
+func load_state(state_to_be_loaded, forced = false):
+	var saved_tutorial_index = TutorialUI.start_dialog_index - 1
+	if GameState.active_game != null: saved_tutorial_index = GameState.active_game.current_dialog_index
+	icons.clear()
+	status.clear()
+	power_ups.clear()
+	special_tiles.clear()
+	
 	if not board.returned_after_minigame: GameState.active_game = UID.init_state
-	if GameState.active_game == null: GameState.active_game = UID.init_state
+	if GameState.active_game == null or forced: GameState.active_game = state_to_be_loaded
+	GameState.active_game.current_dialog_index = saved_tutorial_index
+	
 	GameState.active_game.grid_tiles = self
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
 	load_kind_of_tile(GameState.active_game.special_tiles)
@@ -46,6 +58,8 @@ func load_power_up_tiles():
 func update_board_tile(tile_coord: Vector2i, tile_type: TileType):
 	set_cell(tile_coord, 1, get_hovered_atlas_coord(tile_coord, tile_type))
 
+const default_grave_tiles : Array[Vector2i] = [Vector2i(3, 0), Vector2i(7, 0), Vector2(3, 8), Vector2i(7, 8)]
+
 func load_kind_of_tile(source: Dictionary, handling_pieces := false):
 	for tile_pos in source.keys():
 		var tile = source[tile_pos]
@@ -64,8 +78,9 @@ func load_kind_of_tile(source: Dictionary, handling_pieces := false):
 		match tile.team_relation:
 			SpecialTile.TeamRelation.Red: grave_pos.y += 1
 			SpecialTile.TeamRelation.Blue: grave_pos.y -= 1
-		GameState.active_game.grave_tiles.append(grave_pos)
-		tile.respawn_pos = grave_pos
+		if tile.respawn_pos == -Vector2i.ONE: tile.respawn_pos = grave_pos
+	
+	GameState.active_game.grave_tiles = default_grave_tiles
 
 func _process(_delta):
 	var current_size = DisplayServer.window_get_size()
@@ -237,6 +252,7 @@ func display_possible_moves():
 		var tile_type = TileType.TrickQuestion if move.trick_move else TileType.Move
 		update_board_tile(move_dest, tile_type)
 		var cost_node = UID.move_cost.instantiate()
+		cost_node.board_root = board
 		cost_node.setup(move_dest, move, latest_move_cost_root)
 	add_child(latest_move_cost_root)
 	previous_hovered_tile = -Vector2i.ONE
@@ -247,25 +263,55 @@ func hide_selector():
 
 func play_move_if_possible():
 	if hovered_tile == selected_tile: return
-	if not hovered_tile in possible_moves.keys():
+	var is_tutorial_move_invalid = board.is_playing_tutorial and not is_tutorial_move_valid()
+	var is_move_blocked = not hovered_tile in possible_moves.keys() or is_tutorial_move_invalid
+	if is_move_blocked:
 		hide_selector()
 		return
 	play_move()
+
+const tutorial_piece_interaction_dialog_indices := [
+	TutorialUI.TutorialDialogType.CapturingSwords,
+	TutorialUI.TutorialDialogType.RevivingSwords
+]
+
+func is_tutorial_move_valid():
+	if not tutorial_ui.can_progress_tutorial: return false
+	var dialog_index = GameState.active_game.current_dialog_index
+	if dialog_index >= TutorialUI.TutorialDialogType.PowerUpRules: return true
+	var is_interacting_with_piece = dialog_index in tutorial_piece_interaction_dialog_indices
+	if is_interacting_with_piece: return hovered_tile in GameState.active_game.piece_locations.keys()
+	return true
+
+signal tutorial_move_played
+
+const switch_player_turn_allowed_tutorial_indices := [TutorialUI.TutorialDialogType.CapturingSwords, TutorialUI.TutorialDialogType.PowerUpRules]
+
+func switch_player_turn():
+	var tutorial_dialog_index = GameState.active_game.current_dialog_index
+	var player_turn_disabled = not tutorial_dialog_index in switch_player_turn_allowed_tutorial_indices and board.is_playing_tutorial
+	if player_turn_disabled: return
+	
+	GameState.active_game.next_turn()
+	var diagonal_color = GridState.diagonals_modulate[GameState.active_game.player_turn]
+	tiled_diagonals.change_color(diagonal_color)
 
 func play_move(called_after_event = false):
 	var current_move: Move = GameState.active_game.latest_move if called_after_event\
 		else possible_moves[hovered_tile]
 	GameState.active_game.latest_move = current_move
-	if not called_after_event: GameState.active_game.next_turn()
+	
+	if not called_after_event: switch_player_turn()
+	
 	var piece_locations = GameState.active_game.piece_locations
 	var moved_piece: Piece = piece_locations[selected_tile]
-	var diagonal_color = GridState.diagonals_modulate[GameState.active_game.player_turn]
-	tiled_diagonals.change_color(diagonal_color)
-	
 	var affected_piece: Piece = null
 	var has_captured_piece = hovered_tile in piece_locations
 	if has_captured_piece: affected_piece = piece_locations[hovered_tile]
+	
 	var handle_event = not questions_minigames_disabled and not called_after_event
+	var is_tutorial_progress_enabled = GameState.active_game.current_dialog_index in TutorialUI.disabled_tutorial_progress_dialog_indices
+	if board.is_playing_tutorial and is_tutorial_progress_enabled: tutorial_move_played.emit()
 	if handle_event:
 		handle_pre_move_event(current_move)
 		return
@@ -291,6 +337,7 @@ func play_move(called_after_event = false):
 	handle_power_up_tiles()
 	handle_win_conditions(moved_piece)
 	if GameState.active_game.game_end_type != GridState.GameEndType.Ongoing:
+		GameState.active_game.invert_turn()
 		game_end.display_menu()
 	selected_tile = hovered_tile
 
@@ -382,13 +429,18 @@ func handle_power_up_tiles():
 	GameState.active_game.receive_power_up(hovered_tile, obtainted_kind)
 
 func handle_win_conditions(moved_piece: Piece):
+	if board.is_playing_tutorial: return
 	var needed_flag_color = moved_piece.team_relation
-	var is_in_flag_origin = GameState.active_game.flag_origin[needed_flag_color] == hovered_tile
+	var flag_origin_dict = GameState.active_game.flag_origin
+	if not needed_flag_color in flag_origin_dict: return
+	
+	var is_in_flag_origin = flag_origin_dict[needed_flag_color] == hovered_tile
 	var holds_flag = moved_piece.has_flag()
 	var has_obtainted_flag = is_in_flag_origin and holds_flag
 	if has_obtainted_flag:
 		GameState.active_game.game_end_type = GridState.GameEndType.FlagCaptured
 		return
+	
 	var unable_to_progress = board.is_lack_of_moves_win_condition_valid()
 	if not unable_to_progress: return
 	GameState.active_game.game_end_type = GridState.GameEndType.PiecelessOpponent
@@ -397,7 +449,7 @@ var trick_question_transition_duration = 0.35
 const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
-const questions_minigames_disabled = true
+const questions_minigames_disabled = false
 const after_trick_question_scene = UID.trick_question_decision
 
 func handle_pre_move_event(current_move: Move):

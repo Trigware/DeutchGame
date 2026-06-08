@@ -9,6 +9,7 @@ var item_slot_team := SpecialTile.TeamRelation.Other
 @onready var count_label = $Count
 
 var item_slot_size: Vector2
+var deactivated: bool = false
 
 func setup(parent: CanvasLayer, container: Array[Node2D], power_up: GridState.PowerUpType, team: SpecialTile.TeamRelation, last_power_up: GridState.PowerUpType):
 	power_up_kind = power_up
@@ -24,6 +25,9 @@ const item_slot_multiplier := 0.8
 var number_of_slots: int
 var unoccupied_height: float
 var actual_slot_combined_height: float
+
+func _process(_delta):
+	modulate.a = 0 if deactivated else 1
 
 func update_slot():
 	var window_size = DisplayServer.window_get_size()
@@ -44,7 +48,7 @@ func update_slot():
 	scale = used_scale
 	
 	var item_count = get_item_count()
-	count_label.text = str(item_count)
+	count_label.text = "INF" if item_count >= GridState.int_max / 2 else str(item_count)
 	return used_scale
 
 func get_item_count() -> int:
@@ -55,6 +59,7 @@ func get_item_count() -> int:
 	return power_up.amount
 
 func is_mouse_inside_slot() -> bool:
+	if deactivated: return false
 	var mouse_pos = get_viewport().get_mouse_position()
 	var slot_size = item_slot_size * scale
 	var slot_rect = Rect2(position, slot_size)

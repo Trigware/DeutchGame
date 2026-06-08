@@ -144,7 +144,7 @@ var czech_question: String
 func pick_question_type():
 	var max_question_index = QuestionType.size() - 1
 	var picked_question_index = randi_range(1, max_question_index)
-	question_type = QuestionType.ClockQuestion
+	question_type = QuestionType.values()[picked_question_index]
 	german_question = german_question_title_dict[question_type]
 	czech_question = czech_question_title_dict[question_type]
 

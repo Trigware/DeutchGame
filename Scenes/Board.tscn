@@ -12,6 +12,12 @@
 [ext_resource type="Script" uid="uid://bmastutkie36w" path="res://Scripts/ItemManager.gd" id="8_m454s"]
 [ext_resource type="PackedScene" uid="uid://c0et5rb4hx584" path="res://Scenes/Tiled Diagonals.tscn" id="11_x4kv2"]
 [ext_resource type="PackedScene" uid="uid://cqqmj37bg5lc0" path="res://Scenes/TutorialUI.tscn" id="12_fx0ao"]
+[ext_resource type="Script" uid="uid://d1pwnhpy3j4mq" path="res://Scripts/Resources/GridResource.gd" id="13_km0w0"]
+[ext_resource type="Script" uid="uid://b4rerfhslxblk" path="res://Scripts/Resources/PieceResource.gd" id="14_kvmcw"]
+[ext_resource type="Script" uid="uid://dl3w4u42jqb36" path="res://Scripts/Resources/PlayerPowerUpRes.gd" id="15_qn4gg"]
+[ext_resource type="Script" uid="uid://q3c88fb6vgof" path="res://Scripts/Resources/SpecialTile.gd" id="16_ydh3b"]
+[ext_resource type="Resource" uid="uid://ccgjkvlrcyrre" path="res://Resources/MoveCostsTutorial.tres" id="17_kvmcw"]
+[ext_resource type="Resource" uid="uid://cwkh6rk77ggh2" path="res://Resources/InitState.tres" id="18_qn4gg"]
 
 [sub_resource type="Shader" id="Shader_x4kv2"]
 code = "shader_type canvas_item;
@@ -58,9 +64,242 @@ shader_parameter/texture_size = Vector2(28.799225, 16.201447)
 shader_parameter/texture_scale = Vector2(2, 2)
 shader_parameter/diagonal_lines = 1.15
 shader_parameter/gap_size = 0.525
-shader_parameter/pattern_repeated = 2134.4572549417944
+shader_parameter/pattern_repeated = 9137.685217249149
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
+
+[sub_resource type="Resource" id="Resource_7x6ti"]
+script = ExtResource("14_kvmcw")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_km0w0"]
+script = ExtResource("14_kvmcw")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_iccj1"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_nmfwp"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 0
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_kvmcw"]
+script = ExtResource("16_ydh3b")
+kind = 1
+wall_surround = 0
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_qn4gg"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_ydh3b"]
+script = ExtResource("16_ydh3b")
+kind = 1
+wall_surround = 2
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_vn6nc"]
+script = ExtResource("13_km0w0")
+piece_locations = Dictionary[Vector2i, ExtResource("14_kvmcw")]({
+Vector2i(5, 4): SubResource("Resource_7x6ti"),
+Vector2i(6, 4): SubResource("Resource_km0w0")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("16_ydh3b")]({
+Vector2i(4, 2): SubResource("Resource_kvmcw"),
+Vector2i(5, 0): SubResource("Resource_iccj1"),
+Vector2i(5, 2): SubResource("Resource_qn4gg"),
+Vector2i(5, 8): SubResource("Resource_nmfwp"),
+Vector2i(6, 2): SubResource("Resource_ydh3b")
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
+
+[sub_resource type="Resource" id="Resource_bvs5j"]
+script = ExtResource("14_kvmcw")
+kind = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_bi01t"]
+script = ExtResource("14_kvmcw")
+kind = 1
+team_relation = 1
+respawn_pos = Vector2i(3, 0)
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_ejb6o"]
+script = ExtResource("14_kvmcw")
+kind = 2
+team_relation = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_rqwti"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_osab5"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 0
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_uyaly"]
+script = ExtResource("13_km0w0")
+piece_locations = Dictionary[Vector2i, ExtResource("14_kvmcw")]({
+Vector2i(2, 1): SubResource("Resource_ejb6o"),
+Vector2i(5, 3): SubResource("Resource_bi01t"),
+Vector2i(5, 4): SubResource("Resource_bvs5j")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("16_ydh3b")]({
+Vector2i(5, 0): SubResource("Resource_rqwti"),
+Vector2i(5, 8): SubResource("Resource_osab5")
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
+
+[sub_resource type="Resource" id="Resource_6thiu"]
+script = ExtResource("14_kvmcw")
+kind = 3
+team_relation = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_uuk6v"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_6xs48"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_bnoy5"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_q440b"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_u4dsw"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_3886c"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_b2jcj"]
+script = ExtResource("13_km0w0")
+piece_locations = Dictionary[Vector2i, ExtResource("14_kvmcw")]({
+Vector2i(5, 4): SubResource("Resource_6thiu")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("16_ydh3b")]({
+Vector2i(4, 3): SubResource("Resource_bnoy5"),
+Vector2i(4, 5): SubResource("Resource_u4dsw"),
+Vector2i(5, 0): SubResource("Resource_rqwti"),
+Vector2i(5, 3): SubResource("Resource_uuk6v"),
+Vector2i(5, 5): SubResource("Resource_6xs48"),
+Vector2i(5, 8): SubResource("Resource_osab5"),
+Vector2i(6, 3): SubResource("Resource_q440b"),
+Vector2i(6, 5): SubResource("Resource_3886c")
+})
+player_turn = 1
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
+
+[sub_resource type="Resource" id="Resource_0vuns"]
+script = ExtResource("14_kvmcw")
+kind = 1
+respawn_pos = Vector2i(3, 8)
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_fmxdk"]
+script = ExtResource("14_kvmcw")
+kind = 1
+respawn_pos = Vector2i(7, 8)
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_34xon"]
+script = ExtResource("14_kvmcw")
+kind = 2
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_50shq"]
+script = ExtResource("14_kvmcw")
+kind = 1
+team_relation = 1
+respawn_pos = Vector2i(3, 0)
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_2dsfd"]
+script = ExtResource("14_kvmcw")
+kind = 2
+team_relation = 1
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
+
+[sub_resource type="Resource" id="Resource_xw3q1"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_vg4bq"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_gyre0"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_8w077"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_ojdpt"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_2hxxn"]
+script = ExtResource("13_km0w0")
+piece_locations = Dictionary[Vector2i, ExtResource("14_kvmcw")]({
+Vector2i(3, 2): SubResource("Resource_50shq"),
+Vector2i(3, 4): SubResource("Resource_fmxdk"),
+Vector2i(5, 4): SubResource("Resource_0vuns"),
+Vector2i(7, 2): SubResource("Resource_2dsfd"),
+Vector2i(7, 4): SubResource("Resource_34xon")
+})
+special_tiles = Dictionary[Vector2i, ExtResource("16_ydh3b")]({
+Vector2i(3, 5): SubResource("Resource_vg4bq"),
+Vector2i(4, 2): SubResource("Resource_8w077"),
+Vector2i(5, 0): SubResource("Resource_rqwti"),
+Vector2i(5, 5): SubResource("Resource_xw3q1"),
+Vector2i(5, 8): SubResource("Resource_osab5"),
+Vector2i(6, 2): SubResource("Resource_ojdpt"),
+Vector2i(7, 5): SubResource("Resource_gyre0")
+})
+power_up_tiles = Dictionary[Vector2i, int]({
+Vector2i(3, 5): 5,
+Vector2i(4, 2): 3,
+Vector2i(5, 5): 1,
+Vector2i(6, 2): 4,
+Vector2i(7, 5): 2
+})
+metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
 
 [node name="Board" type="Node2D" unique_id=1780951279]
 script = ExtResource("1_pc0oo")
@@ -77,10 +316,11 @@ texture_scale = Vector2(2, 2)
 value_offset = 0.075
 pattern_speed = 0.745
 
-[node name="Tiles" type="TileMapLayer" parent="." unique_id=1348353485]
+[node name="Tiles" type="TileMapLayer" parent="." unique_id=1348353485 node_paths=PackedStringArray("tutorial_ui")]
 tile_map_data = PackedByteArray("AAADAAAAAQAIAAAAAAAFAAAAAQAJAAAAAAAHAAAAAQAIAAAAAAACAAEAAQABAAAAAAAEAAEAAQABAAAAAAAGAAEAAQABAAAAAAAIAAEAAQABAAAAAAADAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAACAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAGAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAADAAIAAQABAAAAAAAFAAIAAQABAAAAAAAHAAIAAQABAAAAAAACAAMAAQABAAAAAAAIAAMAAQABAAAAAAAHAAMAAQAAAAAAAAADAAQAAQABAAAAAAAHAAQAAQABAAAAAAACAAQAAQAAAAAAAAAEAAQAAQAAAAAAAAAGAAQAAQAAAAAAAAAIAAQAAQAAAAAAAAABAAQAAQABAAAAAAAJAAQAAQABAAAAAAAAAAQAAQAAAAAAAAAKAAQAAQAAAAAAAAACAAUAAQABAAAAAAAIAAUAAQABAAAAAAAHAAUAAQAAAAAAAAADAAYAAQABAAAAAAAFAAYAAQABAAAAAAAHAAYAAQABAAAAAAACAAYAAQAAAAAAAAAEAAYAAQAAAAAAAAAGAAYAAQAAAAAAAAAIAAYAAQAAAAAAAAACAAcAAQABAAAAAAAEAAcAAQABAAAAAAAGAAcAAQABAAAAAAAIAAcAAQABAAAAAAADAAcAAQAAAAAAAAAFAAcAAQAAAAAAAAAHAAcAAQAAAAAAAAADAAgAAQAIAAAAAAAFAAgAAQAJAAAAAAAHAAgAAQAIAAAAAAAFAAQAAQABAAAAAAADAAMAAQAAAAAAAAADAAUAAQAAAAAAAAAEAAMAAQABAAAAAAAGAAMAAQABAAAAAAAFAAMAAQAAAAAAAAAFAAUAAQAAAAAAAAAGAAUAAQABAAAAAAAEAAUAAQABAAAAAAA=")
 tile_set = ExtResource("2_igt3p")
 script = ExtResource("1_ml4tp")
+tutorial_ui = NodePath("../TutorialUI")
 
 [node name="Special Tiles" type="TileMapLayer" parent="Tiles" unique_id=624353482]
 tile_set = ExtResource("4_4r2x2")
@@ -120,4 +360,14 @@ z_index = 1
 texture = ExtResource("5_xbakj")
 hframes = 5
 
-[node name="TutorialUI" parent="." unique_id=909024110 instance=ExtResource("12_fx0ao")]
+[node name="TutorialUI" parent="." unique_id=909024110 node_paths=PackedStringArray("grid_tiles", "items_manager") instance=ExtResource("12_fx0ao")]
+tutorial_boards = Dictionary[int, ExtResource("13_km0w0")]({
+2: SubResource("Resource_vn6nc"),
+3: SubResource("Resource_uyaly"),
+6: SubResource("Resource_b2jcj"),
+7: ExtResource("17_kvmcw"),
+8: SubResource("Resource_2hxxn"),
+9: ExtResource("18_qn4gg")
+})
+grid_tiles = NodePath("../Tiles")
+items_manager = NodePath("../Items")

@@ -7,8 +7,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_f4d8i"]
 font = ExtResource("1_wjwm3")
 font_size = 12
-font_color = Color(0.012617188, 0.012617188, 0.012617188, 1)
-shadow_offset = Vector2(1.5, 1.5)
+font_color = Color(0.9026013, 0.9026013, 0.9026013, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0.85, 0.85)
 
 [node name="MoveCost" type="Label" unique_id=249281686]
 offset_right = 1.0
@@ -30,5 +31,6 @@ layout_mode = 0
 offset_top = 21.0
 offset_right = 22.0
 offset_bottom = 44.0
+text = "(0)"
 label_settings = SubResource("LabelSettings_f4d8i")
 horizontal_alignment = 1

@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://b0gj3im8kpc6k"]
+
+[ext_resource type="Script" uid="uid://dh528li3ppfps" path="res://Scripts/TutorialButton.gd" id="1_47lpj"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_ueqtx"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_47lpj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kahsu"]
+font = ExtResource("2_47lpj")
+font_size = 64
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="Tutorial Button" type="Control" unique_id=1866087156]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_47lpj")
+
+[node name="Button" type="NinePatchRect" parent="." unique_id=1539236283]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+texture = ExtResource("1_ueqtx")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Arrow" type="Label" parent="Button" unique_id=682911777]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 3.0
+offset_right = 110.0
+offset_bottom = 67.0
+rotation = 1.5707964
+text = "^"
+label_settings = SubResource("LabelSettings_kahsu")
+horizontal_alignment = 1
+vertical_alignment = 1

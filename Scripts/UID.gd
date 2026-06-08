@@ -35,6 +35,7 @@ const question_scene = preload("uid://bmpo8accv5c6")
 const question_ingredient_scene := preload("uid://cl6fwuolftma6")
 const question_button := preload("uid://b7itb1gmis7pn")
 const question_clock := preload("uid://bysq3yjn877od")
+const title_screen_scene := preload("uid://bpgi4bffsy83i")
 
 const power_up_sfx := preload("uid://bpvqwvp3oei2q")
 const button_clicked_sfx := preload("uid://vc0ficlfwkxk")
@@ -49,3 +50,5 @@ const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = 
 	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74"),
 	Question.QuestionType.ClockQuestion: preload("uid://cmsvbby1xq7q8")
 }
+
+const tutorial_state := preload("uid://b5nlnubo2etxf")
