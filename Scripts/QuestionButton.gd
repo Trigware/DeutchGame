@@ -39,6 +39,7 @@ func _ready():
 	button_relative_pos.y = final_y_progress_after_press
 	create_tween().tween_property(self, "button_relative_pos:y", init_relative_y_pos, after_press_tween_duration).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
+	
 	button_relative_pos.x = button_relative_center_x
 	if question_root.number_of_question_buttons == 2:
 		button_relative_pos.x = button_relative_center_x - offset_from_center if button_index == 0\

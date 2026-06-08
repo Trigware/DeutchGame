@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bysq3yjn877od"]
+
+[ext_resource type="Script" uid="uid://btafhpaomvlip" path="res://Scripts/QuestionClock.gd" id="1_twlrh"]
+[ext_resource type="Texture2D" uid="uid://chqbxfd64imu3" path="res://Textures/BigClock.png" id="2_b57ce"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_gip1t"]
+[ext_resource type="Texture2D" uid="uid://0fo6he3cf1l2" path="res://Textures/HourHand.png" id="3_b35kk"]
+[ext_resource type="Texture2D" uid="uid://cah33n8tw4agi" path="res://Textures/MinuteHand.png" id="4_5t5u3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_b57ce"]
+font = ExtResource("2_gip1t")
+font_size = 8
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="QuestionClock" type="Node2D" unique_id=2123860110]
+script = ExtResource("1_twlrh")
+
+[node name="Clock" type="Sprite2D" parent="." unique_id=890802397]
+texture = ExtResource("2_b57ce")
+
+[node name="HourHand" type="Sprite2D" parent="." unique_id=1314860186]
+modulate = Color(0.47000003, 0.947, 1, 1)
+texture = ExtResource("3_b35kk")
+
+[node name="MinuteHand" type="Sprite2D" parent="." unique_id=489068453]
+modulate = Color(1, 0.47058824, 0.47058824, 1)
+rotation = 5.1190505
+texture = ExtResource("4_5t5u3")
+
+[node name="Label Offset" type="Node2D" parent="." unique_id=393629744]
+position = Vector2(-30, 35)
+
+[node name="Answer" type="Label" parent="Label Offset" unique_id=171392038]
+offset_left = -134.0
+offset_right = 195.0
+offset_bottom = 23.0
+text = "10:00"
+label_settings = SubResource("LabelSettings_b57ce")
+horizontal_alignment = 1

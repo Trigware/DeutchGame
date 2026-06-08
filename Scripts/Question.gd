@@ -1,12 +1,13 @@
 class_name Question
 extends Control
 
-var question_total_time: float = 2
+var question_total_time: float = 30
 var time_left: float
 
 enum QuestionType {
 	Unknown = -1,
-	IngredientQuestion
+	IngredientQuestion,
+	ClockQuestion
 }
 
 @onready var time_left_label = $TimeLeft
@@ -25,7 +26,8 @@ const ui_show_up_tween_duration = 0.6
 const final_question_titles_y_pos = 22
 
 var timeout_previously = false
-var pressed_ready = false
+var pressed_ready = true
+var ready_from_init = pressed_ready
 
 signal pressed_ready_event
 
@@ -36,7 +38,7 @@ func _ready():
 	create_tween().tween_property(question_title, "position:y", final_question_titles_y_pos, ui_show_up_tween_duration).\
 		set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUAD)
 	pick_question_type()
-	await pressed_ready_event
+	if not pressed_ready: await pressed_ready_event
 	add_question_scene()
 
 func _process(delta: float):
@@ -53,6 +55,10 @@ const button_origin_offset = Vector2(-79, 13)
 const ready_button_tween_duration = 0.5
 
 func handle_ready_button():
+	if ready_from_init:
+		ready_button.hide()
+		return
+	
 	var window_size = Vector2(DisplayServer.window_get_size())
 	var scale_multiplier = window_size.y * ready_button_screen_size_portion / ready_button_size.y
 	ready_button.position = window_size * ready_button_relative_pos
@@ -78,6 +84,7 @@ func display_time_left(delta: float):
 	var time_label_text = str(int(time_left)) if show_integer else str(time_with_decimal)
 	
 	if time_left == 0: time_label_text = "0"
+	time_label_text += 's'
 	time_left_label.text = font_size_bbcode(time_left_font_size, time_label_text)
 	if not shown_answers_early and pressed_ready: time_left = max(time_left - delta, 0)
 	if time_left != 0 or timeout_previously: return
@@ -122,11 +129,13 @@ func account_for_window_sizes():
 	question_title.size.x = window_size.x
 
 const german_question_title_dict : Dictionary[QuestionType, String] = {
-	QuestionType.IngredientQuestion: "Diese Essen in Deutsch!"
+	QuestionType.IngredientQuestion: "Diese Essen in Deutsch!",
+	QuestionType.ClockQuestion: "Wieviel Uhr ist es?"
 }
 
 const czech_question_title_dict : Dictionary[QuestionType, String] = {
-	QuestionType.IngredientQuestion: "Přeložte tato jídla do němčiny!"
+	QuestionType.IngredientQuestion: "Přeložte tato jídla do němčiny!",
+	QuestionType.ClockQuestion: "Řekněte v němčině, kolik hodin je na obrázku!"
 }
 
 var german_question: String
@@ -135,7 +144,7 @@ var czech_question: String
 func pick_question_type():
 	var max_question_index = QuestionType.size() - 1
 	var picked_question_index = randi_range(1, max_question_index)
-	question_type = QuestionType.values()[picked_question_index]
+	question_type = QuestionType.ClockQuestion
 	german_question = german_question_title_dict[question_type]
 	czech_question = czech_question_title_dict[question_type]
 

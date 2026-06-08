@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Deutch Game"
-run/main_scene="uid://bmpo8accv5c6"
+run/main_scene="uid://bq8uq3y6war4f"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]
@@ -20,6 +20,10 @@ GameState="*uid://be4tqm3t6kja4"
 UID="*uid://b1wrjvym1fuln"
 Overlay="*uid://ng4upc00l53v"
 Audio="*uid://jslau24ok4jl"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [global_group]
 

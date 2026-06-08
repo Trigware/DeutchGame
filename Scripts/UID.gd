@@ -32,9 +32,9 @@ const timer_clock_uid = "uid://bi2k7iq18pxnx"
 const food_spritesheet_uid = "uid://ccvqa2ejeeolv"
 var board_scene = load("uid://bq8uq3y6war4f")
 const question_scene = preload("uid://bmpo8accv5c6")
-const ingredients_question := preload("uid://646kf0uhtr74")
 const question_ingredient_scene := preload("uid://cl6fwuolftma6")
 const question_button := preload("uid://b7itb1gmis7pn")
+const question_clock := preload("uid://bysq3yjn877od")
 
 const power_up_sfx := preload("uid://bpvqwvp3oei2q")
 const button_clicked_sfx := preload("uid://vc0ficlfwkxk")
@@ -46,5 +46,6 @@ const restaurant_music := preload("uid://duu7222knu0pl")
 const quiz_music := preload("uid://b8dmhbhel5d6d")
 
 const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = {
-	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74")
+	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74"),
+	Question.QuestionType.ClockQuestion: preload("uid://cmsvbby1xq7q8")
 }
