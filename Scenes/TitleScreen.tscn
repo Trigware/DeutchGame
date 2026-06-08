@@ -15,7 +15,7 @@ shader_parameter/texture_size = Vector2(28.8, 16.2)
 shader_parameter/texture_scale = Vector2(20, 20)
 shader_parameter/diagonal_lines = 20.0
 shader_parameter/gap_size = 0.5
-shader_parameter/pattern_repeated = 36.00836077222956
+shader_parameter/pattern_repeated = 2.2788195150000283
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
 
@@ -61,6 +61,10 @@ texture = ExtResource("5_emot1")
 texture = ExtResource("5_emot1")
 
 [node name="PlayButton" parent="." unique_id=513283286 instance=ExtResource("6_i5sur")]
+is_play_button = true
+
+[node name="TutorialButton" parent="." unique_id=352863901 instance=ExtResource("6_i5sur")]
+final_play_button_color = Color(0.75699997, 0.73, 1, 1)
 
 [node name="Options" type="Node2D" parent="." unique_id=852328042]
 

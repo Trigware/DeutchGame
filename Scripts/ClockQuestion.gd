@@ -1,7 +1,7 @@
 extends Control
 class_name ClockQuestion
 
-const spawned_clock_count = 2
+const spawned_clock_count = 1
 
 var spawned_clocks: Array[QuestionClock]
 var used_hours: Array[int]

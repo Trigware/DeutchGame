@@ -20,6 +20,7 @@ const board_tile_count := Vector2(11, 9)
 var possible_moves: Dictionary
 
 func _ready(): load_init_state()
+
 func load_init_state():
 	if not board.returned_after_minigame: GameState.active_game = UID.init_state
 	if GameState.active_game == null: GameState.active_game = UID.init_state
@@ -27,7 +28,8 @@ func load_init_state():
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
 	load_kind_of_tile(GameState.active_game.special_tiles)
 	tiled_diagonals.line_color = GameState.active_game.diagonals_modulate[GameState.active_game.player_turn]
-	setup_power_ups_at_start()
+	if board.returned_after_minigame: load_power_up_tiles()
+	else: setup_power_ups_at_start()
 	if board.returned_after_minigame: handle_after_minigame_return()
 
 func handle_after_minigame_return():
@@ -36,8 +38,10 @@ func handle_after_minigame_return():
 	Audio.play_sound(played_sfx)
 
 func setup_power_ups_at_start():
-	for tile_coord: Vector2i in GameState.active_game.power_up_tiles:
-		GameState.active_game.generate_power_up(tile_coord, power_ups)
+	for tile_coord: Vector2i in GameState.active_game.power_up_tiles: GameState.active_game.generate_power_up(tile_coord, power_ups)
+
+func load_power_up_tiles():
+	for tile_coord: Vector2i in GameState.active_game.power_up_tiles: GameState.active_game.update_power_up_tile(tile_coord, power_ups)
 
 func update_board_tile(tile_coord: Vector2i, tile_type: TileType):
 	set_cell(tile_coord, 1, get_hovered_atlas_coord(tile_coord, tile_type))
@@ -283,6 +287,7 @@ func play_move(called_after_event = false):
 	piece_locations[hovered_tile] = moved_piece
 	icons.erase_cell(selected_tile)
 	draw_piece_to_board(moved_piece, hovered_tile)
+	handle_power_up_regeneration()
 	handle_power_up_tiles()
 	handle_win_conditions(moved_piece)
 	if GameState.active_game.game_end_type != GridState.GameEndType.Ongoing:
@@ -374,7 +379,7 @@ func handle_power_up_tiles():
 	var obtainted_kind = GameState.active_game.power_up_tiles[hovered_tile]
 	GameState.active_game.power_up_tiles.erase(hovered_tile)
 	power_ups.erase_cell(hovered_tile)
-	GameState.active_game.receive_power_up(obtainted_kind)
+	GameState.active_game.receive_power_up(hovered_tile, obtainted_kind)
 
 func handle_win_conditions(moved_piece: Piece):
 	var needed_flag_color = moved_piece.team_relation
@@ -392,7 +397,7 @@ var trick_question_transition_duration = 0.35
 const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
-const questions_minigames_disabled = false
+const questions_minigames_disabled = true
 const after_trick_question_scene = UID.trick_question_decision
 
 func handle_pre_move_event(current_move: Move):
@@ -429,3 +434,50 @@ func push_piece():
 	selected_tile = GameState.active_game.trick_move_origin
 	hovered_tile = GameState.active_game.trick_move_destination
 	play_move(true)
+
+const moves_until_power_up_regen_start = 2
+
+func handle_power_up_regeneration():
+	for power_up_spawn_pos in GameState.active_game.power_up_piece_info.keys():
+		var holder_info = GameState.active_game.power_up_piece_info[power_up_spawn_pos]
+		var has_holder_moved = holder_info.piece_pos == selected_tile
+		var was_holder_captured = holder_info.piece_pos == hovered_tile
+		if was_holder_captured:
+			start_power_up_regeneration_counter(power_up_spawn_pos)
+			continue
+		if not has_holder_moved: continue
+		
+		holder_info.piece_pos = hovered_tile
+		holder_info.moves_since_gather += 1
+		var holder_move_count = holder_info.moves_since_gather
+		if holder_move_count >= moves_until_power_up_regen_start: start_power_up_regeneration_counter(power_up_spawn_pos)
+	progress_power_up_regeneration_counters()
+	handle_power_up_waiting_for_no_piece_array()
+
+const wait_until_power_up_regeneration = 3
+
+func start_power_up_regeneration_counter(power_up_spawn_pos):
+	var regeneration_wait_time_dict = GameState.active_game.power_up_regeneration_wait_times
+	regeneration_wait_time_dict[power_up_spawn_pos] = wait_until_power_up_regeneration
+
+func progress_power_up_regeneration_counters():
+	var regeneration_wait_time_dict: Dictionary = GameState.active_game.power_up_regeneration_wait_times
+	for power_up_spawn_pos in regeneration_wait_time_dict.keys():
+		var time_until_spawn_allowed = regeneration_wait_time_dict[power_up_spawn_pos] - 1
+		regeneration_wait_time_dict[power_up_spawn_pos] = time_until_spawn_allowed
+		if time_until_spawn_allowed > 0: continue
+		
+		regeneration_wait_time_dict.erase(power_up_spawn_pos)
+		var is_piece_on_spawn = power_up_spawn_pos in GameState.active_game.piece_locations.keys()
+		if is_piece_on_spawn: GameState.active_game.power_ups_waiting_for_no_piece.append(power_up_spawn_pos)
+		else: GameState.active_game.generate_power_up(power_up_spawn_pos, power_ups)
+
+func handle_power_up_waiting_for_no_piece_array():
+	var waiting_for_no_piece_arr = GameState.active_game.power_ups_waiting_for_no_piece
+	var duplicated_arr = waiting_for_no_piece_arr.duplicate()
+	var piece_locations = GameState.active_game.piece_locations
+	for power_up_spawn_pos in duplicated_arr:
+		var is_piece_on_spawn = power_up_spawn_pos in piece_locations.keys()
+		if is_piece_on_spawn: continue
+		waiting_for_no_piece_arr.erase(power_up_spawn_pos)
+		GameState.active_game.generate_power_up(power_up_spawn_pos, power_ups)

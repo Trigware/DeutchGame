@@ -22,7 +22,7 @@ func create_item_slot(team: SpecialTile.TeamRelation, power_up: SpecialTile.Team
 	slot_instance.setup(self, item_power_up_slots, power_up, team, last_power_up)
 
 func create_team_container(team: SpecialTile.TeamRelation):
-	if team == SpecialTile.TeamRelation.Other: return
+	if team == SpecialTile.TeamRelation.Other or board.is_playing_tutorial: return
 	var name_container: TeamNameContainer = UID.name_container.instantiate()
 	team_name_containers[team] = name_container
 	add_child(name_container)

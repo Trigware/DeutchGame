@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cqqmj37bg5lc0"]
+
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="1_bqs15"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="2_sh6l0"]
+
+[sub_resource type="Gradient" id="Gradient_w2ts1"]
+interpolation_mode = 2
+colors = PackedColorArray(0, 0, 0, 1, 0.012617188, 0.012617188, 0.012617188, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bqs15"]
+gradient = SubResource("Gradient_w2ts1")
+width = 128
+
+[sub_resource type="LabelSettings" id="LabelSettings_sh6l0"]
+font = ExtResource("1_bqs15")
+font_size = 48
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_50j14"]
+font = ExtResource("1_bqs15")
+font_size = 64
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="TutorialUI" type="CanvasLayer" unique_id=909024110]
+
+[node name="Gradient" type="TextureRect" parent="." unique_id=1132969212]
+offset_left = 1152.4706
+offset_top = 5.037609e-05
+offset_right = 1333.3594
+offset_bottom = 1153.4706
+rotation = 1.5707964
+texture = SubResource("GradientTexture1D_bqs15")
+
+[node name="Label" type="Label" parent="." unique_id=1808590845]
+offset_right = 1152.0
+offset_bottom = 78.0
+text = "Tutorial Text"
+label_settings = SubResource("LabelSettings_sh6l0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="NinePatchRect" parent="." unique_id=1729020914]
+offset_left = 1081.0
+offset_top = 9.0
+offset_right = 1141.0
+offset_bottom = 69.0
+texture = ExtResource("2_sh6l0")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Arrow" type="Label" parent="Button" unique_id=1565842921]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 3.0
+offset_right = 110.0
+offset_bottom = 67.0
+rotation = 1.5707964
+text = "^"
+label_settings = SubResource("LabelSettings_50j14")
+horizontal_alignment = 1
+vertical_alignment = 1

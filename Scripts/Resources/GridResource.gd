@@ -40,23 +40,9 @@ const diagonals_modulate: Dictionary[SpecialTile.TeamRelation, Color] = {
 @export var piece_locations: Dictionary[Vector2i, Piece]
 @export var special_tiles: Dictionary[Vector2i, SpecialTile]
 @export var power_up_tiles: Dictionary[Vector2i, PowerUpType] = {}
+var power_up_spawn_tiles: Array[Vector2i]
 
-@export var player_power_ups: Dictionary[SpecialTile.TeamRelation, PlayerPowerUp] = {
-	SpecialTile.TeamRelation.Red: PlayerPowerUp.ctor([
-		PowerUp.ctor(GridState.PowerUpType.SpeedBoost, 5),
-		PowerUp.ctor(GridState.PowerUpType.Shield, 5),
-		PowerUp.ctor(GridState.PowerUpType.TrickyItem, 5),
-		PowerUp.ctor(GridState.PowerUpType.WizardFreeze, 5),
-		PowerUp.ctor(GridState.PowerUpType.OpponentSlowness, 5),
-	]),
-	SpecialTile.TeamRelation.Blue: PlayerPowerUp.ctor([
-		PowerUp.ctor(GridState.PowerUpType.SpeedBoost, 5),
-		PowerUp.ctor(GridState.PowerUpType.Shield, 5),
-		PowerUp.ctor(GridState.PowerUpType.TrickyItem, 5),
-		PowerUp.ctor(GridState.PowerUpType.WizardFreeze, 5),
-		PowerUp.ctor(GridState.PowerUpType.OpponentSlowness, 5),
-	])
-}
+@export var player_power_ups: Dictionary[SpecialTile.TeamRelation, PlayerPowerUp]
 
 var team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Red: 10,
@@ -116,25 +102,40 @@ func update_effect_durations():
 			if effect.duration_node == null: continue
 			effect.duration_node.progress_effect_timer()
 
+const power_up_generation_limit = 1000
+
 func generate_power_up(tile_coord: Vector2i, tile_map: TileMapLayer):
-	var last_power_up = PowerUpType.values()[PowerUpType.values().size()-1]-1
-	var chosen_power_up = randi_range(0, last_power_up) + 1
+	var last_power_up = PowerUpType.values()[PowerUpType.values().size()-1]
+	var chosen_power_up: PowerUpType
+	for i in range(power_up_generation_limit):
+		chosen_power_up = randi_range(1, last_power_up)
+		var already_generated = chosen_power_up in power_up_tiles.values()
+		if already_generated: continue
+		break
+	
 	power_up_tiles[tile_coord] = chosen_power_up
+	power_up_spawn_tiles.append(tile_coord)
+	update_power_up_tile(tile_coord, tile_map)
+
+func update_power_up_tile(tile_coord: Vector2i, tile_map: TileMapLayer):
+	var chosen_power_up = power_up_tiles[tile_coord]
 	var atlas_coord = Vector2i(chosen_power_up-1, 0)
 	tile_map.set_cell(tile_coord, 1, atlas_coord)
 
 func has_tile_power_up(tile_coord: Vector2i):
 	return tile_coord in power_up_tiles
 
-func receive_power_up(power_up_kind: PowerUpType):
+func receive_power_up(tile_coord: Vector2i, power_up_kind: PowerUpType):
 	var actual_team = get_inverted_turn()
 	var wanted_player_power_up_setup = actual_team in player_power_ups
 	if not wanted_player_power_up_setup: player_power_ups[actual_team] = PlayerPowerUp.new()
+	
 	var playing_power_ups = player_power_ups[actual_team]
 	var no_wanted_kind_power_up = not power_up_kind in playing_power_ups.power_ups
 	if no_wanted_kind_power_up:
 		playing_power_ups.power_ups[power_up_kind] = PowerUp.new()
 	playing_power_ups.power_ups[power_up_kind].amount += 1
+	power_up_piece_info[tile_coord] = PowerUpHolder.ctor(tile_coord)
 
 func decrement_power_up(power_up_kind: PowerUpType):
 	var player_power_up: PlayerPowerUp = player_power_ups[player_turn]
@@ -142,6 +143,10 @@ func decrement_power_up(power_up_kind: PowerUpType):
 	power_up.amount -= 1
 
 const recipe_list_directory := "res://Resources/Recipes/"
+
+var power_up_regeneration_wait_times: Dictionary[Vector2i, int]
+var power_up_piece_info: Dictionary[Vector2i, PowerUpHolder]
+var power_ups_waiting_for_no_piece: Array[Vector2i]
 
 func create_recipe_list():
 	if restaurant_recipes.size() > 0: return

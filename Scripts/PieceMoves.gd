@@ -3,6 +3,7 @@ extends Node2D
 
 @onready var tiles = $Tiles
 @onready var tiled_diagonals = $"Tiled Diagonals"
+@onready var tutorial_ui = $TutorialUI
 
 const init_diagonals_gap_size = 0.5
 
@@ -19,9 +20,14 @@ const horse_offsets : Array[Vector2i] =\
 	Vector2i(-2, 1), Vector2i(2, 1), Vector2i(-1, 2), Vector2i(1, 2)]
 
 func has_piece(tile: Vector2i) -> bool: return tile in GameState.active_game.piece_locations.keys()
+
+var move_generation_index = 0
+var is_playing_tutorial = false
+
 func get_possible_moves(tile: Vector2i):
 	var piece: Piece = GameState.active_game.piece_locations[tile]
 	var is_frozen = piece.has_status_effect(Effect.StatusEffect.Frozen)
+	move_generation_index = 0
 	if is_frozen: return {}
 	match piece.kind:
 		GridState.PieceType.Sword: return get_possible_sword_moves(piece, tile)
@@ -33,6 +39,7 @@ const move_range = 2
 func _ready():
 	if not Audio.music_playing or returned_after_minigame: Audio.play_music(UID.board_music)
 	tiled_diagonals.gap_size = init_diagonals_gap_size
+	tutorial_ui.visible = is_playing_tutorial
 
 func _process(_delta):
 	create_grid_shadow()
@@ -65,7 +72,7 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 				2: cost = Move.MoveCost.Fast
 				_: cost = Move.MoveCost.FastTrick
 			
-			var move = Move.ctor(cost, is_in_trick_question(dest_pos))
+			var move = get_move(cost, dest_pos)
 			move.moved_piece = piece
 			result[dest_pos] = move
 			if is_stopping_path(piece, dest_pos): break
@@ -75,10 +82,14 @@ func get_possible_sword_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	for dir in diagonal_offsets:
 		var dest_pos = origin + dir
 		if not is_valid_tile(piece, dest_pos): continue
-		var move = Move.ctor(Move.MoveCost.Medium, is_in_trick_question(dest_pos))
+		var move = get_move(Move.MoveCost.Medium, dest_pos)
 		move.moved_piece = piece
 		result[dest_pos] = move
 	return result
+
+func get_move(move_cost, dest_pos, attribute = Move.Attribute.None):
+	move_generation_index += 1
+	return Move.ctor(move_cost, is_in_trick_question(dest_pos), attribute, move_generation_index - 1)
 
 func get_possible_wizard_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	var result = {}
@@ -104,7 +115,7 @@ func get_possible_wizard_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 			if is_move_orthogonal: move_cost = Move.MoveCost.Medium
 			var has_attribute = move_attribute != Move.Attribute.None
 			if has_attribute or i > 1: move_cost = Move.MoveCost.FastTrick
-			var move = Move.ctor(move_cost, is_in_trick_question(dest_pos), move_attribute)
+			var move = get_move(move_cost, dest_pos, move_attribute)
 			move.moved_piece = piece
 			result[dest_pos] = move
 			if is_stopping_path(piece, dest_pos): break
@@ -115,7 +126,7 @@ func get_possible_horse_moves(piece: Piece, origin: Vector2i) -> Dictionary:
 	for dir in horse_offsets:
 		var dest_pos = origin + dir
 		if not is_valid_tile(piece, dest_pos): continue
-		var move = Move.ctor(Move.MoveCost.Medium, is_in_trick_question(dest_pos))
+		var move = get_move(Move.MoveCost.Medium, dest_pos)
 		move.moved_piece = piece
 		result[dest_pos] = move
 	return result

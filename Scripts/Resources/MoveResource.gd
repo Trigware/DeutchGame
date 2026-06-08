@@ -17,6 +17,7 @@ var move_cost := MoveCost.Unknown
 var trick_move := false
 var attribute := Attribute.None
 var moved_piece: Piece
+var move_index: int
 
 enum Attribute {
 	None,
@@ -24,9 +25,10 @@ enum Attribute {
 	PieceFreeze
 }
 
-static func ctor(cost: MoveCost, is_trick := false, attr := Attribute.None) -> Move:
+static func ctor(cost: MoveCost, is_trick := false, attr := Attribute.None, index = -1) -> Move:
 	var instance = Move.new()
 	instance.move_cost = cost
 	instance.trick_move = is_trick or cost == MoveCost.FastTrick
 	instance.attribute = attr
+	instance.move_index = index
 	return instance
