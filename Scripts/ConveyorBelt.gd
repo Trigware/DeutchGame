@@ -12,6 +12,7 @@ extends Node2D
 	false: Color("660000"),
 	true: Color("003f66")
 }
+
 var player_root: RestaurantPlayer
 
 func _process(_delta):
@@ -28,12 +29,11 @@ func _process(_delta):
 		moving_arrows.arrow_modulate = arrow_colors[used_dir_state]
 
 func create_conveyor_object(ingredient_or_food, is_food: bool, food_station_ref: FoodStation) -> ConveyorObject:
-	var conveyor_ingredient := UID.conveyor_ingredient.instantiate()
+	var conveyor_ingredient = UID.conveyor_ingredient.instantiate()
 	conveyor_ingredient.player_root = player_root
 	conveyor_ingredient.food_station = food_station
-	match is_food:
-		true: conveyor_ingredient.food_type = ingredient_or_food
-		false: conveyor_ingredient.item_type = ingredient_or_food
+	if is_food: conveyor_ingredient.food_type = ingredient_or_food
+	else: conveyor_ingredient.item_type = ingredient_or_food
 	
 	conveyor_ingredient.is_output = is_food
 	conveyor_ingredient.convayor_belt_scale = scale.x

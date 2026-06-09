@@ -196,4 +196,5 @@ static func add_food(food_type: Ingredient.FoodType):
 func reload_restaurant_minigame():
 	await Overlay.switch_scene_def(UID.restaurant_minigame, func(_scene):
 		GameState.active_game.restaurant_minigame_explained = true
+		GameState.active_game.ingredient_count_per_type.clear()
 	)
