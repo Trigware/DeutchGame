@@ -69,6 +69,7 @@ var custom_food_requests: Dictionary[Ingredient.FoodType, int]
 var food_stations: Dictionary[Ingredient.FoodType, FoodStation]
 var ingredients_encountered: Array[Ingredient.IngredientType]
 var foods_encountered: Array[Ingredient.FoodType]
+var restaurant_minigame_explained = false
 static var conveyor_belt_speed_multiplier = 1.35
 
 signal ingredient_type_added(ingredient_type: Ingredient.IngredientType)
@@ -191,3 +192,8 @@ static func add_food(food_type: Ingredient.FoodType):
 		held_food_dict[food_type] = 0
 		GameState.active_game.food_type_added.emit(food_type)
 	held_food_dict[food_type] += 1
+
+func reload_restaurant_minigame():
+	await Overlay.switch_scene_def(UID.restaurant_minigame, func(_scene):
+		GameState.active_game.restaurant_minigame_explained = true
+	)

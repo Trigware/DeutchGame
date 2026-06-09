@@ -64,7 +64,7 @@ shader_parameter/texture_size = Vector2(28.799225, 16.201447)
 shader_parameter/texture_scale = Vector2(2, 2)
 shader_parameter/diagonal_lines = 1.15
 shader_parameter/gap_size = 0.525
-shader_parameter/pattern_repeated = 9137.685217249149
+shader_parameter/pattern_repeated = 613.6124989752215
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
 
@@ -78,27 +78,27 @@ script = ExtResource("14_kvmcw")
 kind = 1
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
-[sub_resource type="Resource" id="Resource_iccj1"]
-script = ExtResource("16_ydh3b")
-kind = 2
-relation = 1
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
-[sub_resource type="Resource" id="Resource_nmfwp"]
-script = ExtResource("16_ydh3b")
-kind = 2
-relation = 0
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
 [sub_resource type="Resource" id="Resource_kvmcw"]
 script = ExtResource("16_ydh3b")
 kind = 1
 wall_surround = 0
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
+[sub_resource type="Resource" id="Resource_iccj1"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
 [sub_resource type="Resource" id="Resource_qn4gg"]
 script = ExtResource("16_ydh3b")
 kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_nmfwp"]
+script = ExtResource("16_ydh3b")
+kind = 2
+relation = 0
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
 [sub_resource type="Resource" id="Resource_ydh3b"]
@@ -122,9 +122,10 @@ Vector2i(6, 2): SubResource("Resource_ydh3b")
 })
 metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
 
-[sub_resource type="Resource" id="Resource_bvs5j"]
+[sub_resource type="Resource" id="Resource_ejb6o"]
 script = ExtResource("14_kvmcw")
-kind = 1
+kind = 2
+team_relation = 1
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
 [sub_resource type="Resource" id="Resource_bi01t"]
@@ -134,10 +135,9 @@ team_relation = 1
 respawn_pos = Vector2i(3, 0)
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
-[sub_resource type="Resource" id="Resource_ejb6o"]
+[sub_resource type="Resource" id="Resource_bvs5j"]
 script = ExtResource("14_kvmcw")
-kind = 2
-team_relation = 1
+kind = 1
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
 [sub_resource type="Resource" id="Resource_rqwti"]
@@ -171,6 +171,16 @@ kind = 3
 team_relation = 1
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
+[sub_resource type="Resource" id="Resource_bnoy5"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_u4dsw"]
+script = ExtResource("16_ydh3b")
+kind = 1
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
 [sub_resource type="Resource" id="Resource_uuk6v"]
 script = ExtResource("16_ydh3b")
 kind = 1
@@ -181,17 +191,7 @@ script = ExtResource("16_ydh3b")
 kind = 1
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
-[sub_resource type="Resource" id="Resource_bnoy5"]
-script = ExtResource("16_ydh3b")
-kind = 1
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
 [sub_resource type="Resource" id="Resource_q440b"]
-script = ExtResource("16_ydh3b")
-kind = 1
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
-[sub_resource type="Resource" id="Resource_u4dsw"]
 script = ExtResource("16_ydh3b")
 kind = 1
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
@@ -219,10 +219,11 @@ Vector2i(6, 5): SubResource("Resource_3886c")
 player_turn = 1
 metadata/_custom_type_script = "uid://d1pwnhpy3j4mq"
 
-[sub_resource type="Resource" id="Resource_0vuns"]
+[sub_resource type="Resource" id="Resource_50shq"]
 script = ExtResource("14_kvmcw")
 kind = 1
-respawn_pos = Vector2i(3, 8)
+team_relation = 1
+respawn_pos = Vector2i(3, 0)
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
 [sub_resource type="Resource" id="Resource_fmxdk"]
@@ -231,16 +232,10 @@ kind = 1
 respawn_pos = Vector2i(7, 8)
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
-[sub_resource type="Resource" id="Resource_34xon"]
-script = ExtResource("14_kvmcw")
-kind = 2
-metadata/_custom_type_script = "uid://b4rerfhslxblk"
-
-[sub_resource type="Resource" id="Resource_50shq"]
+[sub_resource type="Resource" id="Resource_0vuns"]
 script = ExtResource("14_kvmcw")
 kind = 1
-team_relation = 1
-respawn_pos = Vector2i(3, 0)
+respawn_pos = Vector2i(3, 8)
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
 [sub_resource type="Resource" id="Resource_2dsfd"]
@@ -249,17 +244,12 @@ kind = 2
 team_relation = 1
 metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
-[sub_resource type="Resource" id="Resource_xw3q1"]
-script = ExtResource("16_ydh3b")
-kind = 4
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
+[sub_resource type="Resource" id="Resource_34xon"]
+script = ExtResource("14_kvmcw")
+kind = 2
+metadata/_custom_type_script = "uid://b4rerfhslxblk"
 
 [sub_resource type="Resource" id="Resource_vg4bq"]
-script = ExtResource("16_ydh3b")
-kind = 4
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
-[sub_resource type="Resource" id="Resource_gyre0"]
 script = ExtResource("16_ydh3b")
 kind = 4
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
@@ -269,7 +259,17 @@ script = ExtResource("16_ydh3b")
 kind = 4
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
+[sub_resource type="Resource" id="Resource_xw3q1"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
 [sub_resource type="Resource" id="Resource_ojdpt"]
+script = ExtResource("16_ydh3b")
+kind = 4
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_gyre0"]
 script = ExtResource("16_ydh3b")
 kind = 4
 metadata/_custom_type_script = "uid://q3c88fb6vgof"

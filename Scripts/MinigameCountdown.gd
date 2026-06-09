@@ -2,6 +2,7 @@ class_name MinigameCountdown
 extends CanvasLayer
 
 @onready var countdown = $Countdown
+@onready var tutorial_button = $TutorialButton
 
 const init_wait_time = 3
 var countdown_size: float = maximum_size
@@ -12,13 +13,17 @@ const maximum_size = 450
 var tween_running = false
 const start_text = "START"
 
-var minigame_started = true
+var minigame_started = false
+var minigame_button_active: bool
 
 func _ready():
 	if minigame_started:
 		GameState.active_game = UID.init_state
 		GameState.active_game.restaurant_game_started.emit()
 	visible = not minigame_started
+	tutorial_button.button_press.connect(func(): minigame_button_active = false)
+	await get_tree().process_frame
+	minigame_button_active = not GameState.active_game.restaurant_minigame_explained
 
 func _process(delta: float):
 	handle_countdown_time(delta)
@@ -34,6 +39,9 @@ const start_modulate_tween_duration = 0.5
 const movement_enable_prestart_duration = 0.5
 
 func handle_countdown_time(delta: float):
+	countdown.visible = not minigame_button_active
+	if minigame_button_active: return
+	
 	time_until_start -= delta
 	var countdown_text = str(int(ceil(time_until_start)))
 	var show_start_text = time_until_start < 0

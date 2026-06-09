@@ -20,10 +20,12 @@ func setup(coord: Vector2i, move: Move, parent: Node):
 const display_move_identifiers = false
 
 func handle_identifier_label():
-	if not display_move_identifiers:
-		identifier_label.hide()
-		return
+	identifier_label.modulate.a = 0
 	identifier_label.text = "(" + str(move_data.move_index + 1) + ")"
+
+func _process(_delta):
+	var identifier_seen = Input.is_action_pressed("move_identifier_show")
+	identifier_label.modulate.a = 1 if identifier_seen else 0
 
 func get_cost_text(move: Move):
 	var duration = Move.move_cost_duration[move.move_cost]

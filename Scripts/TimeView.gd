@@ -5,6 +5,7 @@ extends CanvasLayer
 @export var player_root: RestaurantPlayer
 @onready var time_label = $Time
 @onready var multiplier_label = $Multiplier
+@onready var tutorial_button = $Button
 
 const minigame_duration: float = 240
 var time_until_end: float = minigame_duration
@@ -17,17 +18,46 @@ const init_window_size = Vector2(1152, 648)
 
 var was_previously_time_over = false
 
+func _ready():
+	pressed_tutorial_button_before = false
+	if GameState.active_game != null: pressed_tutorial_button_before = GameState.active_game.restaurant_minigame_explained
+
 func _process(delta: float):
 	var window_size = DisplayServer.window_get_size()
 	handle_label_content(window_size)
 	handle_offset(window_size)
-	if not minigame_countdown.minigame_started: return
+	handle_tutorial_button()
+	var in_minigame_restaurant_tutorial = not GameState.active_game.restaurant_minigame_explained
+	time_label.visible = not in_minigame_restaurant_tutorial
+	multiplier_label.visible = not in_minigame_restaurant_tutorial
+	if not minigame_countdown.minigame_started or in_minigame_restaurant_tutorial: return
 	time_until_end = max(time_until_end - delta, 0)
 	if time_until_end == 0 and not was_previously_time_over:
 		on_time_over()
 
 const seconds_in_minute = 60
 var label_size: float
+
+const tutorial_button_relative_pos = Vector2(0.975, 0.975)
+const base_tutorial_button_scale: float = 1.4
+const base_window_size = Vector2(1152, 648)
+
+var pressed_tutorial_button_before = false
+
+func handle_tutorial_button():
+	tutorial_button.visible = not pressed_tutorial_button_before
+	if pressed_tutorial_button_before: return
+	
+	var window_size = Vector2(DisplayServer.window_get_size())
+	var scale_multiplier = window_size.x / base_window_size.x * base_tutorial_button_scale
+	tutorial_button.scale = Vector2.ONE * scale_multiplier
+	tutorial_button.position = window_size * tutorial_button_relative_pos - tutorial_button.size * scale_multiplier
+	
+	var local_mouse = tutorial_button.get_local_mouse_position()
+	var is_hovering = local_mouse.x >= 0 and local_mouse.y >= 0 and local_mouse.x <= tutorial_button.size.x and local_mouse.y <= tutorial_button.size.y
+	if not is_hovering or not Input.is_action_just_pressed("button_press"): return
+	pressed_tutorial_button_before = true
+	GameState.active_game.reload_restaurant_minigame()
 
 func handle_label_content(window_size):
 	label_size = window_size.x * portion_of_window_width

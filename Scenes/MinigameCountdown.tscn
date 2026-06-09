@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dt8blcihhnthl" path="res://Scripts/MinigameCountdown.gd" id="1_xoqea"]
 [ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="2_xoqea"]
+[ext_resource type="PackedScene" uid="uid://cqydhxxn3q6q3" path="res://Scenes/PlayButton.tscn" id="3_lk2xu"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lk2xu"]
 font = ExtResource("2_xoqea")
@@ -19,3 +20,6 @@ text = "0"
 label_settings = SubResource("LabelSettings_lk2xu")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TutorialButton" parent="." unique_id=513283286 instance=ExtResource("3_lk2xu")]
+is_in_restaurant_minigame = true

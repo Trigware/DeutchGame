@@ -22,7 +22,7 @@ const horse_offsets : Array[Vector2i] =\
 func has_piece(tile: Vector2i) -> bool: return tile in GameState.active_game.piece_locations.keys()
 
 var move_generation_index = 0
-var is_playing_tutorial = true
+var is_playing_tutorial = false
 
 func get_possible_moves(tile: Vector2i):
 	var piece: Piece = GameState.active_game.piece_locations[tile]

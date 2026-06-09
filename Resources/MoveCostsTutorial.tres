@@ -16,12 +16,6 @@ kind = 2
 relation = 1
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
-[sub_resource type="Resource" id="Resource_osab5"]
-script = ExtResource("4_3dcw8")
-kind = 2
-relation = 0
-metadata/_custom_type_script = "uid://q3c88fb6vgof"
-
 [sub_resource type="Resource" id="Resource_cqaee"]
 script = ExtResource("4_3dcw8")
 kind = 3
@@ -30,6 +24,12 @@ metadata/_custom_type_script = "uid://q3c88fb6vgof"
 [sub_resource type="Resource" id="Resource_wml1j"]
 script = ExtResource("4_3dcw8")
 kind = 3
+metadata/_custom_type_script = "uid://q3c88fb6vgof"
+
+[sub_resource type="Resource" id="Resource_osab5"]
+script = ExtResource("4_3dcw8")
+kind = 2
+relation = 0
 metadata/_custom_type_script = "uid://q3c88fb6vgof"
 
 [resource]

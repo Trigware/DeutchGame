@@ -26,7 +26,15 @@ func _ready():
 
 func load_state(state_to_be_loaded, forced = false):
 	var saved_tutorial_index = TutorialUI.start_dialog_index - 1
-	if GameState.active_game != null: saved_tutorial_index = GameState.active_game.current_dialog_index
+	var saved_ingredients_encountered = []
+	var saved_foods_encountered = []
+	var saved_minigame_explained = false
+	if GameState.active_game != null:
+		saved_tutorial_index = GameState.active_game.current_dialog_index
+		saved_ingredients_encountered = GameState.active_game.ingredients_encountered
+		saved_foods_encountered = GameState.active_game.foods_encountered
+		saved_minigame_explained = GameState.active_game.restaurant_minigame_explained
+	
 	icons.clear()
 	status.clear()
 	power_ups.clear()
@@ -35,6 +43,9 @@ func load_state(state_to_be_loaded, forced = false):
 	if not board.returned_after_minigame: GameState.active_game = UID.init_state
 	if GameState.active_game == null or forced: GameState.active_game = state_to_be_loaded
 	GameState.active_game.current_dialog_index = saved_tutorial_index
+	GameState.active_game.ingredients_encountered = saved_ingredients_encountered
+	GameState.active_game.foods_encountered = saved_foods_encountered
+	GameState.active_game.restaurant_minigame_explained = saved_minigame_explained
 	
 	GameState.active_game.grid_tiles = self
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
@@ -285,7 +296,7 @@ func is_tutorial_move_valid():
 
 signal tutorial_move_played
 
-const switch_player_turn_allowed_tutorial_indices := [TutorialUI.TutorialDialogType.CapturingSwords, TutorialUI.TutorialDialogType.PowerUpRules]
+const switch_player_turn_allowed_tutorial_indices := [TutorialUI.TutorialDialogType.CapturingSwords, TutorialUI.TutorialDialogType.PowerUpRules, TutorialUI.TutorialDialogType.GameObjective]
 
 func switch_player_turn():
 	var tutorial_dialog_index = GameState.active_game.current_dialog_index
@@ -309,7 +320,7 @@ func play_move(called_after_event = false):
 	var has_captured_piece = hovered_tile in piece_locations
 	if has_captured_piece: affected_piece = piece_locations[hovered_tile]
 	
-	var handle_event = not questions_minigames_disabled and not called_after_event
+	var handle_event = not questions_minigames_disabled and not called_after_event and not board.is_playing_tutorial
 	var is_tutorial_progress_enabled = GameState.active_game.current_dialog_index in TutorialUI.disabled_tutorial_progress_dialog_indices
 	if board.is_playing_tutorial and is_tutorial_progress_enabled: tutorial_move_played.emit()
 	if handle_event:

@@ -6,13 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://dtpoadv7fcreq" path="res://Textures/WheelItems.png" id="2_pavpa"]
 [ext_resource type="Texture2D" uid="uid://ca8mjuskp5ucr" path="res://Textures/Fortune Pointer.png" id="4_knryd"]
 [ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="6_bftnf"]
-[ext_resource type="Texture2D" uid="uid://db1xsx3wajk7x" path="res://Textures/Tiles.png" id="7_8lme0"]
+[ext_resource type="Texture2D" uid="uid://dtn0x1gqt7s37" path="res://Textures/Tiles.png" id="7_8lme0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lme0"]
 shader = ExtResource("1_yyskf")
-shader_parameter/amount_of_segments = 8
-shader_parameter/wheel_rotation = 0.6875
-shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.69, 0.56925, 0.207, 1), Color(0.44849998, 0.69, 0.207, 1), Color(0.207, 0.69, 0.32775003, 1), Color(0.207, 0.69, 0.69, 1), Color(0.207, 0.32775003, 0.69, 1), Color(0.44849998, 0.207, 0.69, 1), Color(0.69, 0.207, 0.56925, 1)])
+shader_parameter/amount_of_segments = 7
+shader_parameter/wheel_rotation = 0.6785714285714286
+shader_parameter/segment_colors = Array[Color]([Color(0.69, 0.207, 0.207, 1), Color(0.69, 0.62100005, 0.207, 1), Color(0.34499997, 0.69, 0.207, 1), Color(0.207, 0.69, 0.48299998, 1), Color(0.207, 0.48299986, 0.69, 1), Color(0.34499997, 0.207, 0.69, 1), Color(0.69, 0.207, 0.62100005, 1)])
 shader_parameter/texture_size = Vector2(100, 104)
 shader_parameter/seperator_size = 0.219
 shader_parameter/seperator_tint = Vector4(1, 1, 1, 1)
@@ -79,6 +79,7 @@ modulate = Color(1, 1, 1, 0)
 position = Vector2(0, -15)
 
 [node name="Result Shadow" type="Sprite2D" parent="Result Root" unique_id=408706287]
+visible = false
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6.0000153, 15)
 scale = Vector2(3.0000002, 3.0000002)

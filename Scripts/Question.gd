@@ -26,7 +26,7 @@ const ui_show_up_tween_duration = 0.6
 const final_question_titles_y_pos = 22
 
 var timeout_previously = false
-var pressed_ready = true
+var pressed_ready = false
 var ready_from_init = pressed_ready
 
 signal pressed_ready_event

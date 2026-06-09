@@ -48,7 +48,7 @@ func update_slot():
 	scale = used_scale
 	
 	var item_count = get_item_count()
-	count_label.text = "INF" if item_count >= GridState.int_max / 2 else str(item_count)
+	count_label.text = "" if item_count >= GridState.int_max / 2 else str(item_count)
 	return used_scale
 
 func get_item_count() -> int:

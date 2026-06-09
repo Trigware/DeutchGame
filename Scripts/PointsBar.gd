@@ -68,7 +68,9 @@ func _process(delta: float):
 	offset.x = window_size.x / 2 - progress_x_bar / 2 * bar_scale + icon_offset / 2 * bar_scale
 	offset.y = window_size.y - timer_y_offset * bar_scale
 	progress_bar.value = used_points / maximum_points_count
-	if points_count > maximum_points_count and not goal_reached_previously: point_goal_reached()
+	var restaurant_tutorial_explained = GameState.active_game.restaurant_minigame_explained
+	if points_count > maximum_points_count and not goal_reached_previously and restaurant_tutorial_explained:
+		point_goal_reached()
 
 var goal_reached_previously = false
 
