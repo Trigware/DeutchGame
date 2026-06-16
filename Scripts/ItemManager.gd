@@ -123,6 +123,7 @@ func stopped_affected_tiles_highlight():
 	Audio.play_sound(UID.power_up_sfx)
 	GameState.active_game.decrement_power_up(latest_selected_power_up)
 	var used_tricky_item = latest_selected_power_up == GridState.PowerUpType.TrickyItem
+	Save.save_game()
 	if used_tricky_item:
 		handle_trick_question_placement(hovered_coord)
 		return
@@ -173,13 +174,12 @@ func update_tiles_with_tricky_item_positions():
 		var piece: Piece = GameState.active_game.piece_locations[tile_coord]
 		var is_frozen = piece.has_status_effect(Effect.StatusEffect.Frozen)
 		var is_fainted = piece.has_status_effect(Effect.StatusEffect.Fainted)
-		var is_not_sword = piece.kind != GridState.PieceType.Sword
-		var cannot_place = not piece.belongs_to_playing() or is_not_sword or is_frozen or is_fainted
+		var cannot_place = not piece.belongs_to_playing() or is_frozen or is_fainted
 		if cannot_place: continue
 		
-		var sword_moves = board.get_possible_sword_moves(piece, tile_coord)
-		for move_dest: Vector2i in sword_moves.keys():
-			var move: Move = sword_moves[move_dest]
+		var available_moves = board.get_possible_moves(tile_coord)
+		for move_dest: Vector2i in available_moves.keys():
+			var move: Move = available_moves[move_dest]
 			var expensive_move = move.move_cost == Move.MoveCost.FastTrick
 			var place_has_piece = move_dest in GameState.active_game.piece_locations
 			var place_has_special_tile = move_dest in GameState.active_game.special_tiles

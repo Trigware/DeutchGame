@@ -10,7 +10,6 @@ func _ready():
 	GameState.active_game.player_held_ingredients_nodes = []
 	GameState.active_game.unlocked_foods = []
 	Audio.play_music(UID.restaurant_music)
-	GameState.active_game.create_recipe_list()
 	GameState.active_game.recipe_screens = {}
 	GameState.active_game.foods_thrown = []
 	GameState.active_game.custom_food_requests = {}

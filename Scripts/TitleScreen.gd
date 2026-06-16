@@ -5,7 +5,7 @@ extends Node2D
 @onready var tiled_diagonals = $"Tiled Diagonals"
 @onready var logo = $Logo
 
-const version_text = "1.0-rc1"
+const version_text = "1.1"
 const logo_width = 310
 const logo_height = 100
 

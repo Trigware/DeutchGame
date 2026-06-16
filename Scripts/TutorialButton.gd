@@ -4,12 +4,13 @@ extends Control
 signal button_pressed
 
 @onready var button_base = $Button
+var playing_tutorial = false
 
 func _process(_delta):
 	handle_position_and_scale()
 	handle_mouse_interaction()
 
-var relative_pos = Vector2(0.99, 0.015)
+var relative_pos = Vector2(0.99, 0.008)
 var relative_size = 0.1
 
 func handle_position_and_scale():

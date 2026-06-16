@@ -44,6 +44,7 @@ func add_effect(effect: Effect.StatusEffect):
 	var has_speed = has_status_effect(Effect.StatusEffect.Speed)
 	if adding_slowness and has_speed: remove_effect(Effect.StatusEffect.Speed)
 	if adding_speed and has_slowness: remove_effect(Effect.StatusEffect.Slowness)
+	
 	var already_has_effect = has_status_effect(effect)
 	var effect_instance: Effect = Effect.ctor(effect, self)
 	if already_has_effect:

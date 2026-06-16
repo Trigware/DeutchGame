@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bjqdqmm1evmow"]
+
+[ext_resource type="Script" uid="uid://chhpyvg0qfkv5" path="res://Scripts/LoadButton.gd" id="1_hr2pt"]
+[ext_resource type="Texture2D" uid="uid://qbptsgd1tgki" path="res://Textures/Button.png" id="1_yyvmx"]
+[ext_resource type="Texture2D" uid="uid://2uxiy4u0ld2e" path="res://Textures/FloppyDisc.png" id="2_2bpna"]
+[ext_resource type="FontFile" uid="uid://dil43sbwcg2uc" path="res://Fonts/Leafcross Font.png" id="3_2bpna"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_hr2pt"]
+font = ExtResource("3_2bpna")
+font_size = 24
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(1.5, 1.5)
+
+[node name="LoadButton" type="Node2D" unique_id=622198892]
+script = ExtResource("1_hr2pt")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1575449450]
+clip_contents = true
+offset_right = 60.0
+offset_bottom = 60.0
+texture = ExtResource("1_yyvmx")
+patch_margin_left = 17
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 18
+
+[node name="Floppy" type="Sprite2D" parent="." unique_id=212078135]
+position = Vector2(29, 29)
+texture = ExtResource("2_2bpna")
+
+[node name="Title" type="Label" parent="." unique_id=1063944095]
+offset_left = -125.0
+offset_right = 190.0
+offset_bottom = 82.0
+text = "AUTOSAVE"
+label_settings = SubResource("LabelSettings_hr2pt")
+horizontal_alignment = 1
+vertical_alignment = 2

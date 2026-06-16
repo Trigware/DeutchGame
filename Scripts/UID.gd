@@ -37,6 +37,14 @@ const question_button := preload("uid://b7itb1gmis7pn")
 const question_clock := preload("uid://bysq3yjn877od")
 const title_screen_scene := preload("uid://bpgi4bffsy83i")
 
+var food_recipes : Dictionary[Ingredient.FoodType, RestaurantRecipe] = {
+	Ingredient.FoodType.Currywurst: load("uid://bqk6h6qfe50t1"),
+	Ingredient.FoodType.FriedCheese: load("uid://bpy5optx37bee"),
+	Ingredient.FoodType.Grostl: load("uid://dyi17tloq5nvv"),
+	Ingredient.FoodType.Kasespatzle: load("uid://ctgtpeyre3y77"),
+	Ingredient.FoodType.Schnitzel: load("uid://cxunov1l8rl5n")
+}
+
 const power_up_sfx := preload("uid://bpvqwvp3oei2q")
 const button_clicked_sfx := preload("uid://vc0ficlfwkxk")
 const task_success_sfx := preload("uid://dadnawol3qnog")

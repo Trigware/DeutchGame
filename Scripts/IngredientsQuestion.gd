@@ -6,7 +6,7 @@ const number_of_generated_foods = 4
 var generated_ingredients: Array = []
 var generated_foods: Array = []
 var ingredient_nodes: Array[QuestionIngredient]
-const restricted_ingredients = [Ingredient.IngredientType.Flour, Ingredient.IngredientType.Breadcrumbs, Ingredient.IngredientType.Oil]
+const restricted_ingredients = [Ingredient.IngredientType.Flour, Ingredient.IngredientType.Breadcrumbs, Ingredient.IngredientType.Oil, Ingredient.IngredientType.Onion]
 const restricted_foods = [Ingredient.FoodType.Kasespatzle, Ingredient.FoodType.FriedCheese, Ingredient.FoodType.Grostl]
 
 func _ready():
@@ -56,20 +56,19 @@ func initialize_ingredient_or_food_value(chosen_index, max_ingredient_index):
 
 func will_retry_generating():
 	var chosen_ingredient_or_food = chosen_ingredient if has_generated_ingredient else chosen_food
-	var active_game = GameState.active_game
-	var encountered_ingredients_or_food_list = active_game.ingredients_encountered if has_generated_ingredient else active_game.foods_encountered
 	var restricted_ingredients_or_food_list = restricted_ingredients if has_generated_ingredient else restricted_foods
 	var generated_ingredients_or_food_list = generated_ingredients if has_generated_ingredient else generated_foods
 	
-	var encounted_before = chosen_ingredient_or_food in encountered_ingredients_or_food_list
-	var is_food_restricted = chosen_ingredient_or_food in restricted_ingredients_or_food_list and not encounted_before
+	var is_food_restricted = chosen_ingredient_or_food in restricted_ingredients_or_food_list
 	var has_food_generated_before = chosen_ingredient_or_food in generated_ingredients_or_food_list
-	return is_food_restricted or has_food_generated_before
+	var is_invalid = is_food_restricted or has_food_generated_before
+	return is_invalid
 
 func initiialize_question_ingredient_scene():
 	var tracker_list = generated_ingredients if has_generated_ingredient else generated_foods
 	var ingredient_or_food = chosen_ingredient if has_generated_ingredient else chosen_food
 	tracker_list.append(ingredient_or_food)
+	
 	if has_generated_ingredient: question_ingredient.ingredient_type = chosen_ingredient
 	else: question_ingredient.food_type = chosen_food
 	

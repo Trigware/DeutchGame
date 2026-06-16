@@ -9,7 +9,7 @@ const initial_durations: Dictionary[Effect.StatusEffect, int] = {
 	Effect.StatusEffect.Speed: 2,
 	Effect.StatusEffect.Protected: 3,
 	Effect.StatusEffect.Slowness: 2,
-	Effect.StatusEffect.Frozen: 4
+	Effect.StatusEffect.Frozen: 3
 }
 
 var linked_effect: Effect = null

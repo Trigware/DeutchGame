@@ -23,7 +23,7 @@ var effect_initialized := false
 
 const flag_kind : Array[StatusEffect] = [StatusEffect.RedFlag, StatusEffect.BlueFlag]
 
-static func ctor(effect: StatusEffect, piece: Piece) -> Effect:
+static func ctor(effect: StatusEffect, piece: Piece = null) -> Effect:
 	var instance := Effect.new()
 	instance.effect_type = effect
 	instance.linked_piece = piece

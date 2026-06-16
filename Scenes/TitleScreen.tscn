@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://6m335yxqnns8" path="res://Textures/SachovlajkyLogo.png" id="5_emot1"]
 [ext_resource type="PackedScene" uid="uid://cqydhxxn3q6q3" path="res://Scenes/PlayButton.tscn" id="6_i5sur"]
 [ext_resource type="PackedScene" uid="uid://trlib1xcwskt" path="res://Scenes/TeamOption.tscn" id="7_7whhf"]
+[ext_resource type="PackedScene" uid="uid://bjqdqmm1evmow" path="res://Scenes/LoadButton.tscn" id="8_5c2t2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8l4an"]
 shader = ExtResource("2_vmg2h")
@@ -15,7 +16,7 @@ shader_parameter/texture_size = Vector2(28.8, 16.2)
 shader_parameter/texture_scale = Vector2(20, 20)
 shader_parameter/diagonal_lines = 20.0
 shader_parameter/gap_size = 0.5
-shader_parameter/pattern_repeated = 7.709603047220897
+shader_parameter/pattern_repeated = 9.868535144997983
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
 
@@ -75,3 +76,8 @@ title_screen = NodePath("../..")
 [node name="BlueTeam" parent="Options" unique_id=2071148301 node_paths=PackedStringArray("title_screen") instance=ExtResource("7_7whhf")]
 team_color = 1
 title_screen = NodePath("../..")
+
+[node name="LoadFile" parent="." unique_id=622198892 instance=ExtResource("8_5c2t2")]
+is_from_file = true
+
+[node name="LoadAutosave" parent="." unique_id=493072833 instance=ExtResource("8_5c2t2")]

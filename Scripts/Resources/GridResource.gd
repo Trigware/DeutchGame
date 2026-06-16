@@ -86,7 +86,6 @@ var team_names : Dictionary[SpecialTile.TeamRelation, String] = {
 var trick_move_origin: Vector2i
 var trick_move_destination: Vector2i
 
-var restaurant_recipes: Dictionary[Ingredient.FoodType, RestaurantRecipe] = {}
 var current_dialog_index = -1
 
 func invert_turn(): player_turn = get_inverted_turn()
@@ -107,7 +106,6 @@ func update_effect_durations():
 const power_up_generation_limit = 1000
 
 func generate_power_up(tile_coord: Vector2i, tile_map: TileMapLayer):
-	
 	var last_power_up = PowerUpType.values()[PowerUpType.values().size()-1]
 	var chosen_power_up: PowerUpType
 	for i in range(power_up_generation_limit):
@@ -115,7 +113,8 @@ func generate_power_up(tile_coord: Vector2i, tile_map: TileMapLayer):
 		var already_generated = chosen_power_up in power_up_tiles.values()
 		if already_generated: continue
 		break
-	var has_predetermined_power_up = power_up_tiles[tile_coord] != PowerUpType.None
+	
+	var has_predetermined_power_up = tile_coord in power_up_tiles and power_up_tiles[tile_coord] != PowerUpType.None
 	if has_predetermined_power_up: chosen_power_up = power_up_tiles[tile_coord]
 	
 	power_up_tiles[tile_coord] = chosen_power_up
@@ -141,10 +140,11 @@ func receive_power_up(tile_coord: Vector2i, power_up_kind: PowerUpType):
 	var no_wanted_kind_power_up = not power_up_kind in playing_power_ups.power_ups
 	if no_wanted_kind_power_up:
 		playing_power_ups.power_ups[power_up_kind] = PowerUp.new()
-	var prev_amount = playing_power_ups.power_ups[power_up_kind]
+	var prev_amount = playing_power_ups.power_ups[power_up_kind].amount
 	
 	var will_give_infinite_power_ups = current_dialog_index >= TutorialUI.TutorialDialogType.PowerUpRules
-	var updated_amount = int_max if will_give_infinite_power_ups else prev_amount + 1
+	var additional_count = 3 if power_up_kind == PowerUpType.TrickyItem else 1
+	var updated_amount = int_max if will_give_infinite_power_ups else prev_amount + additional_count
 	playing_power_ups.power_ups[power_up_kind].amount = updated_amount
 	power_up_piece_info[tile_coord] = PowerUpHolder.ctor(tile_coord)
 
@@ -159,32 +159,8 @@ var power_up_regeneration_wait_times: Dictionary[Vector2i, int]
 var power_up_piece_info: Dictionary[Vector2i, PowerUpHolder]
 var power_ups_waiting_for_no_piece: Array[Vector2i]
 
-func create_recipe_list():
-	if restaurant_recipes.size() > 0: return
-	var recipe_directory = DirAccess.open(recipe_list_directory)
-	if recipe_directory == null:
-		push_error("Recipe directory not found!")
-		return
-	
-	recipe_directory.list_dir_begin()
-	
-	while true:
-		var current_file := recipe_directory.get_next()
-		if current_file == "": break
-		if recipe_directory.current_is_dir() or current_file.begins_with("."): continue
-		
-		var full_file_path = recipe_list_directory + current_file
-		var recipe_resource := load(full_file_path)
-		if not recipe_resource is RestaurantRecipe: continue
-		var current_recipe := recipe_resource as RestaurantRecipe
-		restaurant_recipes[current_recipe.resulting_food] = current_recipe
-	
-	recipe_directory.list_dir_end()
-
 static func get_recipe(crafted_food: Ingredient.FoodType) -> RestaurantRecipe:
-	if not crafted_food in GameState.active_game.restaurant_recipes:
-		GameState.active_game.create_recipe_list()
-	return GameState.active_game.restaurant_recipes[crafted_food]
+	return UID.food_recipes[crafted_food]
 
 static func add_food(food_type: Ingredient.FoodType):
 	var held_food_dict = GameState.active_game.player_held_foods 

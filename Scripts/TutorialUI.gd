@@ -30,6 +30,8 @@ const tutorial_dialog: Array[String] = [
 
 const disabled_tutorial_progress_dialog_indices := [TutorialDialogType.CapturingSwords, TutorialDialogType.RevivingSwords]
 
+var is_playing_tutorial = false
+
 @onready var header_label = $Header
 @onready var gradient = $Gradient
 @onready var tutorial_button = $"Tutorial Button"
@@ -43,6 +45,9 @@ const base_header_font_size = 40
 const start_dialog_index = TutorialDialogType.ConceptExplain
 
 func _ready():
+	tutorial_button.playing_tutorial = is_playing_tutorial
+	gradient.visible = is_playing_tutorial
+	
 	if not grid_tiles.board.is_playing_tutorial: return
 	GameState.active_game.current_dialog_index = start_dialog_index - 1
 	progress_tutorial()
