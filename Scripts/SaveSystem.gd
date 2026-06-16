@@ -59,15 +59,19 @@ func save_game():
 	file.store_string(json_contents)
 	file.close()
 
-func load_game():
-	var save_dict = load_dictionary()
+func load_game(path):
+	var save_dict = load_dictionary(path)
 	if save_dict.size() == 0: return
 	load_piece_positions(save_dict)
 	load_power_ups(save_dict)
 	GameState.active_game.player_turn = save_dict["player_turn"]
+	
 	load_power_up_tiles(save_dict)
 	load_power_up_respawn_info(save_dict)
 	load_trick_question_tiles(save_dict)
+
+func load_autosave():
+	load_game(save_path)
 
 func load_piece_positions(save_dict):
 	var piece_loc_dict = GameState.active_game.piece_locations
@@ -89,9 +93,9 @@ func load_piece_positions(save_dict):
 			piece_value.status_effects[effect_type] = effect_value
 		piece_loc_dict[piece_pos] = piece_value
 
-func load_dictionary():
-	if not FileAccess.file_exists(save_path): return {}
-	var file := FileAccess.open(save_path, FileAccess.READ)
+func load_dictionary(path):
+	if not FileAccess.file_exists(path): return {}
+	var file := FileAccess.open(path, FileAccess.READ)
 	var file_contents = file.get_as_text()
 	file.close()
 	

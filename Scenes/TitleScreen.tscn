@@ -16,9 +16,15 @@ shader_parameter/texture_size = Vector2(28.8, 16.2)
 shader_parameter/texture_scale = Vector2(20, 20)
 shader_parameter/diagonal_lines = 20.0
 shader_parameter/gap_size = 0.5
-shader_parameter/pattern_repeated = 9.868535144997983
+shader_parameter/pattern_repeated = 52.628035144980366
 shader_parameter/line_color = Vector4(0, 0, 0, 0)
 shader_parameter/gap_color = Vector4(0, 0, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5c2t2"]
+font = ExtResource("3_8l4an")
+font_size = 64
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(6, 6)
 
 [node name="Title Screen" type="Node2D" unique_id=1320341074]
 script = ExtResource("1_n15yj")
@@ -77,7 +83,19 @@ title_screen = NodePath("../..")
 team_color = 1
 title_screen = NodePath("../..")
 
-[node name="LoadFile" parent="." unique_id=622198892 instance=ExtResource("8_5c2t2")]
+[node name="LoadFile" parent="." unique_id=622198892 node_paths=PackedStringArray("file_drop_label") instance=ExtResource("8_5c2t2")]
 is_from_file = true
+file_drop_label = NodePath("../FrontLayer/FileDropText")
 
 [node name="LoadAutosave" parent="." unique_id=493072833 instance=ExtResource("8_5c2t2")]
+
+[node name="FrontLayer" type="CanvasLayer" parent="." unique_id=1249673281]
+layer = 2
+
+[node name="FileDropText" type="Label" parent="FrontLayer" unique_id=62228942]
+offset_right = 1151.0
+offset_bottom = 649.0
+text = "přetáhněte soubor se hrou"
+label_settings = SubResource("LabelSettings_5c2t2")
+horizontal_alignment = 1
+vertical_alignment = 1
