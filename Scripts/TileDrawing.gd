@@ -41,7 +41,7 @@ func load_state(state_to_be_loaded, forced = false):
 	special_tiles.clear()
 	clear_effect_durations()
 	
-	if not board.returned_after_minigame: GameState.active_game = UID.init_state
+	if not board.returned_to_board: GameState.active_game = UID.init_state
 	if GameState.active_game == null or forced: GameState.active_game = state_to_be_loaded
 	GameState.active_game.current_dialog_index = saved_tutorial_index
 	GameState.active_game.restaurant_minigame_explained = saved_minigame_explained
@@ -50,9 +50,9 @@ func load_state(state_to_be_loaded, forced = false):
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
 	load_kind_of_tile(GameState.active_game.special_tiles)
 	tiled_diagonals.line_color = GameState.active_game.diagonals_modulate[GameState.active_game.player_turn]
-	if board.returned_after_minigame: load_power_up_tiles()
+	if board.returned_to_board: load_power_up_tiles()
 	else: setup_power_ups_at_start()
-	if board.returned_after_minigame: handle_after_minigame_return()
+	if board.returned_to_board: handle_after_minigame_return()
 
 func clear_effect_durations():
 	for effect_dur_node in effect_durations.get_children():
@@ -83,12 +83,12 @@ func load_kind_of_tile(source: Dictionary, handling_pieces := false):
 		else: tile_map = special_tiles
 		
 		tile_map.set_cell(tile_pos, 1, tile.get_atlas())
-		if not handling_pieces and tile.kind == SpecialTile.TileType.Flag and not board.returned_after_minigame:
+		if not handling_pieces and tile.kind == SpecialTile.TileType.Flag and not board.returned_to_board:
 			GameState.active_game.flag_origin[tile.relation] = tile_pos
 		if not handling_pieces: continue
 		var piece_value = GameState.active_game.piece_locations[tile_pos]
 		draw_piece_to_board(piece_value, tile_pos)
-		if tile.kind != GridState.PieceType.Sword or board.returned_after_minigame: continue
+		if tile.kind != GridState.PieceType.Sword or board.returned_to_board: continue
 		
 		var grave_pos = tile_pos
 		match tile.team_relation:
@@ -320,9 +320,9 @@ func play_move(called_after_event = false):
 	var current_move: Move = GameState.active_game.latest_move if called_after_event\
 		else possible_moves[hovered_tile]
 	GameState.active_game.latest_move = current_move
+	point_sources.clear()
 	
 	if not called_after_event: switch_player_turn()
-	
 	var piece_locations = GameState.active_game.piece_locations
 	var moved_piece: Piece = piece_locations[selected_tile]
 	var affected_piece: Piece = null
@@ -344,6 +344,8 @@ func play_move(called_after_event = false):
 			freeze_piece(affected_piece)
 			return
 	
+	var completed_source = PointSource.CompletedMinigame if board.returned_from_minigame else PointSource.CorrectAnswer
+	point_sources.append(completed_source)
 	if has_captured_piece:
 		affected_piece = piece_locations[hovered_tile]
 		handle_captured_piece_logic()
@@ -356,6 +358,8 @@ func play_move(called_after_event = false):
 	handle_power_up_regeneration()
 	handle_power_up_tiles()
 	handle_win_conditions(moved_piece)
+	update_points()
+	
 	if GameState.active_game.game_end_type != GridState.GameEndType.Ongoing:
 		GameState.active_game.invert_turn()
 		game_end.display_menu()
@@ -389,6 +393,7 @@ func handle_flag_move_logic(moved_piece: Piece):
 	var used_flag = Effect.StatusEffect.BlueFlag if moved_piece.team_relation == SpecialTile.TeamRelation.Red\
 		else Effect.StatusEffect.RedFlag
 	moved_piece.add_effect(used_flag)
+	point_sources.append(PointSource.ObtaintedFlag)
 	special_tiles.erase_cell(hovered_tile)
 	GameState.active_game.special_tiles.erase(hovered_tile)
 
@@ -405,12 +410,26 @@ func handle_captured_piece_logic():
 		special_tiles.set_cell(respawn_coord, 1, special_tile.get_atlas())
 		captured_piece.remove_flag()
 		GameState.active_game.special_tiles[respawn_coord] = special_tile
+		point_sources.append(PointSource.ReturnedFlag)
 	
-	if captured_piece.kind != GridState.PieceType.Sword: return
+	var has_captured_sword = captured_piece.kind == GridState.PieceType.Sword
+	var can_revive_sword = has_captured_sword and is_wizard_alive()
+	var point_source = PointSource.CapturedSword if can_revive_sword else PointSource.KilledPiece
+	point_sources.append(point_source)
+	if not has_captured_sword: return
+	
 	var respawn_pos = captured_piece.respawn_pos
 	captured_piece.override_effects(Effect.StatusEffect.Fainted)
 	piece_locations[respawn_pos] = captured_piece
 	draw_piece_to_board(captured_piece, respawn_pos)
+
+func is_wizard_alive():
+	for piece_pos in GameState.active_game.piece_locations.keys():
+		var piece_data = GameState.active_game.piece_locations[piece_pos]
+		var is_correct_color = piece_data.team_relation == GameState.active_game.player_turn
+		var is_wizard = piece_data.kind == GridState.PieceType.Wizard
+		if is_correct_color and is_wizard: return true
+	return false
 
 const status_effect_show_offset : Array[Vector2i] =\
 	[Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]
@@ -445,9 +464,11 @@ func erase_piece(coords: Vector2i):
 func handle_power_up_tiles():
 	var contains_power_up = GameState.active_game.has_tile_power_up(hovered_tile)
 	if not contains_power_up: return
+	
 	var obtainted_kind = GameState.active_game.power_up_tiles[hovered_tile]
 	GameState.active_game.power_up_tiles.erase(hovered_tile)
 	power_ups.erase_cell(hovered_tile)
+	point_sources.append(PointSource.ObtaintedPowerUp)
 	GameState.active_game.receive_power_up(hovered_tile, obtainted_kind)
 
 func handle_win_conditions(moved_piece: Piece):
@@ -563,3 +584,37 @@ func handle_power_up_waiting_for_no_piece_array():
 		if is_piece_on_spawn: continue
 		waiting_for_no_piece_arr.erase(power_up_spawn_pos)
 		GameState.active_game.generate_power_up(power_up_spawn_pos, power_ups)
+
+var point_sources : Array[PointSource]
+
+enum PointSource {
+	Unknown,
+	CorrectAnswer,
+	CompletedMinigame,
+	ObtaintedPowerUp,
+	CapturedSword,
+	KilledPiece,
+	ObtaintedFlag,
+	ReturnedFlag
+}
+
+const point_sources_values: Dictionary[PointSource, int] = {
+	PointSource.CorrectAnswer: 3,
+	PointSource.CompletedMinigame: 6,
+	PointSource.ObtaintedPowerUp: 2,
+	PointSource.CapturedSword: 5,
+	PointSource.KilledPiece: 9,
+	PointSource.ObtaintedFlag: 6,
+	PointSource.ReturnedFlag: 4
+}
+
+func update_points():
+	var obtainted_point_value = 0
+	for point_source: PointSource in point_sources:
+		var source_value = point_sources_values[point_source]
+		obtainted_point_value += source_value
+		
+	var gathered_points_dict = GameState.active_game.team_gathered_points
+	var player_color = GameState.active_game.get_inverted_turn()
+	var new_point_count = gathered_points_dict.get(player_color, 0) + obtainted_point_value
+	gathered_points_dict[player_color] = new_point_count

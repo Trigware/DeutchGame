@@ -51,7 +51,8 @@ func save_game():
 		"team_info": team_dict,
 		"power_up_respawn_info": respawn_info,
 		"power_up_tiles": power_up_positions_dict,
-		"tricky_question_tiles": tricky_question_tiles
+		"tricky_question_tiles": tricky_question_tiles,
+		"team_points": GameState.active_game.team_gathered_points
 	}
 	
 	var file := FileAccess.open(save_path, FileAccess.WRITE)
@@ -66,6 +67,8 @@ func load_game(path):
 	load_power_ups(save_dict)
 	GameState.active_game.player_turn = save_dict["player_turn"]
 	
+	load_gathered_team_points(save_dict)
+	load_team_info(save_dict)
 	load_power_up_tiles(save_dict)
 	load_power_up_respawn_info(save_dict)
 	load_trick_question_tiles(save_dict)
@@ -228,4 +231,11 @@ func load_trick_question_tiles(save_dict):
 		var tricky_question_pos = parse_vector(tricky_question_pos_str)
 		var tricky_question_color = trick_question_json[tricky_question_pos_str]
 		special_tiles_dict[tricky_question_pos] = SpecialTile.ctor(SpecialTile.TileType.TrickQuestion, tricky_question_color)
-	
+
+func load_gathered_team_points(save_dict):
+	var team_points_json = save_dict["team_points"]
+	var team_points_dict = GameState.active_game.team_gathered_points
+	for team_color in team_points_json.keys():
+		var team_points = int(team_points_json[team_color])
+		team_points_dict[int(team_color)] = team_points
+	print(team_points_dict)

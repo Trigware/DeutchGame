@@ -7,7 +7,8 @@ var time_left: float
 enum QuestionType {
 	Unknown = -1,
 	IngredientQuestion,
-	ClockQuestion
+	ClockQuestion,
+	FamilyTree
 }
 
 @onready var time_left_label = $TimeLeft
@@ -130,12 +131,14 @@ func account_for_window_sizes():
 
 const german_question_title_dict : Dictionary[QuestionType, String] = {
 	QuestionType.IngredientQuestion: "Diese Essen in Deutsch!",
-	QuestionType.ClockQuestion: "Wieviel Uhr ist es?"
+	QuestionType.ClockQuestion: "Wieviel Uhr ist es?",
+	QuestionType.FamilyTree: "QGermanFamilyTree"
 }
 
 const czech_question_title_dict : Dictionary[QuestionType, String] = {
 	QuestionType.IngredientQuestion: "Přeložte tato jídla do němčiny!",
-	QuestionType.ClockQuestion: "Řekněte v němčině, kolik hodin je na obrázku!"
+	QuestionType.ClockQuestion: "Řekněte v němčině, kolik hodin je na obrázku!",
+	QuestionType.FamilyTree: "QEnglishFamilyTree"
 }
 
 var german_question: String
@@ -144,7 +147,7 @@ var czech_question: String
 func pick_question_type():
 	var max_question_index = QuestionType.size() - 1
 	var picked_question_index = randi_range(1, max_question_index)
-	question_type = QuestionType.values()[picked_question_index]
+	question_type = QuestionType.FamilyTree
 	german_question = german_question_title_dict[question_type]
 	czech_question = czech_question_title_dict[question_type]
 
@@ -196,5 +199,5 @@ func on_answer_evaluate(answered_correctly: bool):
 	if evaluating_question: return
 	evaluating_question = true
 	var scene_modifier = func(board_scene: BoardRoot): board_scene.push_piece()
-	var used_modifier = scene_modifier if answered_correctly else func(board_scene: BoardRoot): board_scene.returned_after_minigame = true
+	var used_modifier = scene_modifier if answered_correctly else func(board_scene: BoardRoot): board_scene.returned_to_board = true
 	Overlay.switch_scene_def(UID.board_scene, used_modifier)

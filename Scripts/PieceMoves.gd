@@ -37,7 +37,7 @@ func get_possible_moves(tile: Vector2i):
 const move_range = 2
 
 func _ready():
-	if not Audio.music_playing or returned_after_minigame: Audio.play_music(UID.board_music)
+	if not Audio.music_playing or returned_to_board: Audio.play_music(UID.board_music)
 	tiled_diagonals.gap_size = init_diagonals_gap_size
 	tutorial_ui.visible = is_playing_tutorial
 
@@ -198,12 +198,13 @@ func is_lack_of_moves_win_condition_valid() -> bool:
 		number_of_valid_pieces += 1
 	return number_of_valid_pieces == 0
 
-var returned_after_minigame = false
+var returned_to_board = false
+var returned_from_minigame = false
 var task_was_successful = false
 
 func push_piece():
 	var main_loop = Engine.get_main_loop()
-	returned_after_minigame = true
+	returned_to_board = true
 	task_was_successful = true
 	for i in range(2): await main_loop.process_frame
 	tiles.push_piece()

@@ -50,6 +50,8 @@ var team_member_count: Dictionary[SpecialTile.TeamRelation, int] = {
 	SpecialTile.TeamRelation.Blue: 10
 }
 
+var team_gathered_points: Dictionary = {}
+
 var grave_tiles: Array[Vector2i] = []
 var flag_origin: Dictionary[SpecialTile.TeamRelation, Vector2i]
 var game_end_type := GameEndType.Ongoing

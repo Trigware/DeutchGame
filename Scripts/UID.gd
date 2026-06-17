@@ -56,7 +56,8 @@ const quiz_music := preload("uid://b8dmhbhel5d6d")
 
 const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = {
 	Question.QuestionType.IngredientQuestion: preload("uid://646kf0uhtr74"),
-	Question.QuestionType.ClockQuestion: preload("uid://cmsvbby1xq7q8")
+	Question.QuestionType.ClockQuestion: preload("uid://cmsvbby1xq7q8"),
+	Question.QuestionType.FamilyTree: preload("uid://cudeoiwyyn40c")
 }
 
 const tutorial_state := preload("uid://b5nlnubo2etxf")

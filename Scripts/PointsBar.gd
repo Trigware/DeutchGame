@@ -78,7 +78,9 @@ func point_goal_reached():
 	goal_reached_previously = true
 	Overlay.switch_scene(UID.board_scene, TimeView.minigame_cover_overlay_tween_duration, TimeView.minigame_overlay_inbetween_duration, goal_reached)
 
-func goal_reached(board_scene: BoardRoot): board_scene.push_piece()
+func goal_reached(board_scene: BoardRoot):
+	board_scene.returned_from_minigame = true
+	board_scene.push_piece()
 
 const time_per_point = 0.05
 

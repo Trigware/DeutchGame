@@ -121,4 +121,6 @@ func on_time_over():
 	was_previously_time_over = true
 	await Overlay.switch_scene(UID.board_scene, minigame_cover_overlay_tween_duration, minigame_overlay_inbetween_duration, game_over_scene_func)
 
-func game_over_scene_func(board_scene: BoardRoot): board_scene.returned_after_minigame = true
+func game_over_scene_func(board_scene: BoardRoot):
+	board_scene.returned_to_board = true
+	board_scene.returned_from_minigame = true

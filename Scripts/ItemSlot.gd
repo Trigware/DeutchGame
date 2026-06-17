@@ -7,6 +7,7 @@ var item_slot_team := SpecialTile.TeamRelation.Other
 @onready var main_sprite = $Main
 @onready var item_sprite = $Item
 @onready var count_label = $Count
+@onready var points_label = $Points
 
 var item_slot_size: Vector2
 var deactivated: bool = false
@@ -28,6 +29,22 @@ var actual_slot_combined_height: float
 
 func _process(_delta):
 	modulate.a = 0 if deactivated else 1
+	update_points_label()
+
+const upper_points_pos_y = -37
+const lower_points_pos_y = 27
+const right_align_points_label_x = -112
+
+func update_points_label():
+	var belongs_to_blue_team = item_slot_team == SpecialTile.TeamRelation.Blue
+	points_label.position.y = upper_points_pos_y if belongs_to_blue_team else lower_points_pos_y
+	var points_visible_power_up_slot_type = GridState.PowerUpType.SpeedBoost if belongs_to_blue_team else GridState.PowerUpType.OpponentSlowness
+	points_label.visible = power_up_kind == points_visible_power_up_slot_type
+	
+	var points_count = GameState.active_game.team_gathered_points.get(item_slot_team, 0)
+	points_label.text = str(points_count)
+	points_label.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT if belongs_to_blue_team else HorizontalAlignment.HORIZONTAL_ALIGNMENT_FILL
+	points_label.position.x = right_align_points_label_x if belongs_to_blue_team else 0
 
 func update_slot():
 	var window_size = DisplayServer.window_get_size()
@@ -41,6 +58,7 @@ func update_slot():
 	var unoffseted_y_pos = item_actual_size.y * (power_up_kind - 0.5)
 	var used_y_pos = unoffseted_y_pos + unoccupied_height / 2
 	var x_offset = item_actual_size.x / 8
+	
 	var belongs_slot_to_blue_team = item_slot_team == SpecialTile.TeamRelation.Blue
 	if belongs_slot_to_blue_team: x_offset = window_size.x - item_actual_size.x
 	position = Vector2(x_offset, used_y_pos)
