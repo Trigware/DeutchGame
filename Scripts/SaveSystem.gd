@@ -14,7 +14,8 @@ func get_piece_positions_dict():
 		var piece_dict = {
 			"color": piece.team_relation,
 			"kind": piece.kind,
-			"effects": effects_dict
+			"effects": effects_dict,
+			"respawn_pos": piece.respawn_pos
 		}
 		piece_positions[piece_pos] = piece_dict
 	
@@ -89,6 +90,7 @@ func load_piece_positions(save_dict):
 		var piece_type = piece_data["kind"]
 		var piece_effects = piece_data["effects"]
 		var piece_value = Piece.ctor(piece_type, piece_color)
+		piece_value.respawn_pos = parse_vector(piece_data["respawn_pos"])
 		
 		for effect_str in piece_effects.keys():
 			var effect_type = int(effect_str)
@@ -238,4 +240,3 @@ func load_gathered_team_points(save_dict):
 	for team_color in team_points_json.keys():
 		var team_points = int(team_points_json[team_color])
 		team_points_dict[int(team_color)] = team_points
-	print(team_points_dict)

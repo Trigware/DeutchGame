@@ -199,10 +199,10 @@ func handle_jumping(delta: float):
 		z_index = 0
 	anim_sprite.offset.y = offset_y
 
-const base_jump_over_barrel_score = 7
-const base_ingredient_pickup_score = 5.5
-const base_ingredient_belt_throw_score = 4.5
-const base_food_pickup_score = 30
+const base_jump_over_barrel_score = 8.5
+const base_ingredient_pickup_score = 7
+const base_ingredient_belt_throw_score = 6
+const base_food_pickup_score = 35
 const jump_over_score_log_expo = 2.8
 const jump_over_score_log_divisor = 15
 const maximum_food_delivery_score_gain = 60

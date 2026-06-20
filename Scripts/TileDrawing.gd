@@ -33,7 +33,6 @@ func load_state(state_to_be_loaded, forced = false):
 		saved_tutorial_index = GameState.active_game.current_dialog_index
 		saved_ingredients_encountered = GameState.active_game.ingredients_encountered
 		saved_foods_encountered = GameState.active_game.foods_encountered
-		saved_minigame_explained = GameState.active_game.restaurant_minigame_explained
 	
 	icons.clear()
 	status.clear()
@@ -44,7 +43,6 @@ func load_state(state_to_be_loaded, forced = false):
 	if not board.returned_to_board: GameState.active_game = UID.init_state
 	if GameState.active_game == null or forced: GameState.active_game = state_to_be_loaded
 	GameState.active_game.current_dialog_index = saved_tutorial_index
-	GameState.active_game.restaurant_minigame_explained = saved_minigame_explained
 	
 	GameState.active_game.grid_tiles = self
 	load_kind_of_tile(GameState.active_game.piece_locations, true)
@@ -492,7 +490,7 @@ var trick_question_transition_duration = 0.35
 const full_zoom : float = 3
 const trick_transition_duration = 0.75
 
-const questions_minigames_disabled = true
+const questions_minigames_disabled = false
 const after_trick_question_scene = UID.trick_question_decision
 
 func handle_pre_move_event(current_move: Move):

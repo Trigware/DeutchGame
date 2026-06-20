@@ -61,3 +61,4 @@ const question_subscene_dict : Dictionary[Question.QuestionType, PackedScene] = 
 }
 
 const tutorial_state := preload("uid://b5nlnubo2etxf")
+const family_member := preload("uid://wn1m8bmf11se")

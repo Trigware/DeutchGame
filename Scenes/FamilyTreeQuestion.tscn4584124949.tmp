@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cudeoiwyyn40c"]
+
+[ext_resource type="Script" uid="uid://dmx1o14kc60bp" path="res://Scripts/FamilyTreeQuestion.gd" id="1_ygi1d"]
+
+[node name="FamilyTreeQuestion" type="Node2D" unique_id=1331814834]
+script = ExtResource("1_ygi1d")
